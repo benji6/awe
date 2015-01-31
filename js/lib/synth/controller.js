@@ -1,14 +1,21 @@
-var keyboardController = require('../keyboard/output.js');
-var Oscillator = require ('./Oscillator.js');
-var GainNode = require ('./GainNode.js');
+var keyboardInput = require('../keyboard/output.js');
+var Oscillator = require('./Oscillator.js');
+var GainNode = require('./GainNode.js');
+var view = require('./view.js');
+var pubsub = require('./pubsub.js');
+
+var oscillators = new Map();
 
 module.exports = (audioCtx) => {
   var gainNode = GainNode(audioCtx);
+  gainNode.gain.value = 0.1;
   gainNode.connect(audioCtx.destination);
 
-  var oscillators = new Map();
+  pubsub.on('volume', (volume) => {
+    gainNode.gain.value = volume;
+  });
 
-  keyboardController.on('keyDown', (freq) => {
+  keyboardInput.on('keyDown', (freq) => {
     if (oscillators.has(freq)) {
       return;
     }
@@ -20,7 +27,7 @@ module.exports = (audioCtx) => {
     oscillators.set(freq, oscillator);
   });
 
-  keyboardController.on('keyUp', (freq) => {
+  keyboardInput.on('keyUp', (freq) => {
     var oscillator = oscillators.get(freq);
     if (!oscillator) {
       return;
@@ -28,4 +35,7 @@ module.exports = (audioCtx) => {
     oscillator.stop();
     oscillators.delete(freq);
   });
+
+  view();
+
 };
