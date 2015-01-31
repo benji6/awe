@@ -1,4 +1,4 @@
-var keyboardController = require('../controllers/keyboard.js');
+var keyboardController = require('../keyboard/output.js');
 var Oscillator = require ('./Oscillator.js');
 var GainNode = require ('./GainNode.js');
 
