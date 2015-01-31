@@ -12,8 +12,7 @@ var createOsc = function (type, channel) {
 
   osc.connect(gainNode);
   pubsub.on(channel, (volume) => {
-    model.volume[type] = volume;
-    gainNode.gain.value = volume;
+    gainNode.gain.value = model.volume[type] = volume;
   });
 
   return {
@@ -41,8 +40,7 @@ module.exports = () => {
   var gainNode = GainNode(model.volume.master);
 
   pubsub.on('volume', (volume) => {
-    model.volume.master = volume;
-    gainNode.gain.value = volume;
+    gainNode.gain.value = model.volume.master = volume;
   });
 
   keyboardInput.on('keyDown', (freq) => {
