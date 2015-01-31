@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/benji6/awe",
   "dependencies": {
+    "minivents": "^1.1.7",
     "watchify": "^2.3.0"
   },
   "jshintConfig": {
