@@ -47,6 +47,9 @@ var createOscVolumeControl = function (text, channel) {
 
 module.exports = () => {
   createMasterVolumeControl();
+  createOscVolumeControl('Sine Volume: ', 'sineVolume');
   createOscVolumeControl('Square Volume: ', 'squareVolume');
   createOscVolumeControl('Sawtooth Volume: ', 'sawtoothVolume');
+  createOscVolumeControl('Triangle Volume: ', 'triangleVolume');
+
 };

@@ -6,7 +6,8 @@ var view = require('./view.js');
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
 
-var createOsc = function (type, channel) {
+var createOsc = function (type) {
+  var channel = type + "Volume";
   var osc = Oscillator(type);
   var gainNode = GainNode(model.volume[type]);
 
@@ -23,8 +24,10 @@ var createOsc = function (type, channel) {
 
 var newNote = function (freq, gainNode) {
   var oscillators = [
+    createOsc('sine', 'sineVolume'),
     createOsc('square', 'squareVolume'),
-    createOsc('sawtooth', 'sawtoothVolume')
+    createOsc('sawtooth', 'sawtoothVolume'),
+    createOsc('triangle', 'triangleVolume')
   ];
 
   oscillators.forEach((element) => {
