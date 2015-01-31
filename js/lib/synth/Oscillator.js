@@ -1,6 +1,6 @@
-module.exports = (audioCtx) => {
-  var oscillator = audioCtx.createOscillator();
-  oscillator.type = 'square';
+module.exports = function (audioContext, type) {
+  var oscillator = audioContext.createOscillator();
+  oscillator.type = type;
 
   return oscillator;
 };
