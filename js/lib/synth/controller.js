@@ -2,7 +2,6 @@ var keyboardController = require('../controllers/keyboard.js');
 var Oscillator = require ('./Oscillator.js');
 var GainNode = require ('./GainNode.js');
 
-
 module.exports = (audioCtx) => {
   var gainNode = GainNode(audioCtx);
   gainNode.connect(audioCtx.destination);
