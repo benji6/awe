@@ -6,12 +6,10 @@ var view = require('./view.js');
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
 
-var activeNotes = new Map();
-
 var createOsc = function (type, channel) {
   var osc = Oscillator(type);
   var gainNode = GainNode(model.volume[type]);
-  
+
   osc.connect(gainNode);
   pubsub.on(channel, (volume) => {
     model.volume[type] = volume;
@@ -36,7 +34,7 @@ var newNote = function (freq, gainNode) {
     element.osc.start();
   });
 
-  activeNotes.set(freq, oscillators);
+  model.activeNotes.set(freq, oscillators);
 };
 
 module.exports = () => {
@@ -48,19 +46,19 @@ module.exports = () => {
   });
 
   keyboardInput.on('keyDown', (freq) => {
-    if (activeNotes.has(freq)) {
+    if (model.activeNotes.has(freq)) {
       return;
     }
     newNote(freq, gainNode);
   });
 
   keyboardInput.on('keyUp', (freq) => {
-    var oscillators = activeNotes.get(freq);
+    var oscillators = model.activeNotes.get(freq);
     if (!oscillators) {
       return;
     }
     oscillators.forEach((elem) => elem.osc.stop());
-    activeNotes.delete(freq);
+    model.activeNotes.delete(freq);
   });
 
   gainNode.connect(audioContext.destination);
