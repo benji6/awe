@@ -1,3 +1,4 @@
+var audioContext = require('../audioContext');
 var keyboardInput = require('../keyboard/output.js');
 var Oscillator = require('./Oscillator.js');
 var GainNode = require('./GainNode.js');
@@ -6,9 +7,9 @@ var pubsub = require('./pubsub.js');
 
 var activeNotes = new Map();
 
-var createOsc = function (audioContext, type, channel) {
-  var osc = Oscillator(audioContext, type);
-  var gainNode = GainNode(audioContext, 0.1);
+var createOsc = function (type, channel) {
+  var osc = Oscillator(type);
+  var gainNode = GainNode(0.1);
   osc.connect(gainNode);
   pubsub.on(channel, (volume) => {
     gainNode.gain.value = volume;
@@ -20,10 +21,10 @@ var createOsc = function (audioContext, type, channel) {
   };
 };
 
-var newNote = function (audioContext, freq, gainNode) {
+var newNote = function (freq, gainNode) {
   var oscillators = [
-    createOsc(audioContext, 'square', 'squareVolume'),
-    createOsc(audioContext, 'sawtooth', 'sawtoothVolume')
+    createOsc('square', 'squareVolume'),
+    createOsc('sawtooth', 'sawtoothVolume')
   ];
 
   oscillators.forEach((element) => {
@@ -34,8 +35,8 @@ var newNote = function (audioContext, freq, gainNode) {
   activeNotes.set(freq, oscillators);
 };
 
-module.exports = (audioContext) => {
-  var gainNode = GainNode(audioContext, 0.1);
+module.exports = () => {
+  var gainNode = GainNode(0.1);
   pubsub.on('volume', (volume) => {
     gainNode.gain.value = volume;
   });
@@ -43,7 +44,7 @@ module.exports = (audioContext) => {
     if (activeNotes.has(freq)) {
       return;
     }
-    newNote(audioContext, freq, gainNode);
+    newNote(freq, gainNode);
   });
 
   keyboardInput.on('keyUp', (freq) => {

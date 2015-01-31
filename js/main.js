@@ -1,3 +1,3 @@
-var audioCtx = new AudioContext();
+var audioContext = require('./lib/audioContext.js')
 
-var synth = require('./lib/synth/controller.js')(audioCtx);
+var synth = require('./lib/synth/controller.js')(audioContext);
