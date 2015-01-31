@@ -42,7 +42,7 @@ var newNote = function (freq, gainNode) {
 module.exports = () => {
   var gainNode = GainNode(model.volume.master);
 
-  pubsub.on('volume', (volume) => {
+  pubsub.on('masterVolume', (volume) => {
     gainNode.gain.value = model.volume.master = volume;
   });
 

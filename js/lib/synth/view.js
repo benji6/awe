@@ -1,3 +1,5 @@
+var jsmlParse = require('../../../custom_modules/jsml/jsmlParse.js');
+
 var pubsub = require('./pubsub.js');
 
 var createInputElement = () => {
@@ -10,46 +12,46 @@ var createInputElement = () => {
   return input;
 };
 
-var createMasterVolumeControl = () => {
-  var text = document.createTextNode('Volume: ');
-  var input = createInputElement();
-  var output = document.createElement('output');
-  output.value = (input.value * 100).toFixed(0);
-  input.oninput = function () {
-    pubsub.emit('volume', input.value);
-    output.value = (input.value * 100).toFixed(0);
+var createVolumeControl = function (text) {
+  var channel = text + "Volume";
+  var input;
+  var output;
+  var jsml = {
+    tag: "div",
+    children: [{
+      tag: "label",
+      text: text + " volume"
+    },
+    {
+      tag: "input",
+      callback: (element) => {
+        input = element;
+        element.type = "range";
+        element.min = 0;
+        element.max = 1;
+        element.step = 0.01;
+        element.value = 0.1;
+        element.oninput = function () {
+          pubsub.emit(channel, input.value);
+          output.value = (input.value * 100).toFixed(0);
+        };
+      }
+    },
+    {
+      tag: "output",
+      callback: (element) => {
+        output = element;
+        element.value = input.value;
+      }
+    }]
   };
-  var label = document.createElement('label');
-  label.appendChild(text);
-  label.appendChild(input);
-  label.appendChild(output);
-  var div = document.createElement('div');
-  div.appendChild(label);
-  document.body.appendChild(div);
-};
-
-var createOscVolumeControl = function (text, channel) {
-  var input = createInputElement();
-  var output = document.createElement('output');
-  output.value = (input.value * 100).toFixed(0);
-  input.oninput = function () {
-    pubsub.emit(channel, input.value);
-    output.value = (input.value * 100).toFixed(0);
-  };
-  var label = document.createElement('label');
-  label.appendChild(document.createTextNode(text));
-  label.appendChild(input);
-  label.appendChild(output);
-  var div = document.createElement('div');
-  div.appendChild(label);
-  document.body.appendChild(div);
+  jsmlParse(jsml, document.body);
 };
 
 module.exports = () => {
-  createMasterVolumeControl();
-  createOscVolumeControl('Sine Volume: ', 'sineVolume');
-  createOscVolumeControl('Square Volume: ', 'squareVolume');
-  createOscVolumeControl('Sawtooth Volume: ', 'sawtoothVolume');
-  createOscVolumeControl('Triangle Volume: ', 'triangleVolume');
-
+  createVolumeControl('master');
+  createVolumeControl('sine');
+  createVolumeControl('square');
+  createVolumeControl('sawtooth');
+  createVolumeControl('triangle');
 };

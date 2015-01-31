@@ -1,4 +1,5 @@
 *.log
 bundle.js
+custom_modules
 jasmine-2.1.3
 node_modules
