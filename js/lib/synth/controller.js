@@ -1,7 +1,6 @@
 var audioContext = require('../audioContext');
 var keyboardInput = require('../keyboard/output.js');
 
-
 var view = require('./view.js');
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
@@ -32,7 +31,8 @@ var createOsc = function (type) {
   });
 
   pubsub.on(type + "Detune", (cents) => {
-    osc.detune.value = model.detune[type] = cents * 100;
+    model.detune[type] = cents;
+    osc.detune.value = cents;
   });
 
   return {
@@ -58,6 +58,22 @@ var newNote = function (freq, gainNode) {
   model.activeNotes.set(freq, oscillators);
 };
 
+pubsub.on("save", () => localStorage.setItem("synthModel", JSON.stringify(model)));
+
+pubsub.on("load", () => {
+  var retrieved = JSON.parse(localStorage.getItem("synthModel"));
+  model.volume = retrieved.volume;
+  model.detune = retrieved.detune;
+  view.render();
+});
+
+pubsub.on("reset", () => {
+  var retrieved = JSON.parse(localStorage.getItem("synthModel"));
+  model.volume = model.defaults.volume;
+  model.detune = model.defaults.detune;
+  view.render();
+});
+
 module.exports = () => {
   var gainNode = GainNode(model.volume.master);
 
@@ -82,6 +98,4 @@ module.exports = () => {
   });
 
   gainNode.connect(audioContext.destination);
-
-  view();
 };
