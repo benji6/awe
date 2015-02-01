@@ -1,10 +1,24 @@
 var audioContext = require('../audioContext');
 var keyboardInput = require('../keyboard/output.js');
-var Oscillator = require('./Oscillator.js');
-var GainNode = require('./GainNode.js');
+
+
 var view = require('./view.js');
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
+
+var Oscillator = (type) => {
+  var oscillator = audioContext.createOscillator();
+  oscillator.type = type;
+
+  return oscillator;
+};
+
+var GainNode = (volume) => {
+  var gainNode = audioContext.createGain();
+  gainNode.gain.value = volume;
+
+  return gainNode;
+};
 
 var createOsc = function (type) {
   var osc = Oscillator(type);
