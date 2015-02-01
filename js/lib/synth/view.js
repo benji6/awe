@@ -5,15 +5,15 @@ var pubsub = require('./pubsub.js');
 var table = document.createElement('table');
 document.body.appendChild(table);
 
-var createVolumeControl = function (text) {
-  var channel = text + "Volume";
+var createRangeControl = function (text, type) {
+  var channel = text + type;
   var input;
   var output;
   var jsml = {
     tag: "tr",
     children: [{
       tag: "td",
-      text: text + " volume"
+      text: text.charAt(0).toUpperCase() + text.slice(1) + " " + type
     },
     {
       tag: "td",
@@ -48,9 +48,12 @@ var createVolumeControl = function (text) {
 };
 
 module.exports = () => {
-  createVolumeControl('master');
-  createVolumeControl('sine');
-  createVolumeControl('square');
-  createVolumeControl('sawtooth');
-  createVolumeControl('triangle');
+  createRangeControl("master", "Volume");
+
+  var waves = new Set(["sine", "square", "sawtooth", "triangle"]);
+
+  waves.forEach((elem) => {
+    createRangeControl(elem, "Volume");
+    createRangeControl(elem, "Detune");
+  });
 };

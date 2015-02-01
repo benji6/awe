@@ -7,13 +7,15 @@ var pubsub = require('./pubsub.js');
 var model = require('./model.js');
 
 var createOsc = function (type) {
-  var channel = type + "Volume";
   var osc = Oscillator(type);
   var gainNode = GainNode(model.volume[type]);
 
   osc.connect(gainNode);
-  pubsub.on(channel, (volume) => {
+  pubsub.on(type + "Volume", (volume) => {
     gainNode.gain.value = model.volume[type] = volume;
+  });
+  pubsub.on(type + "Detune", (cents) => {
+    osc.detune.value = cents * 100;
   });
 
   return {
