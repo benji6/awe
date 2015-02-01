@@ -19,20 +19,41 @@ var GainNode = (volume) => {
   return gainNode;
 };
 
+var setPannerPosition = (panner, panning) => {
+  var x = panning;
+  var z = 1 - Math.abs(x);
+  panner.setPosition(x, 0, z);
+
+  return panner;
+};
+
+var Panner = (panning) => {
+  var panner = audioContext.createPanner();
+  panner.panningModel = 'equalpower';
+
+  return setPannerPosition(panner, panning);
+};
+
 var createOsc = function (type) {
   var osc = Oscillator(type);
   var gainNode = GainNode(model.volume[type]);
+  var panner = Panner(model.panning[type]);
 
   osc.detune.value = model.detune[type];
-  osc.connect(gainNode);
+  osc.connect(panner);
+  panner.connect(gainNode);
 
   pubsub.on(type + "Volume", (volume) => {
     gainNode.gain.value = model.volume[type] = volume;
   });
 
   pubsub.on(type + "Detune", (cents) => {
-    model.detune[type] = cents;
-    osc.detune.value = cents;
+    osc.detune.value = model.detune[type] = cents;
+  });
+
+  pubsub.on(type + "Panning", (value) => {
+    model.panning[type] = value;
+    setPannerPosition(panner, value);
   });
 
   return {

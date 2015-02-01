@@ -12,6 +12,12 @@ module.exports = {
       square: 0,
       sawtooth: 0,
       triangle: 0
+    },
+    panning: {
+      sine: 0,
+      square: 0,
+      sawtooth: 0,
+      triangle: 0
     }
   },
   volume: {
@@ -22,6 +28,12 @@ module.exports = {
     triangle: 0.1
   },
   detune: {
+    sine: 0,
+    square: 0,
+    sawtooth: 0,
+    triangle: 0
+  },
+  panning: {
     sine: 0,
     square: 0,
     sawtooth: 0,
