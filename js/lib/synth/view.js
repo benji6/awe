@@ -2,40 +2,49 @@ var jsmlParse = require('../../../custom_modules/jsml/jsmlParse.js');
 
 var pubsub = require('./pubsub.js');
 
+var table = document.createElement('table');
+document.body.appendChild(table);
+
 var createVolumeControl = function (text) {
   var channel = text + "Volume";
   var input;
   var output;
   var jsml = {
-    tag: "div",
+    tag: "tr",
     children: [{
-      tag: "label",
+      tag: "td",
       text: text + " volume"
     },
     {
-      tag: "input",
-      callback: (element) => {
-        input = element;
-        element.type = "range";
-        element.min = 0;
-        element.max = 1;
-        element.step = 0.01;
-        element.value = 0.1;
-        element.oninput = function () {
-          pubsub.emit(channel, input.value);
-          output.value = (input.value * 100).toFixed(0);
-        };
+      tag: "td",
+      children: {
+        tag: "input",
+        callback: (element) => {
+          input = element;
+          element.type = "range";
+          element.min = 0;
+          element.max = 1;
+          element.step = 0.01;
+          element.value = 0.1;
+          element.oninput = function () {
+            pubsub.emit(channel, input.value);
+            output.value = (input.value * 100).toFixed(0);
+          };
+        }
       }
     },
     {
-      tag: "output",
-      callback: (element) => {
-        output = element;
-        element.value = input.value;
+      tag: "td",
+      children: {
+        tag: "output",
+        callback: (element) => {
+          output = element;
+          element.value = input.value;
+        }
       }
     }]
   };
-  jsmlParse(jsml, document.body);
+  jsmlParse(jsml, table);
 };
 
 module.exports = () => {
