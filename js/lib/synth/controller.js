@@ -85,6 +85,7 @@ pubsub.on("load", () => {
   var retrieved = JSON.parse(localStorage.getItem("synthModel"));
   model.volume = retrieved.volume;
   model.detune = retrieved.detune;
+  model.panning = retrieved.panning;
   view.render();
 });
 
@@ -92,21 +93,27 @@ pubsub.on("reset", () => {
   var retrieved = JSON.parse(localStorage.getItem("synthModel"));
   model.volume = model.defaults.volume;
   model.detune = model.defaults.detune;
+  model.panning = model.defaults.panning;
   view.render();
 });
 
 module.exports = () => {
+  var panner = Panner(model.panning.master);
   var gainNode = GainNode(model.volume.master);
 
   pubsub.on('masterVolume', (volume) => {
     gainNode.gain.value = model.volume.master = volume;
+  });
+  pubsub.on('masterPanning', (value) => {
+    model.panning.master = value;
+    setPannerPosition(panner, value);
   });
 
   keyboardInput.on('keyDown', (freq) => {
     if (model.activeNotes.has(freq)) {
       return;
     }
-    newNote(freq, gainNode);
+    newNote(freq, panner);
   });
 
   keyboardInput.on('keyUp', (freq) => {
@@ -118,5 +125,6 @@ module.exports = () => {
     model.activeNotes.delete(freq);
   });
 
+  panner.connect(gainNode);
   gainNode.connect(audioContext.destination);
 };

@@ -93,6 +93,7 @@ var createRangeControl = function (wave, type, min, max) {
 var waves = new Set(["sine", "square", "sawtooth", "triangle"]);
 
 createRangeControl("master", "volume", 0, 1);
+createRangeControl("master", "panning", -1, 1);
 waves.forEach((elem) => {
   createRangeControl(elem, "volume", 0, 1);
   createRangeControl(elem, "detune", -100, 100);

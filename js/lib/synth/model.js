@@ -14,6 +14,7 @@ module.exports = {
       triangle: 0
     },
     panning: {
+      master: 0,
       sine: 0,
       square: 0,
       sawtooth: 0,
@@ -34,6 +35,7 @@ module.exports = {
     triangle: 0
   },
   panning: {
+    master: 0,
     sine: 0,
     square: 0,
     sawtooth: 0,
