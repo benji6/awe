@@ -2,16 +2,6 @@ var jsmlParse = require('../../../custom_modules/jsml/jsmlParse.js');
 
 var pubsub = require('./pubsub.js');
 
-var createInputElement = () => {
-  var input = document.createElement('input');
-  input.type = "range";
-  input.min = 0;
-  input.max = 1;
-  input.step = 0.01;
-  input.value = 0.1;
-  return input;
-};
-
 var createVolumeControl = function (text) {
   var channel = text + "Volume";
   var input;
