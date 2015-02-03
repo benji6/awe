@@ -63,7 +63,7 @@ var createRangeControl = function (wave, type, min, max) {
           element.min = min;
           element.max = max;
           element.step = (max - min) / 100;
-          element.value = model[type][wave];
+          element.value = model.currentSettings[type][wave];
           element.oninput = () => {
             pubsub.emit(channel, input.value);
             output.value = input.value;
@@ -103,10 +103,10 @@ waves.forEach((elem) => {
 module.exports = {
   render: () => {
     inputElements.forEach((element) => {
-      element.element.value = model[element.type][element.wave];
+      element.value = model.currentSettings[element.type][element.wave];
     });
     outputElements.forEach((element) => {
-      element.element.value = model[element.type][element.wave];
+      element.value = model.currentSettings[element.type][element.wave];
     });
   }
 };

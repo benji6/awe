@@ -36,23 +36,23 @@ var Panner = (panning) => {
 
 var createOsc = function (type) {
   var osc = Oscillator(type);
-  var gainNode = GainNode(model.volume[type]);
-  var panner = Panner(model.panning[type]);
+  var gainNode = GainNode(model.currentSettings.volume[type]);
+  var panner = Panner(model.currentSettings.panning[type]);
 
-  osc.detune.value = model.detune[type];
+  osc.detune.value = model.currentSettings.detune[type];
   osc.connect(panner);
   panner.connect(gainNode);
 
   pubsub.on(type + "Volume", (volume) => {
-    gainNode.gain.value = model.volume[type] = volume;
+    gainNode.gain.value = model.currentSettings.volume[type] = volume;
   });
 
   pubsub.on(type + "Detune", (cents) => {
-    osc.detune.value = model.detune[type] = cents;
+    osc.detune.value = model.currentSettings.detune[type] = cents;
   });
 
   pubsub.on(type + "Panning", (value) => {
-    model.panning[type] = value;
+    model.currentSettings.panning[type] = value;
     setPannerPosition(panner, value);
   });
 
@@ -79,33 +79,31 @@ var newNote = function (freq, gainNode) {
   model.activeNotes.set(freq, oscillators);
 };
 
-pubsub.on("save", () => localStorage.setItem("synthModel", JSON.stringify(model)));
+pubsub.on("save", () => {
+  localStorage.setItem("synthModel", JSON.stringify(model.currentSettings));
+});
 
 pubsub.on("load", () => {
   var retrieved = JSON.parse(localStorage.getItem("synthModel"));
-  model.volume = retrieved.volume;
-  model.detune = retrieved.detune;
-  model.panning = retrieved.panning;
+  model.currentSettings = retrieved;
   view.render();
 });
 
 pubsub.on("reset", () => {
   var retrieved = JSON.parse(localStorage.getItem("synthModel"));
-  model.volume = model.defaults.volume;
-  model.detune = model.defaults.detune;
-  model.panning = model.defaults.panning;
+  model.currentSettings = model.defaultSettings;
   view.render();
 });
 
 module.exports = () => {
-  var panner = Panner(model.panning.master);
-  var gainNode = GainNode(model.volume.master);
+  var panner = Panner(model.currentSettings.panning.master);
+  var gainNode = GainNode(model.currentSettings.volume.master);
 
   pubsub.on('masterVolume', (volume) => {
-    gainNode.gain.value = model.volume.master = volume;
+    gainNode.gain.value = model.currentSettings.volume.master = volume;
   });
   pubsub.on('masterPanning', (value) => {
-    model.panning.master = value;
+    model.currentSettings.panning.master = value;
     setPannerPosition(panner, value);
   });
 
