@@ -79,13 +79,17 @@ var newNote = function (freq, gainNode) {
   model.activeNotes.set(freq, oscillators);
 };
 
+var masterPanner = Panner(model.currentSettings.panning.master);
+var masterGainNode = GainNode(model.currentSettings.volume.master);
+
 pubsub.on("save", () => {
   localStorage.setItem("synthModel", JSON.stringify(model.currentSettings));
 });
 
 pubsub.on("load", () => {
-  var retrieved = JSON.parse(localStorage.getItem("synthModel"));
-  model.currentSettings = retrieved;
+  model.currentSettings = JSON.parse(localStorage.getItem("synthModel"));
+  masterGainNode.gain.value = model.currentSettings.volume.master;
+  setPannerPosition(masterPanner, model.currentSettings.panning.master);
   view.render();
 });
 
@@ -95,23 +99,24 @@ pubsub.on("reset", () => {
   view.render();
 });
 
+
+
 module.exports = () => {
-  var panner = Panner(model.currentSettings.panning.master);
-  var gainNode = GainNode(model.currentSettings.volume.master);
+
 
   pubsub.on('masterVolume', (volume) => {
-    gainNode.gain.value = model.currentSettings.volume.master = volume;
+    masterGainNode.gain.value = model.currentSettings.volume.master = volume;
   });
   pubsub.on('masterPanning', (value) => {
     model.currentSettings.panning.master = value;
-    setPannerPosition(panner, value);
+    setPannerPosition(masterPanner, value);
   });
 
   keyboardInput.on('keyDown', (freq) => {
     if (model.activeNotes.has(freq)) {
       return;
     }
-    newNote(freq, panner);
+    newNote(freq, masterPanner);
   });
 
   keyboardInput.on('keyUp', (freq) => {
@@ -123,6 +128,6 @@ module.exports = () => {
     model.activeNotes.delete(freq);
   });
 
-  panner.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  masterPanner.connect(masterGainNode);
+  masterGainNode.connect(audioContext.destination);
 };

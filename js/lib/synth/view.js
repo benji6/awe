@@ -35,8 +35,8 @@ jsmlParse({
 
 var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-window.inputElements = new Set();
-window.outputElements = new Set();
+var inputElements = new Set();
+var outputElements = new Set();
 
 var createRangeControl = function (wave, type, min, max) {
   var channel = wave + capitaliseFirst(type);
@@ -103,10 +103,10 @@ waves.forEach((elem) => {
 module.exports = {
   render: () => {
     inputElements.forEach((element) => {
-      element.value = model.currentSettings[element.type][element.wave];
+      element.element.value = model.currentSettings[element.type][element.wave];
     });
     outputElements.forEach((element) => {
-      element.value = model.currentSettings[element.type][element.wave];
+      element.element.value = model.currentSettings[element.type][element.wave];
     });
   }
 };
