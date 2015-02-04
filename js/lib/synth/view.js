@@ -38,7 +38,7 @@ var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var inputElements = new Set();
 var outputElements = new Set();
 
-var createRangeControl = function (wave, type, min, max) {
+var createRangeControl = function (wave, type, min, max, step) {
   var channel = wave + capitaliseFirst(type);
   var input;
   var output;
@@ -62,7 +62,7 @@ var createRangeControl = function (wave, type, min, max) {
           element.type = "range";
           element.min = min;
           element.max = max;
-          element.step = (max - min) / 100;
+          element.step = step || (max - min) / 100;
           element.value = model.currentSettings[type][wave];
           element.oninput = () => {
             pubsub.emit(channel, input.value);
@@ -91,13 +91,20 @@ var createRangeControl = function (wave, type, min, max) {
 };
 
 var waves = new Set(["sine", "square", "sawtooth", "triangle"]);
+var controls = new Set([
+  ["volume", 0, 1],
+  ["tune", -36, 36, 1],
+  ["detune", -100, 100],
+  ["panning", -1, 1],
+]);
 
 createRangeControl("master", "volume", 0, 1);
 createRangeControl("master", "panning", -1, 1);
-waves.forEach((elem) => {
-  createRangeControl(elem, "volume", 0, 1);
-  createRangeControl(elem, "detune", -100, 100);
-  createRangeControl(elem, "panning", -1, 1);
+
+waves.forEach((wave) => {
+  controls.forEach((control) => {
+    createRangeControl(wave, control[0], control[1], control[2], control[3]);
+  });
 });
 
 module.exports = {
