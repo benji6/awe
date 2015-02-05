@@ -1,5 +1,11 @@
 var generateDefaultSettings = () => {
   return {
+    adsr: {
+      a: 1,
+      d: 1,
+      s: 0.5,
+      r: 2
+    },
     volume: {
       master: 0.1,
       sine: 0.1,

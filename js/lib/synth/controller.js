@@ -38,6 +38,12 @@ var createOsc = function (type) {
   var osc = Oscillator(type);
   var gainNode = GainNode(model.currentSettings.volume[type]);
   var panner = Panner(model.currentSettings.panning[type]);
+  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime +
+    model.currentSettings.adsr.a);
+  gainNode.gain.linearRampToValueAtTime(model.currentSettings.adsr.s, audioContext.currentTime +
+    model.currentSettings.adsr.a +
+    model.currentSettings.adsr.d);
 
   osc.detune.value = 100 * model.currentSettings.tune[type] +
     model.currentSettings.detune[type];
@@ -130,7 +136,13 @@ module.exports = () => {
     if (!oscillators) {
       return;
     }
-    oscillators.forEach((elem) => elem.osc.stop());
+    oscillators.forEach((elem) => {
+      elem.gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+      elem.gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime +
+        model.currentSettings.adsr.r);
+      window.setTimeout(() => elem.osc.stop(),
+        1000 * model.currentSettings.adsr.r);
+    });
     model.activeNotes.delete(freq);
   });
 
