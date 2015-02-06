@@ -1,0 +1,68 @@
+var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+
+var model = require('./model.js');
+
+var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+var inputElements = new Set();
+var outputElements = new Set();
+
+var createRangeControl = function (parentDomEl, type, min, max, step) {
+  var channel = "master" + capitaliseFirst(type);
+  var input;
+  var output;
+  var jsml = {
+    tag: "tr",
+    children: [{
+      tag: "td",
+      text: "Master " + type
+    },
+    {
+      tag: "td",
+      children: {
+        tag: "input",
+        callback: (element) => {
+          input = element;
+          inputElements.add({
+            element: element,
+            type: type
+          });
+          element.type = "range";
+          element.min = min;
+          element.max = max;
+          element.step = step || (max - min) / 100;
+          element.value = model[type];
+          element.oninput = () => {
+            pubsub.emit(channel, input.value);
+            output.value = input.value;
+          };
+        }
+      }
+    },
+    {
+      tag: "td",
+      children: {
+        tag: "output",
+        callback: (element) => {
+          output = element;
+          outputElements.add({
+            element: element,
+            type: type
+          });
+          element.value = input.value;
+        }
+      }
+    }]
+  };
+  jsmlParse(jsml, parentDomEl);
+};
+
+module.exports = {
+  init: (parentDomEl) => {
+    createRangeControl(parentDomEl, "volume", 0, 1);
+    createRangeControl(parentDomEl, "panning", -1, 1);
+  },
+  render: () => {
+
+  }
+};

@@ -1,16 +1,17 @@
 var audioContext = require('../audioContext');
-var keyboardInput = require('../keyboard/output.js');
+
+var oscillators = require('./oscillators/controller.js');
 
 var view = require('./view.js');
+var presetsView = require('./presets/view.js');
+var masterView = require('./master/view.js');
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
 
-var Oscillator = (type) => {
-  var oscillator = audioContext.createOscillator();
-  oscillator.type = type;
-
-  return oscillator;
-};
+var parentDomElement = view.init(document.body);
+masterView.init(parentDomElement);
+oscillators.connectViewTo(parentDomElement);
+presetsView.init(parentDomElement);
 
 var GainNode = (volume) => {
   var gainNode = audioContext.createGain();
@@ -34,67 +35,10 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-var createOsc = function (type) {
-  var osc = Oscillator(type);
-  var gainNode = GainNode(model.currentSettings.volume[type]);
-  var panner = Panner(model.currentSettings.panning[type]);
-  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-  gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime +
-    model.currentSettings.adsr.a);
-  gainNode.gain.linearRampToValueAtTime(model.currentSettings.adsr.s, audioContext.currentTime +
-    model.currentSettings.adsr.a +
-    model.currentSettings.adsr.d);
-
-  osc.detune.value = 100 * model.currentSettings.tune[type] +
-    model.currentSettings.detune[type];
-  osc.connect(panner);
-  panner.connect(gainNode);
-
-  pubsub.on(type + "Volume", (volume) => {
-    gainNode.gain.value = model.currentSettings.volume[type] = +volume;
-  });
-
-  pubsub.on(type + "Tune", (value) => {
-    model.currentSettings.tune[type] = +value;
-    osc.detune.value = 100 * model.currentSettings.tune[type] +
-      model.currentSettings.detune[type];
-  });
-
-  pubsub.on(type + "Detune", (cents) => {
-    model.currentSettings.detune[type] = +cents;
-    osc.detune.value = 100 * model.currentSettings.tune[type] +
-      model.currentSettings.detune[type];
-  });
-
-  pubsub.on(type + "Panning", (value) => {
-    model.currentSettings.panning[type] = +value;
-    setPannerPosition(panner, value);
-  });
-
-  return {
-    osc,
-    gainNode
-  };
-};
-
-var newNote = function (freq, output) {
-  var oscillators = [
-    createOsc('sine', 'sineVolume'),
-    createOsc('square', 'squareVolume'),
-    createOsc('sawtooth', 'sawtoothVolume'),
-    createOsc('triangle', 'triangleVolume')
-  ];
-
-  oscillators.forEach((element) => {
-    element.gainNode.connect(output);
-    element.osc.frequency.value = freq;
-    element.osc.start();
-  });
-
-  model.activeNotes.set(freq, oscillators);
-};
-
 var masterPanner = Panner(model.currentSettings.panning.master);
+
+oscillators.connectAudioTo(masterPanner);
+
 var masterGainNode = GainNode(model.currentSettings.volume.master);
 
 pubsub.on("save", () => {
@@ -122,28 +66,6 @@ module.exports = () => {
   pubsub.on('masterPanning', (value) => {
     model.currentSettings.panning.master = +value;
     setPannerPosition(masterPanner, value);
-  });
-
-  keyboardInput.on('keyDown', (freq) => {
-    if (model.activeNotes.has(freq)) {
-      return;
-    }
-    newNote(freq, masterPanner);
-  });
-
-  keyboardInput.on('keyUp', (freq) => {
-    var oscillators = model.activeNotes.get(freq);
-    if (!oscillators) {
-      return;
-    }
-    oscillators.forEach((elem) => {
-      elem.gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-      elem.gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-        model.currentSettings.adsr.r);
-      window.setTimeout(() => elem.osc.stop(),
-        1000 * model.currentSettings.adsr.r);
-    });
-    model.activeNotes.delete(freq);
   });
 
   masterPanner.connect(masterGainNode);
