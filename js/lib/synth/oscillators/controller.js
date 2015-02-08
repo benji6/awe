@@ -85,10 +85,10 @@ var newNote;
 var setOutput = (output) => {
   return (freq) => {
     var oscillators = [
-      createOsc('sine', 'sineVolume'),
-      createOsc('square', 'squareVolume'),
-      createOsc('sawtooth', 'sawtoothVolume'),
-      createOsc('triangle', 'triangleVolume')
+      createOsc("sine"),
+      createOsc("square"),
+      createOsc("sawtooth"),
+      createOsc("triangle")
     ];
 
     oscillators.forEach((element) => {
@@ -117,8 +117,7 @@ keyboardInput.on('keyUp', (freq) => {
     elem.gainNode.gain.cancelScheduledValues(audioContext.currentTime);
     elem.gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime +
       adsr.r);
-    window.setTimeout(() => elem.osc.stop(),
-    1000 * adsr.r);
+    window.setTimeout(() => elem.osc.stop(), 1000 * adsr.r);
   });
   activeNotes.delete(freq);
 });

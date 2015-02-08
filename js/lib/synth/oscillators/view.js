@@ -13,52 +13,49 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
   var input;
   var output;
   var jsml = {
-    tag: "table",
-    children: {
-      tag: "tr",
-      children: [{
-        tag: "td",
-        text: capitaliseFirst(wave) + " " + type
-      },
-      {
-        tag: "td",
-        children: {
-          tag: "input",
-          type: "range",
-          min,
-          max,
-          step: step || (max - min) / 100,
-          value:  model[wave][type],
-          callback: (element) => {
-            input = element;
-            inputElements.add({
-              element,
-              type,
-              wave
-            });
-            element.oninput = () => {
-              pubsub.emit(channel, element.value);
-              output.value = element.value;
-            };
-          }
+    tag: "tr",
+    children: [{
+      tag: "td",
+      text: capitaliseFirst(wave) + " " + type
+    },
+    {
+      tag: "td",
+      children: {
+        tag: "input",
+        type: "range",
+        min,
+        max,
+        step: step || (max - min) / 100,
+        value:  model[wave][type],
+        callback: (element) => {
+          input = element;
+          inputElements.add({
+            element,
+            type,
+            wave
+          });
+          element.oninput = () => {
+            pubsub.emit(channel, element.value);
+            output.value = element.value;
+          };
         }
-      },
-      {
-        tag: "td",
-        children: {
-          tag: "output",
-          callback: (element) => {
-            output = element;
-            outputElements.add({
-              element,
-              type,
-              wave
-            });
-            element.value = input.value;
-          }
+      }
+    },
+    {
+      tag: "td",
+      children: {
+        tag: "output",
+        callback: (element) => {
+          output = element;
+          outputElements.add({
+            element,
+            type,
+            wave
+          });
+          element.value = input.value;
         }
-      }]
-    }
+      }
+    }]
   };
 
   jsmlParse(jsml, parentDomEl);
