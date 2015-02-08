@@ -3,7 +3,6 @@ var pubsub = require('./pubsub.js');
 var oscillators = require('./oscillators/controller.js');
 var master = require('./master/controller.js');
 var presetsView = require('./presets/view.js');
-var model = require('./model.js');
 var view = require('./view.js');
 
 // pubsub.on("save", () => {
