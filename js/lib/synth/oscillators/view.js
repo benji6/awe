@@ -66,7 +66,7 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
 
 
 module.exports = {
-  init: (parent) => {
+  connectTo: (parent) => {
     var waves = new Set(["sawtooth", "sine", "square", "triangle"]);
     var controls = new Set([
       ["volume", 0, 1],

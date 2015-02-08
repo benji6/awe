@@ -42,6 +42,6 @@ module.exports = {
   connectOutputTo: (outputAudioNode) => {
     gainNode.connect(outputAudioNode);
   },
-  connectViewTo: view.connect,
+  connectViewTo: view.connectTo,
   inputNode: panner
 };

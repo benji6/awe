@@ -61,7 +61,7 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
 };
 
 module.exports = {
-  connect: (parentDomEl) => {
+  connectTo: (parentDomEl) => {
     createRangeControl(parentDomEl, "volume", 0, 1);
     createRangeControl(parentDomEl, "panning", -1, 1);
   },

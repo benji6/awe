@@ -124,8 +124,8 @@ keyboardInput.on('keyUp', (freq) => {
 });
 
 module.exports = {
-  connectAudioTo: (outputAudioNode) => {
+  connectOutputTo: (outputAudioNode) => {
     newNote = setOutput(outputAudioNode);
   },
-  connectViewTo: view.init
+  connectViewTo: view.connectTo
 };

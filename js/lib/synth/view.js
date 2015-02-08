@@ -10,7 +10,7 @@ var jsml = {
 };
 
 module.exports = {
-  init: (parentDomEl) => {
+  connectViewTo: (parentDomEl) => {
     jsmlParse(jsml, parentDomEl);
     return synthViewHolder;
   }

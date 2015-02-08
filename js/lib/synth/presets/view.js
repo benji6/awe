@@ -30,7 +30,7 @@ var jsml = {
 };
 
 module.exports = {
-  init: (parentDomElement) => {
+  connectTo: (parentDomElement) => {
     jsmlParse(jsml, parentDomElement);
   }
 };
