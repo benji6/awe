@@ -3,3 +3,7 @@ body {
   color: #CCE;
   font-family: sans-serif;
 }
+
+table {
+  display: inline;
+}

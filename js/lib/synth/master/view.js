@@ -60,10 +60,13 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
   jsmlParse(jsml, parentDomEl);
 };
 
+var table = document.createElement("table");
+createRangeControl(table, "volume", 0, 1);
+createRangeControl(table, "panning", -1, 1);
+
 module.exports = {
   connectTo: (parentDomEl) => {
-    createRangeControl(parentDomEl, "volume", 0, 1);
-    createRangeControl(parentDomEl, "panning", -1, 1);
+    parentDomEl.appendChild(table);
   },
   render: () => {
     inputElements.forEach((element) => {
