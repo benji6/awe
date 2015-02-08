@@ -54,9 +54,6 @@ var createOsc = function (type) {
   panner.connect(gainNode);
 
   pubsub.on(type + "Volume", (volume) => {
-    console.log(volume);
-    console.log(model[type].volume);
-    console.log(gainNode);
     gainNode.gain.value = model[type].volume = +volume;
   });
 

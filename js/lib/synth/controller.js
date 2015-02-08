@@ -1,15 +1,17 @@
 var audioContext = require('../audioContext');
 
 var oscillators = require('./oscillators/controller.js');
+var master = require('./master/controller.js');
+
 
 var view = require('./view.js');
 var presetsView = require('./presets/view.js');
-var masterView = require('./master/view.js');
+
 var pubsub = require('./pubsub.js');
 var model = require('./model.js');
 
 var parentDomElement = view.init(document.body);
-masterView.init(parentDomElement);
+master.connectViewTo(parentDomElement);
 oscillators.connectViewTo(parentDomElement);
 presetsView.init(parentDomElement);
 
@@ -35,11 +37,9 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-var masterPanner = Panner(model.currentSettings.panning.master);
 
-oscillators.connectAudioTo(masterPanner);
+oscillators.connectAudioTo(master.inputNode);
 
-var masterGainNode = GainNode(model.currentSettings.volume.master);
 
 pubsub.on("save", () => {
   localStorage.setItem("synthModel", JSON.stringify(model.currentSettings));
@@ -60,14 +60,5 @@ pubsub.on("reset", () => {
 });
 
 module.exports = () => {
-  pubsub.on('masterVolume', (volume) => {
-    masterGainNode.gain.value = model.currentSettings.volume.master = +volume;
-  });
-  pubsub.on('masterPanning', (value) => {
-    model.currentSettings.panning.master = +value;
-    setPannerPosition(masterPanner, value);
-  });
-
-  masterPanner.connect(masterGainNode);
-  masterGainNode.connect(audioContext.destination);
+  master.connectOutputTo(audioContext.destination);
 };

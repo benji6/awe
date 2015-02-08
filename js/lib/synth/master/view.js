@@ -1,5 +1,6 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 
+var pubsub = require('../pubsub.js');
 var model = require('./model.js');
 
 var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
@@ -47,8 +48,8 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
           callback: (element) => {
             output = element;
             outputElements.add({
-              element: element,
-              type: type
+              element,
+              type
             });
             element.value = input.value;
           }
@@ -60,11 +61,16 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
 };
 
 module.exports = {
-  init: (parentDomEl) => {
+  connect: (parentDomEl) => {
     createRangeControl(parentDomEl, "volume", 0, 1);
     createRangeControl(parentDomEl, "panning", -1, 1);
   },
   render: () => {
-
+    inputElements.forEach((element) => {
+      element.element.value = model[element.type];
+    });
+    outputElements.forEach((element) => {
+      element.element.value = model[element.type];
+    });
   }
 };
