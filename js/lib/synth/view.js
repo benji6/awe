@@ -3,8 +3,8 @@ var jsmlParse = require('../../../custom_modules/jsml/jsmlParse.js');
 var synthViewHolder;
 
 var jsml = {
-  "tag": "div",
-  "callback": (element) => {
+  tag: "div",
+  callback: (element) => {
     synthViewHolder = element;
   }
 };

@@ -13,46 +13,48 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
   var output;
   var jsml = {
     tag: "tr",
-    children: [{
-      tag: "td",
-      text: "Master " + type
-    },
-    {
-      tag: "td",
-      children: {
-        tag: "input",
-        callback: (element) => {
-          input = element;
-          inputElements.add({
-            element: element,
-            type: type
-          });
-          element.type = "range";
-          element.min = min;
-          element.max = max;
-          element.step = step || (max - min) / 100;
-          element.value = model[type];
-          element.oninput = () => {
-            pubsub.emit(channel, input.value);
-            output.value = input.value;
-          };
+    children: [
+      {
+        tag: "td",
+        text: "Master " + type
+      },
+      {
+        tag: "td",
+        children: {
+          tag: "input",
+          type: "range",
+          min,
+          max,
+          step: step || (max - min) / 100,
+          value: model[type],
+          callback: (element) => {
+            input = element;
+            inputElements.add({
+              element,
+              type
+            });
+            element.oninput = () => {
+              pubsub.emit(channel, input.value);
+              output.value = input.value;
+            };
+          }
+        }
+      },
+      {
+        tag: "td",
+        children: {
+          tag: "output",
+          callback: (element) => {
+            output = element;
+            outputElements.add({
+              element: element,
+              type: type
+            });
+            element.value = input.value;
+          }
         }
       }
-    },
-    {
-      tag: "td",
-      children: {
-        tag: "output",
-        callback: (element) => {
-          output = element;
-          outputElements.add({
-            element: element,
-            type: type
-          });
-          element.value = input.value;
-        }
-      }
-    }]
+    ]
   };
   jsmlParse(jsml, parentDomEl);
 };
