@@ -13,13 +13,5 @@ module.exports = {
   init: (parentDomEl) => {
     jsmlParse(jsml, parentDomEl);
     return synthViewHolder;
-  },
-  render: () => {
-    // inputElements.forEach((element) => {
-    //   element.element.value = model.currentSettings[element.type][element.wave];
-    // });
-    // outputElements.forEach((element) => {
-    //   element.element.value = model.currentSettings[element.type][element.wave];
-    // });
   }
 };

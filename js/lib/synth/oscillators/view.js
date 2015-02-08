@@ -24,6 +24,11 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
         tag: "td",
         children: {
           tag: "input",
+          type: "range",
+          min: min,
+          max: max,
+          step: step || (max - min) / 100,
+          value:  model[wave][type],
           callback: (element) => {
             input = element;
             inputElements.add({
@@ -31,11 +36,6 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
               type: type,
               wave: wave
             });
-            element.type = "range";
-            element.min = min;
-            element.max = max;
-            element.step = step || (max - min) / 100;
-            element.value = model[wave][type];
             element.oninput = () => {
               pubsub.emit(channel, element.value);
               output.value = element.value;
