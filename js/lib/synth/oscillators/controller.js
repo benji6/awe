@@ -72,7 +72,7 @@ var createOsc = function (type) {
     model[type].panning = +value;
     setPannerPosition(panner, value);
   });
-
+model
   return {
     osc,
     gainNode

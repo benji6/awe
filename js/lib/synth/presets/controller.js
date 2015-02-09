@@ -11,25 +11,56 @@ var controllers = {
   oscillators
 };
 
-pubsub.on("save", () => {
-  var settings = {
-    adsr: adsr.getModel(),
-    master: master.getModel(),
-    oscillators: oscillators.getModel()
+var getSettings = () => {
+  return {
+    adsr: controllers.adsr.getModel(),
+    master: controllers.master.getModel(),
+    oscillators: controllers.oscillators.getModel()
   };
-  localStorage.setItem("synthSettings", JSON.stringify(settings));
+};
+
+var recursiveDeepCopy = (obj) => {
+  var newObj;
+
+  if (typeof obj !== 'object' || !obj) {
+    return obj;
+  }
+
+  if (obj.constructor === Array) {
+    newObj = [];
+    obj.forEach((element) => {
+      newObj.push(recursiveDeepCopy(element));
+    });
+    return newObj;
+  }
+
+  newObj = {};
+  Object.keys(obj).forEach((key) =>
+    newObj[key] = recursiveDeepCopy(obj[key]));
+
+  return newObj;
+};
+
+model = recursiveDeepCopy(getSettings());
+
+pubsub.on("save", () => {
+  localStorage.setItem("synthSettings", JSON.stringify(getSettings()));
 });
 
 pubsub.on("load", () => {
   var retrievedSettings = JSON.parse(localStorage.getItem("synthSettings"));
-  Object.keys(retrievedSettings).forEach((model) => {
-    controllers[model].setModel(retrievedSettings[model]);
+  Object.keys(retrievedSettings).forEach((key) => {
+    controllers[key].setModel(retrievedSettings[key]);
     //view.render
   });
 });
 
 pubsub.on("reset", () => {
-  console.log("reset");
+  console.log(model)
+  Object.keys(model).forEach((key) => {
+    controllers[key].setModel(model[key]);
+    //view.render
+  });
 });
 
 module.exports = {
