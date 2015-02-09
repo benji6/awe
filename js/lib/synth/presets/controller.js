@@ -1,38 +1,35 @@
 var pubsub = require('../pubsub.js');
+var model = require('./model.js');
 var view = require('./view.js');
-
+var adsr = require('../adsr/controller.js');
 var master = require('../master/controller.js');
+var oscillators = require('../oscillators/controller.js');
 
-
-// pubsub.on("save", () => {
-//   localStorage.setItem("synthModel", JSON.stringify(model.currentSettings));
-// });
-//
-// pubsub.on("load", () => {
-//   model.currentSettings = JSON.parse(localStorage.getItem("synthModel"));
-//   masterGainNode.gain.value = model.currentSettings.volume.master;
-//   setPannerPosition(masterPanner, model.currentSettings.panning.master);
-//   view.render();
-// });
-//
-// pubsub.on("reset", () => {
-//   masterGainNode.gain.value = model.defaultSettings.volume.master;
-//   setPannerPosition(masterPanner, model.defaultSettings.panning.master);
-//   model.currentSettings = model.defaultSettings;
-//   view.render();
-// });
-
+var controllers = {
+  adsr,
+  master,
+  oscillators
+};
 
 pubsub.on("save", () => {
-  console.log("save");
+  var settings = {
+    adsr: adsr.getModel(),
+    master: master.getModel(),
+    oscillators: oscillators.getModel()
+  };
+  localStorage.setItem("synthSettings", JSON.stringify(settings));
 });
 
 pubsub.on("load", () => {
-  console.log("load")
+  var retrievedSettings = JSON.parse(localStorage.getItem("synthSettings"));
+  Object.keys(retrievedSettings).forEach((model) => {
+    controllers[model].setModel(retrievedSettings[model]);
+    //view.render
+  });
 });
 
 pubsub.on("reset", () => {
-  console.log("reset")
+  console.log("reset");
 });
 
 module.exports = {

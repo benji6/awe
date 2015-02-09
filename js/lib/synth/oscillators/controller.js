@@ -1,7 +1,7 @@
 var audioContext = require('../../audioContext');
 var pubsub = require('../pubsub.js');
 var keyboardInput = require('../../keyboard/output.js');
-var adsrModel = require('../adsr/controller.js').model;
+var adsrModel = require('../adsr/controller.js').getModel();
 var model = require('./model.js');
 var view = require('./view.js');
 
@@ -52,7 +52,6 @@ var createOsc = function (type) {
   model[type].detune;
   osc.connect(panner);
   panner.connect(gainNode);
-
   pubsub.on(type + "Volume", (volume) => {
     gainNode.gain.value = model[type].volume = +volume;
   });
@@ -126,5 +125,7 @@ module.exports = {
   connectOutputTo: (outputAudioNode) => {
     newNote = setOutput(outputAudioNode);
   },
-  connectViewTo: view.connectTo
+  connectViewTo: view.connectTo,
+  getModel: () => model,
+  setModel: (newModel) => model = newModel
 };
