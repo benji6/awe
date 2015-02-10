@@ -13,49 +13,52 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
   var input;
   var output;
   var jsml = {
-    tag: "tr",
-    children: [
-      {
-        tag: "td",
-        text: "Master " + type
-      },
-      {
-        tag: "td",
-        children: {
-          tag: "input",
-          type: "range",
-          min,
-          max,
-          step: step || (max - min) / 100,
-          value: model[type],
-          callback: (element) => {
-            input = element;
-            inputElements.add({
-              element,
-              type
-            });
-            element.oninput = () => {
-              pubsub.emit(channel, input.value);
-              output.value = input.value;
-            };
+    tag: "div",
+    children: {
+      tag: "tr",
+      children: [
+        {
+          tag: "td",
+          text: "Master " + type
+        },
+        {
+          tag: "td",
+          children: {
+            tag: "input",
+            type: "range",
+            min,
+            max,
+            step: step || (max - min) / 100,
+            value: model[type],
+            callback: (element) => {
+              input = element;
+              inputElements.add({
+                element,
+                type
+              });
+              element.oninput = () => {
+                pubsub.emit(channel, input.value);
+                output.value = (+input.value).toFixed(2);
+              };
+            }
+          }
+        },
+        {
+          tag: "td",
+          children: {
+            tag: "output",
+            callback: (element) => {
+              output = element;
+              outputElements.add({
+                element,
+                type
+              });
+              element.value = (+input.value).toFixed(2);
+            }
           }
         }
-      },
-      {
-        tag: "td",
-        children: {
-          tag: "output",
-          callback: (element) => {
-            output = element;
-            outputElements.add({
-              element,
-              type
-            });
-            element.value = input.value;
-          }
-        }
-      }
-    ]
+      ]
+    }
   };
   jsmlParse(jsml, parentDomEl);
 };

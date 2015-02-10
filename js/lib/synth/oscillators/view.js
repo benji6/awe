@@ -36,7 +36,7 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
           });
           element.oninput = () => {
             pubsub.emit(channel, element.value);
-            output.value = element.value;
+            output.value = (+element.value).toFixed(2);
           };
         }
       }
@@ -52,7 +52,7 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
             type,
             wave
           });
-          element.value = input.value;
+          element.value = (+input.value).toFixed(2);
         }
       }
     }]
