@@ -8,6 +8,8 @@ var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var inputElements = new Set();
 var outputElements = new Set();
 
+var formatOutput = (output) => (+output).toFixed(2);
+
 var createRangeControl = function (parentDomEl, type, min, max, step) {
   var channel = "master" + capitaliseFirst(type);
   var input;
@@ -38,7 +40,7 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
               });
               element.oninput = () => {
                 pubsub.emit(channel, input.value);
-                output.value = (+input.value).toFixed(2);
+                output.value = formatOutput(input.value);
               };
             }
           }
@@ -53,7 +55,7 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
                 element,
                 type
               });
-              element.value = (+input.value).toFixed(2);
+              element.value = formatOutput(input.value);
             }
           }
         }
@@ -73,10 +75,10 @@ module.exports = {
   },
   render: () => {
     inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
+      element.element.value = model[element.type];
     });
     outputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
+      element.element.value = formatOutput(model[element.type]) ;
     });
   }
 };
