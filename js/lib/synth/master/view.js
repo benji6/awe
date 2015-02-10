@@ -70,10 +70,10 @@ module.exports = {
   },
   render: () => {
     inputElements.forEach((element) => {
-      element.element.value = model[element.type];
+      element.element.value = model.getModel()[element.type];
     });
     outputElements.forEach((element) => {
-      element.element.value = model[element.type];
+      element.element.value = model.getModel()[element.type];
     });
   }
 };

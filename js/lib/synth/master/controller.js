@@ -24,17 +24,17 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-var panner = Panner(model.panning);
-var gainNode = GainNode(model.volume);
+var panner = Panner(model.getModel().panning);
+var gainNode = GainNode(model.getModel().volume);
 
 panner.connect(gainNode);
 
 pubsub.on('masterVolume', (volume) => {
-  gainNode.gain.value = model.volume = +volume;
+  gainNode.gain.value = model.getModel().volume = +volume;
 });
 
 pubsub.on('masterPanning', (value) => {
-  model.panning = +value;
+  model.getModel().panning = +value;
   setPannerPosition(panner, value);
 });
 
@@ -43,7 +43,9 @@ module.exports = {
     gainNode.connect(outputAudioNode);
   },
   connectViewTo: view.connectTo,
+  init: model.init,
   inputNode: panner,
-  getModel: () => model,
-  setModel: (newModel) => model = newModel
+  getModel: model.getModel,
+  render: view.render,
+  setModel: model.setModel
 };

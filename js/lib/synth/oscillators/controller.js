@@ -38,8 +38,8 @@ var Panner = (panning) => {
 
 var createOsc = function (type) {
   var osc = Oscillator(type);
-  var gainNode = GainNode(model[type].volume);
-  var panner = Panner(model[type].panning);
+  var gainNode = GainNode(model.getModel()[type].volume);
+  var panner = Panner(model.getModel()[type].panning);
   gainNode.gain.setValueAtTime(0, audioContext.currentTime);
   gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime +
     adsrModel.a);
@@ -48,31 +48,31 @@ var createOsc = function (type) {
     adsrModel.a +
     adsrModel.d);
 
-  osc.detune.value = 100 * model[type].tune +
-  model[type].detune;
+  osc.detune.value = 100 * model.getModel()[type].tune +
+  model.getModel()[type].detune;
   osc.connect(panner);
   panner.connect(gainNode);
   pubsub.on(type + "Volume", (volume) => {
-    gainNode.gain.value = model[type].volume = +volume;
+    gainNode.gain.value = model.getModel()[type].volume = +volume;
   });
 
   pubsub.on(type + "Tune", (value) => {
-    model[type].tune = +value;
-    osc.detune.value = 100 * model[type].tune +
-    model[type].detune;
+    model.getModel()[type].tune = +value;
+    osc.detune.value = 100 * model.getModel()[type].tune +
+    model.getModel()[type].detune;
   });
 
   pubsub.on(type + "Detune", (cents) => {
-    model[type].detune = +cents;
-    osc.detune.value = 100 * model[type].tune +
-    model[type].detune;
+    model.getModel()[type].detune = +cents;
+    osc.detune.value = 100 * model.getModel()[type].tune +
+    model.getModel()[type].detune;
   });
 
   pubsub.on(type + "Panning", (value) => {
-    model[type].panning = +value;
+    model.getModel()[type].panning = +value;
     setPannerPosition(panner, value);
   });
-model
+
   return {
     osc,
     gainNode
@@ -126,6 +126,8 @@ module.exports = {
     newNote = setOutput(outputAudioNode);
   },
   connectViewTo: view.connectTo,
-  getModel: () => model,
-  setModel: (newModel) => model = newModel
+  getModel: model.getModel,
+  init: model.init,
+  render: view.render,
+  setModel: model.setModel
 };

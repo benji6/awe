@@ -1,6 +1,8 @@
 var model = require('./model.js');
 
 module.exports = {
-  getModel: () => model,
-  setModel: (newModel) => model = newModel
+  getModel: model.getModel,
+  init: model.init,
+  setModel: model.setModel,
+  render: () => {}
 };

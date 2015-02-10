@@ -26,7 +26,7 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
         min,
         max,
         step: step || (max - min) / 100,
-        value:  model[wave][type],
+        value:  model.getModel()[wave][type],
         callback: (element) => {
           input = element;
           inputElements.add({
@@ -86,10 +86,10 @@ module.exports = {
   },
   render: () => {
     inputElements.forEach((element) => {
-      element.element.value = model[element.wave][element.type];
+      element.element.value = model.getModel()[element.wave][element.type];
     });
     outputElements.forEach((element) => {
-      element.element.value = model[element.wave][element.type];
+      element.element.value = model.getModel()[element.wave][element.type];
     });
   }
 };
