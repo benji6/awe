@@ -11,7 +11,11 @@ var controllers = {
 };
 
 pubsub.on("save", () => {
-  localStorage.setItem("synthSettings", JSON.stringify(getSettings()));
+  var dataToStore = {};
+  Object.keys(controllers).forEach((key) => {
+    dataToStore[key] = controllers[key].getModel();
+  });
+  localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
 });
 
 pubsub.on("load", () => {

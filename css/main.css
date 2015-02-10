@@ -7,3 +7,8 @@ body {
 table {
   display: inline;
 }
+
+output {
+  display: inline-block;
+  width: 4em;
+}
