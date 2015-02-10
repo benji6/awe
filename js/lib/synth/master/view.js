@@ -31,7 +31,7 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
             min,
             max,
             step: step || (max - min) / 100,
-            value: model[type],
+            value: model.getModel()[type],
             callback: (element) => {
               input = element;
               inputElements.add({
@@ -75,10 +75,10 @@ module.exports = {
   },
   render: () => {
     inputElements.forEach((element) => {
-      element.element.value = model[element.type];
+      element.element.value = model.getModel()[element.type];
     });
     outputElements.forEach((element) => {
-      element.element.value = formatOutput(model[element.type]) ;
+      element.element.value = formatOutput(model.getModel()[element.type]) ;
     });
   }
 };
