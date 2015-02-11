@@ -1,20 +1,16 @@
-var Minivents = require('minivents');
+var pubsub = require('../pubsub.js');
 var keyCodesToNotes = require('./keyCodesToNotes.js');
 var notesToFrequencies = require('./notesToFrequencies.js');
-
-var minivents = new Minivents();
 
 var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
 
 document.body.onkeydown = (e) => {
   var freq = getFreq(e);
   if (freq) {
-    minivents.emit('keyDown', freq);
+    pubsub.emit('noteStart', freq);
   }
 };
 document.body.onkeyup = (e) => {
   var freq = getFreq(e);
-  minivents.emit('keyUp', freq);
+  pubsub.emit('noteFinish', freq);
 };
-
-module.exports = minivents;

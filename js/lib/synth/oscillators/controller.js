@@ -1,6 +1,5 @@
 var audioContext = require('../../audioContext');
 var pubsub = require('../pubsub.js');
-var keyboardInput = require('../../keyboard/output.js');
 var adsrModel = require('../adsr/controller.js').model;
 var model = require('./model.js');
 var view = require('./view.js');
@@ -100,14 +99,14 @@ var setOutput = (output) => {
   };
 };
 
-keyboardInput.on('keyDown', (freq) => {
+var noteStart = (freq) => {
   if (activeNotes.has(freq)) {
     return;
   }
   newNote(freq);
-});
+};
 
-keyboardInput.on('keyUp', (freq) => {
+var noteFinish = (freq) => {
   var oscillators = activeNotes.get(freq);
   if (!oscillators) {
     return;
@@ -119,12 +118,14 @@ keyboardInput.on('keyUp', (freq) => {
     window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r);
   });
   activeNotes.delete(freq);
-});
+};
 
 module.exports = {
   connectOutputTo: (outputAudioNode) => {
     newNote = setOutput(outputAudioNode);
   },
   model,
+  noteFinish,
+  noteStart,
   view
 };
