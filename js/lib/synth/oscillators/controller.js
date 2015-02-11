@@ -1,7 +1,7 @@
 var audioContext = require('../../audioContext');
 var pubsub = require('../pubsub.js');
 var keyboardInput = require('../../keyboard/output.js');
-var adsrModel = require('../adsr/controller.js').model.getModel();
+var adsrModel = require('../adsr/controller.js').model;
 var model = require('./model.js');
 var view = require('./view.js');
 
@@ -42,11 +42,11 @@ var createOsc = function (type) {
   var panner = Panner(model.getModel()[type].panning);
   gainNode.gain.setValueAtTime(0, audioContext.currentTime);
   gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime +
-    adsrModel.a);
-  gainNode.gain.linearRampToValueAtTime(adsrModel.s,
+    adsrModel.getModel().a);
+  gainNode.gain.linearRampToValueAtTime(adsrModel.getModel().s,
     audioContext.currentTime +
-    adsrModel.a +
-    adsrModel.d);
+    adsrModel.getModel().a +
+    adsrModel.getModel().d);
 
   osc.detune.value = 100 * model.getModel()[type].tune +
   model.getModel()[type].detune;
@@ -115,8 +115,8 @@ keyboardInput.on('keyUp', (freq) => {
   oscillators.forEach((elem) => {
     elem.gainNode.gain.cancelScheduledValues(audioContext.currentTime);
     elem.gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-      adsrModel.r);
-    window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.r);
+      adsrModel.getModel().r);
+    window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r);
   });
   activeNotes.delete(freq);
 });
