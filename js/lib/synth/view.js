@@ -4,7 +4,7 @@ var synthViewHolder;
 
 var jsml = {
   tag: "div",
-  class: "synth",
+  className: "synth",
   callback: (element) => {
     synthViewHolder = element;
   }

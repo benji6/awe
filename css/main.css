@@ -4,11 +4,12 @@ body {
   font-family: sans-serif;
 }
 
-table {
+
+.synth table {
   display: inline;
 }
 
-output {
+.synth output {
   display: inline-block;
   width: 4em;
 }
