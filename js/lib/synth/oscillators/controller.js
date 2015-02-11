@@ -1,7 +1,7 @@
 var audioContext = require('../../audioContext');
 var pubsub = require('../pubsub.js');
 var keyboardInput = require('../../keyboard/output.js');
-var adsrModel = require('../adsr/controller.js').getModel();
+var adsrModel = require('../adsr/controller.js').model.getModel();
 var model = require('./model.js');
 var view = require('./view.js');
 
@@ -125,9 +125,6 @@ module.exports = {
   connectOutputTo: (outputAudioNode) => {
     newNote = setOutput(outputAudioNode);
   },
-  connectViewTo: view.connectTo,
-  getModel: model.getModel,
-  init: model.init,
-  render: view.render,
-  setModel: model.setModel
+  model,
+  view
 };

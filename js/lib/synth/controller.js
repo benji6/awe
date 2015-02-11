@@ -14,10 +14,10 @@ module.exports = {
   },
   connectViewTo: (parentDomElement) => {
     var synthParentView = view.connectViewTo(parentDomElement);
-    master.connectViewTo(synthParentView);
-    adsr.connectViewTo(synthParentView);
-    oscillators.connectViewTo(synthParentView);
+    master.view.connectTo(synthParentView);
+    adsr.view.connectTo(synthParentView);
+    oscillators.view.connectTo(synthParentView);
 
-    presets.connectViewTo(synthParentView);
+    presets.view.connectTo(synthParentView);
   }
 };

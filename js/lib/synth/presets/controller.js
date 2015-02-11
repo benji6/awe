@@ -13,7 +13,7 @@ var controllers = {
 pubsub.on("save", () => {
   var dataToStore = {};
   Object.keys(controllers).forEach((key) => {
-    dataToStore[key] = controllers[key].getModel();
+    dataToStore[key] = controllers[key].model.getModel();
   });
   localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
 });
@@ -21,18 +21,18 @@ pubsub.on("save", () => {
 pubsub.on("load", () => {
   var retrievedSettings = JSON.parse(localStorage.getItem("synthSettings"));
   Object.keys(retrievedSettings).forEach((key) => {
-    controllers[key].setModel(retrievedSettings[key]);
-    controllers[key].render();
+    controllers[key].model.setModel(retrievedSettings[key]);
+    controllers[key].view.render();
   });
 });
 
 pubsub.on("reset", () => {
   Object.keys(controllers).forEach((key) => {
-    controllers[key].init();
-    controllers[key].render();
+    controllers[key].model.init();
+    controllers[key].view.render();
   });
 });
 
 module.exports = {
-  connectViewTo: view.connectTo
+  view
 };

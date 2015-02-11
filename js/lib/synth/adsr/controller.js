@@ -18,9 +18,6 @@ pubsub.on('adsrR', (value) => {
 
 
 module.exports = {
-  connectViewTo: view.connectTo,
-  getModel: model.getModel,
-  init: model.init,
-  setModel: model.setModel,
-  render: view.render
+  model,
+  view
 };
