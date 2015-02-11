@@ -40,8 +40,13 @@ pubsub.on("reset", () => {
 });
 
 pubsub.on("importdata", (data) => {
-  // dev - try and catch the below if incorrect data id loaded
-  newData = JSON.parse(data);
+  try {
+    newData = JSON.parse(data);
+  }
+  catch (e) {
+    console.log(`error importing preset data: ${e}`);
+    return;
+  }
   everyController((key) => {
     if (!newData[key]) {
       console.log(`import preset data warning: no imported data for key ${key}`);
