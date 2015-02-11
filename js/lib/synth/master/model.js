@@ -1,10 +1,12 @@
-var defaultModel = {
-  panning: 0,
-  volume: 0.1
+var createDefaultModel = () => {
+  return {
+    panning: 0,
+    volume: 0.1
+  };
 };
 
 var model;
-var init = () => model = defaultModel;
+var init = () => model = createDefaultModel();
 
 init();
 
