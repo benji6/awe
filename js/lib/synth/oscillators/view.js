@@ -62,35 +62,39 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
   jsmlParse(jsml, parentDomEl);
 };
 
-var tables = new Set();
-var waves = new Set(["sawtooth", "sine", "square", "triangle"]);
-var controls = new Set([
-  ["volume", 0, 1],
-  ["tune", -36, 36, 1],
-  ["detune", -100, 100],
-  ["panning", -1, 1],
-]);
+var connectTo = (parentDomEl) => {
+  var tables = new Set();
+  var waves = new Set(["sawtooth", "sine", "square", "triangle"]);
+  var controls = new Set([
+    ["volume", 0, 1],
+    ["tune", -36, 36, 1],
+    ["detune", -100, 100],
+    ["panning", -1, 1],
+  ]);
 
-waves.forEach((wave) => {
-  var table = document.createElement("table");
-  controls.forEach((control) => {
-    createRangeControl(table, wave, control[0], control[1], control[2], control[3]);
+  waves.forEach((wave) => {
+    var table = document.createElement("table");
+    controls.forEach((control) => {
+      createRangeControl(table, wave, control[0], control[1], control[2], control[3]);
+    });
+    tables.add(table);
   });
-  tables.add(table);
-});
+  tables.forEach((table) => {
+    parentDomEl.appendChild(table);
+  });
+};
+
+var render = () => {
+  inputElements.forEach((element) => {
+    element.element.value = model.getModel()[element.wave][element.type];
+  });
+  outputElements.forEach((element) => {
+    element.element.value = formatOutput(model.getModel()[element.wave][element.type]);
+  });
+};
+
 
 module.exports = {
-  connectTo: (parentDomEl) => {
-    tables.forEach((table) => {
-      parentDomEl.appendChild(table);
-    });
-  },
-  render: () => {
-    inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.wave][element.type];
-    });
-    outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.wave][element.type]);
-    });
-  }
+  connectTo,
+  render
 };

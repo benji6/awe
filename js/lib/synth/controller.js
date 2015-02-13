@@ -12,16 +12,23 @@ inputPubsub.on('noteFinish', oscillators.noteFinish);
 
 oscillators.connectOutputTo(master.inputNode);
 
-module.exports = {
-  connectOutputTo: (outputAudioNode) => {
-    master.connectOutputTo(outputAudioNode);
-  },
-  connectViewTo: (parentDomElement) => {
-    var synthParentView = view.connectViewTo(parentDomElement);
-    master.view.connectTo(synthParentView);
-    adsr.view.connectTo(synthParentView);
-    oscillators.view.connectTo(synthParentView);
+var connectOutputTo = (outputAudioNode) => {
+  master.connectOutputTo(outputAudioNode);
+};
 
-    presets.view.connectTo(synthParentView);
-  }
+var connectViewTo = (parentDomElement) => {
+  var synthParentView = view.connectViewTo(parentDomElement);
+  master.view.connectTo(synthParentView);
+  adsr.view.connectTo(synthParentView);
+  oscillators.view.connectTo(synthParentView);
+
+  presets.view.connectTo(synthParentView);
+};
+
+
+module.exports = () => {
+  return {
+    connectOutputTo,
+    connectViewTo
+  };
 };

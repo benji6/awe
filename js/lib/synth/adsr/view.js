@@ -65,23 +65,28 @@ var createRangeControl = function (parentDomEl, type, min, max, step) {
   jsmlParse(jsml, parentDomEl);
 };
 
-var table = document.createElement("table");
+var connectTo = (parentDomEl) => {
+  var table = document.createElement("table");
 
-createRangeControl(table, "a", 0, 1);
-createRangeControl(table, "d", 0, 1);
-createRangeControl(table, "s", 0, 1);
-createRangeControl(table, "r", 0, 1);
+  createRangeControl(table, "a", 0, 1);
+  createRangeControl(table, "d", 0, 1);
+  createRangeControl(table, "s", 0, 1);
+  createRangeControl(table, "r", 0, 1);
+
+  parentDomEl.appendChild(table);
+};
+
+var render = () => {
+  inputElements.forEach((element) => {
+    element.element.value = model.getModel()[element.type];
+  });
+  outputElements.forEach((element) => {
+    element.element.value = formatOutput(model.getModel()[element.type]) ;
+  });
+};
+
 
 module.exports = {
-  connectTo: (parentDomEl) => {
-    parentDomEl.appendChild(table);
-  },
-  render: () => {
-    inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
-    });
-    outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.type]) ;
-    });
-  }
+  connectTo,
+  render
 };
