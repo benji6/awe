@@ -9,6 +9,7 @@ var noteStart = function noteStart () {
   pubsub.emit('noteStart', frequency);
   window.setTimeout(noteFinish, timeout);
 };
+
 var noteFinish = function noteFinish () {
   pubsub.emit('noteFinish', frequency);
   window.setTimeout(noteStart, timeout);
