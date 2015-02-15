@@ -1,24 +1,21 @@
 var View = require('./View.js');
-var adsr = require('../adsr/controller.js');
-var master = require('../master/controller.js');
-var oscillators = require('../oscillators/controller.js');
 
-var controllers = {
-  adsr,
-  master,
-  oscillators
-};
+var everyProperty = (obj) =>
+  (fn) => {
+    Object.keys(obj).forEach((key) => {
+      fn(key);
+    });
+  };
 
-var everyController = (fn) => {
-  Object.keys(controllers).forEach((key) => {
-    fn(key);
-  });
-};
-
-
-
-module.exports = (pubsub) => {
+module.exports = function (pubsub, adsr, master, oscillators) {
   var view = View(pubsub);
+
+  var controllers = {
+    adsr,
+    master,
+    oscillators
+  };
+  var everyController = everyProperty(controllers);
 
   pubsub.on("save", () => {
     var dataToStore = {};

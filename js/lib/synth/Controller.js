@@ -18,8 +18,7 @@ module.exports = () => {
   var master = Master(pubsub);
   var adsr = Adsr(pubsub);
   var oscillators = Oscillators(pubsub, adsr.model);
-  var presets = Presets(pubsub);
-
+  var presets = Presets(pubsub, adsr, master, oscillators);
 
   inputPubsub.on('noteStart', oscillators.noteStart);
   inputPubsub.on('noteStart', oscillators.noteStart);
