@@ -2,10 +2,10 @@ var Minivents = require('minivents');
 
 var inputPubsub = require('../pubsub.js');
 var audioContext = require('../audioContext');
-var Oscillators = require('./oscillators/controller.js');
-var Master = require('./master/controller.js');
-var Adsr = require('./adsr/controller.js');
-var Presets = require('./presets/controller.js');
+var Oscillators = require('./oscillators/Controller.js');
+var Master = require('./master/Controller.js');
+var Adsr = require('./adsr/Controller.js');
+var Presets = require('./presets/Controller.js');
 var view = require('./view.js');
 
 var connect = (master) =>
