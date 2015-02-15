@@ -26,13 +26,17 @@ var createDefaultModel = () => {
     }
   };
 };
-var model;
-var init = () => model = createDefaultModel();
 
-init();
 
-module.exports = {
-  getModel: () => model,
-  init,
-  setModel: (newModel) => model = newModel
+module.exports = () => {
+  var model;
+  var init = () => model = createDefaultModel();
+
+  init();
+  
+  return {
+    getModel: () => model,
+    init,
+    setModel: (newModel) => model = newModel
+  };
 };
