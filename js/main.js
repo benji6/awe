@@ -2,7 +2,7 @@ var audioContext = require('./lib/audioContext.js');
 
 var keyboard = require('./lib/keyboard/output.js');
 var sequencer = require('./lib/sequencer/controller.js');
-var Synth = require('./lib/synth/controller.js');
+var Synth = require('./lib/synth/Controller.js');
 
 var synth0 = Synth();
 var synth1 = Synth();
