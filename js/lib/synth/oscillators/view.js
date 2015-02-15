@@ -1,24 +1,22 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 
-var model = require('./model.js');
-var pubsub = require('../pubsub.js');
-
 var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
-var inputElements = new Set();
-var outputElements = new Set();
+module.exports = (model, pubsub) => {
+  var inputElements = new Set();
+  var outputElements = new Set();
 
-var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
-  var channel = wave + capitaliseFirst(type);
-  var input;
-  var output;
-  var jsml = {
-    tag: "tr",
-    children: [{
-      tag: "td",
-      text: capitaliseFirst(wave) + " " + type
-    },
+  var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
+    var channel = wave + capitaliseFirst(type);
+    var input;
+    var output;
+    var jsml = {
+      tag: "tr",
+      children: [{
+        tag: "td",
+        text: capitaliseFirst(wave) + " " + type
+      },
     {
       tag: "td",
       children: {
@@ -42,24 +40,24 @@ var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
         }
       }
     },
-    {
-      tag: "td",
-      children: {
-        tag: "output",
-        callback: (element) => {
-          output = element;
-          outputElements.add({
-            element,
-            type,
-            wave
-          });
-          element.value = formatOutput(input.value);
-        }
+  {
+    tag: "td",
+    children: {
+      tag: "output",
+      callback: (element) => {
+        output = element;
+        outputElements.add({
+          element,
+          type,
+          wave
+        });
+        element.value = formatOutput(input.value);
       }
-    }]
-  };
+    }
+  }]
+};
 
-  jsmlParse(jsml, parentDomEl);
+jsmlParse(jsml, parentDomEl);
 };
 
 var connectTo = (parentDomEl) => {
@@ -70,31 +68,31 @@ var connectTo = (parentDomEl) => {
     ["tune", -36, 36, 1],
     ["detune", -100, 100],
     ["panning", -1, 1],
-  ]);
+    ]);
 
-  waves.forEach((wave) => {
-    var table = document.createElement("table");
-    controls.forEach((control) => {
-      createRangeControl(table, wave, control[0], control[1], control[2], control[3]);
+    waves.forEach((wave) => {
+      var table = document.createElement("table");
+      controls.forEach((control) => {
+        createRangeControl(table, wave, control[0], control[1], control[2], control[3]);
+      });
+      tables.add(table);
     });
-    tables.add(table);
-  });
-  tables.forEach((table) => {
-    parentDomEl.appendChild(table);
-  });
-};
+    tables.forEach((table) => {
+      parentDomEl.appendChild(table);
+    });
+  };
 
-var render = () => {
-  inputElements.forEach((element) => {
-    element.element.value = model.getModel()[element.wave][element.type];
-  });
-  outputElements.forEach((element) => {
-    element.element.value = formatOutput(model.getModel()[element.wave][element.type]);
-  });
-};
+  var render = () => {
+    inputElements.forEach((element) => {
+      element.element.value = model.getModel()[element.wave][element.type];
+    });
+    outputElements.forEach((element) => {
+      element.element.value = formatOutput(model.getModel()[element.wave][element.type]);
+    });
+  };
 
-
-module.exports = {
-  connectTo,
-  render
+  return {
+    connectTo,
+    render
+  };
 };

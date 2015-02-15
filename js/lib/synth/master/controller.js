@@ -1,7 +1,6 @@
 var audioContext = require('../../audioContext');
-var pubsub = require('../pubsub.js');
-var model = require('./model.js');
-var view = require('./view.js');
+var Model = require('./model.js');
+var View = require('./view.js');
 
 var GainNode = (volume) => {
   var gainNode = audioContext.createGain();
@@ -24,25 +23,32 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-var panner = Panner(model.getModel().panning);
-var gainNode = GainNode(model.getModel().volume);
 
-panner.connect(gainNode);
+module.exports = (pubsub) => {
+  var model = Model();
+  var view = View(model, pubsub);
+  var panner = Panner(model.getModel().panning);
+  var gainNode = GainNode(model.getModel().volume);
 
-pubsub.on('masterVolume', (volume) => {
-  gainNode.gain.value = model.getModel().volume = +volume;
-});
+  panner.connect(gainNode);
 
-pubsub.on('masterPanning', (value) => {
-  model.getModel().panning = +value;
-  setPannerPosition(panner, value);
-});
+  pubsub.on('masterVolume', (volume) => {
+    gainNode.gain.value = model.getModel().volume = +volume;
+  });
 
-module.exports = {
-  connectOutputTo: (outputAudioNode) => {
+  pubsub.on('masterPanning', (value) => {
+    model.getModel().panning = +value;
+    setPannerPosition(panner, value);
+  });
+
+  var connect = (outputAudioNode) => {
     gainNode.connect(outputAudioNode);
-  },
-  inputNode: panner,
-  model,
-  view
+  };
+
+  return {
+    connect,
+    inputNode: panner,
+    model,
+    view
+  };
 };

@@ -10,10 +10,10 @@ var synth1 = Synth();
 //sequencer.play();
 
 synth0.connectViewTo(document.body);
-synth0.connectOutputTo(audioContext.destination);
+synth0.connect(audioContext.destination);
 
 synth1.connectViewTo(document.body);
-synth1.connectOutputTo(audioContext.destination);
+synth1.connect(audioContext.destination);
 
 
 window.synth0 = synth0;

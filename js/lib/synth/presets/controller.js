@@ -1,5 +1,4 @@
-var pubsub = require('../pubsub.js');
-var view = require('./view.js');
+var View = require('./view.js');
 var adsr = require('../adsr/controller.js');
 var master = require('../master/controller.js');
 var oscillators = require('../oscillators/controller.js');
@@ -16,55 +15,62 @@ var everyController = (fn) => {
   });
 };
 
-pubsub.on("save", () => {
-  var dataToStore = {};
-  everyController((key) => {
-    dataToStore[key] = controllers[key].model.getModel();
-  });
-  localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
-});
 
-pubsub.on("load", () => {
-  var newData = JSON.parse(localStorage.getItem("synthSettings"));
-  everyController((key) => {
-    controllers[key].model.setModel(newData[key]);
-    controllers[key].view.render();
-  });
-});
 
-pubsub.on("reset", () => {
-  everyController((key) => {
-    controllers[key].model.init();
-    controllers[key].view.render();
+module.exports = (pubsub) => {
+  var view = new View(pubsub);
+  
+  pubsub.on("save", () => {
+    var dataToStore = {};
+    everyController((key) => {
+      dataToStore[key] = controllers[key].model.getModel();
+    });
+    localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
   });
-});
 
-pubsub.on("importdata", (data) => {
-  try {
-    newData = JSON.parse(data);
-  }
-  catch (e) {
-    console.log(`error importing preset data: ${e}`);
-    return;
-  }
-  everyController((key) => {
-    if (!newData[key]) {
-      console.log(`import preset data warning: no imported data for key ${key}`);
+  pubsub.on("load", () => {
+    var newData = JSON.parse(localStorage.getItem("synthSettings"));
+    everyController((key) => {
+      controllers[key].model.setModel(newData[key]);
+      controllers[key].view.render();
+    });
+  });
+
+  pubsub.on("reset", () => {
+    everyController((key) => {
+      controllers[key].model.init();
+      controllers[key].view.render();
+    });
+  });
+
+  pubsub.on("importdata", (data) => {
+    try {
+      newData = JSON.parse(data);
+    }
+    catch (e) {
+      console.log(`error importing preset data: ${e}`);
       return;
     }
-    controllers[key].model.setModel(newData[key]);
-    controllers[key].view.render();
+    everyController((key) => {
+      if (!newData[key]) {
+        console.log(`import preset data warning: no imported data for key ${key}`);
+        return;
+      }
+      controllers[key].model.setModel(newData[key]);
+      controllers[key].view.render();
+    });
   });
-});
 
-pubsub.on("export", () => {
-  var exportData = {};
-  everyController((key) => {
-    exportData[key] = controllers[key].model.getModel();
+  pubsub.on("export", () => {
+    var exportData = {};
+    everyController((key) => {
+      exportData[key] = controllers[key].model.getModel();
+    });
+    alert(JSON.stringify(exportData));
   });
-  alert(JSON.stringify(exportData));
-});
 
-module.exports = {
-  view
+
+  return {
+    view
+  };
 };

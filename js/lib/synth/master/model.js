@@ -5,13 +5,15 @@ var createDefaultModel = () => {
   };
 };
 
-var model;
-var init = () => model = createDefaultModel();
+module.exports = () => {
+  var model;
+  var init = () => model = createDefaultModel();
+  
+  init();
 
-init();
-
-module.exports = {
-  getModel: () => model,
-  init,
-  setModel: (newModel) => model = newModel
+  return {
+    getModel: () => model,
+    init,
+    setModel: (newModel) => model = newModel
+  };
 };

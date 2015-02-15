@@ -1,34 +1,44 @@
+var Minivents = require('minivents');
+
 var inputPubsub = require('../pubsub.js');
 var audioContext = require('../audioContext');
-var pubsub = require('./pubsub.js');
-var oscillators = require('./oscillators/controller.js');
-var master = require('./master/controller.js');
-var adsr = require('./adsr/controller.js');
+var Oscillators = require('./oscillators/controller.js');
+var Master = require('./master/controller.js');
+var Adsr = require('./adsr/controller.js');
 var presets = require('./presets/controller.js');
 var view = require('./view.js');
 
-inputPubsub.on('noteStart', oscillators.noteStart);
-inputPubsub.on('noteFinish', oscillators.noteFinish);
-
-oscillators.connectOutputTo(master.inputNode);
-
-var connectOutputTo = (outputAudioNode) => {
-  master.connectOutputTo(outputAudioNode);
-};
-
-var connectViewTo = (parentDomElement) => {
-  var synthParentView = view.connectViewTo(parentDomElement);
-  master.view.connectTo(synthParentView);
-  adsr.view.connectTo(synthParentView);
-  oscillators.view.connectTo(synthParentView);
-
-  presets.view.connectTo(synthParentView);
-};
+var connect = (master) =>
+  (outputNode) =>
+    master.connect(outputNode);
 
 
 module.exports = () => {
+  var pubsub = new Minivents();
+  var master = Master(pubsub);
+  var oscillators = Oscillators(pubsub);
+  var adsr = Adsr(pubsub);
+
+
+  inputPubsub.on('noteStart', oscillators.noteStart);
+  inputPubsub.on('noteStart', oscillators.noteStart);
+  inputPubsub.on('noteFinish', oscillators.noteFinish);
+
+  oscillators.connect(master.inputNode);
+
+  var connectViewTo = (master) =>
+  (parentDomElement) => {
+    var synthParentView = view.connectViewTo(parentDomElement);
+    master.view.connectTo(synthParentView);
+    adsr.view.connectTo(synthParentView);
+    oscillators.view.connectTo(synthParentView);
+
+    presets.view.connectTo(synthParentView);
+  };
+
   return {
-    connectOutputTo,
-    connectViewTo
+    pubsub,
+    connect: connect(master),
+    connectViewTo: connectViewTo(master)
   };
 };

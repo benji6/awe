@@ -7,13 +7,16 @@ var createDefaultModel = () => {
   };
 };
 
-var model;
-var init = () => model = createDefaultModel();
 
-init();
+module.exports = () =>{
+  var model;
+  var init = () => model = createDefaultModel();
 
-module.exports = {
-  getModel: () => model,
-  init,
-  setModel: (newModel) => model = newModel
+  init();
+
+  return {
+    getModel: () => model,
+    init,
+    setModel: (newModel) => model = newModel
+  };
 };
