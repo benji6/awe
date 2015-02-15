@@ -21,7 +21,6 @@ module.exports = () => {
   var presets = Presets(pubsub, adsr, master, oscillators);
 
   inputPubsub.on('noteStart', oscillators.noteStart);
-  inputPubsub.on('noteStart', oscillators.noteStart);
   inputPubsub.on('noteFinish', oscillators.noteFinish);
 
   oscillators.connect(master.inputNode);
