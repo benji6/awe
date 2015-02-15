@@ -18,8 +18,8 @@ var everyController = (fn) => {
 
 
 module.exports = (pubsub) => {
-  var view = new View(pubsub);
-  
+  var view = View(pubsub);
+
   pubsub.on("save", () => {
     var dataToStore = {};
     everyController((key) => {

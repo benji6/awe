@@ -1,9 +1,8 @@
 var audioContext = require('../../audioContext');
-var adsrModel = require('../adsr/controller.js').model;
 var Model = require('./model.js');
 var View = require('./view.js');
 
-module.exports = (pubsub) => {
+module.exports = function (pubsub, adsrModel) {
   var model = Model();
   var view = View(model, pubsub);
   var activeNotes = new Map();

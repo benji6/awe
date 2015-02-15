@@ -5,7 +5,7 @@ var audioContext = require('../audioContext');
 var Oscillators = require('./oscillators/controller.js');
 var Master = require('./master/controller.js');
 var Adsr = require('./adsr/controller.js');
-var presets = require('./presets/controller.js');
+var Presets = require('./presets/controller.js');
 var view = require('./view.js');
 
 var connect = (master) =>
@@ -16,8 +16,9 @@ var connect = (master) =>
 module.exports = () => {
   var pubsub = new Minivents();
   var master = Master(pubsub);
-  var oscillators = Oscillators(pubsub);
   var adsr = Adsr(pubsub);
+  var oscillators = Oscillators(pubsub, adsr.model);
+  var presets = Presets(pubsub);
 
 
   inputPubsub.on('noteStart', oscillators.noteStart);
