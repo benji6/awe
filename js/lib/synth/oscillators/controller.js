@@ -1,6 +1,6 @@
 var audioContext = require('../../audioContext');
-var Model = require('./model.js');
-var View = require('./view.js');
+var Model = require('./Model.js');
+var View = require('./View.js');
 
 module.exports = function (pubsub, adsrModel) {
   var model = Model();

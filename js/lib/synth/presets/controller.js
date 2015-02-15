@@ -1,4 +1,4 @@
-var View = require('./view.js');
+var View = require('./View.js');
 var adsr = require('../adsr/controller.js');
 var master = require('../master/controller.js');
 var oscillators = require('../oscillators/controller.js');
