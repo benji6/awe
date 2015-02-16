@@ -37,7 +37,7 @@ module.exports = (model, pubsub) => {
             type
           });
           element.oninput = () => {
-            pubsub.emit(channel, input.value);
+            pubsub.pub(channel, input.value);
             output.value = formatOutput(input.value);
           };
         }

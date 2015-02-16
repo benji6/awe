@@ -17,7 +17,7 @@ module.exports = function (pubsub, adsr, master, oscillators) {
   };
   var everyController = everyProperty(controllers);
 
-  pubsub.on("save", () => {
+  pubsub.sub("save", () => {
     var dataToStore = {};
     everyController((key) => {
       dataToStore[key] = controllers[key].model.getModel();
@@ -25,7 +25,7 @@ module.exports = function (pubsub, adsr, master, oscillators) {
     localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
   });
 
-  pubsub.on("load", () => {
+  pubsub.sub("load", () => {
     var newData = JSON.parse(localStorage.getItem("synthSettings"));
     everyController((key) => {
       controllers[key].model.setModel(newData[key]);
@@ -33,14 +33,14 @@ module.exports = function (pubsub, adsr, master, oscillators) {
     });
   });
 
-  pubsub.on("reset", () => {
+  pubsub.sub("reset", () => {
     everyController((key) => {
       controllers[key].model.init();
       controllers[key].view.render();
     });
   });
 
-  pubsub.on("importdata", (data) => {
+  pubsub.sub("importdata", (data) => {
     try {
       newData = JSON.parse(data);
     }
@@ -58,7 +58,7 @@ module.exports = function (pubsub, adsr, master, oscillators) {
     });
   });
 
-  pubsub.on("export", () => {
+  pubsub.sub("export", () => {
     var exportData = {};
     everyController((key) => {
       exportData[key] = controllers[key].model.getModel();

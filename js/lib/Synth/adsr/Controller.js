@@ -6,16 +6,16 @@ module.exports = (pubsub) => {
   var model = Model();
   var view = View(model, pubsub);
 
-  pubsub.on('adsrA', (value) => {
+  pubsub.sub('adsrA', (value) => {
     model.getModel().a = +value;
   });
-  pubsub.on('adsrD', (value) => {
+  pubsub.sub('adsrD', (value) => {
     model.getModel().d = +value;
   });
-  pubsub.on('adsrS', (value) => {
+  pubsub.sub('adsrS', (value) => {
     model.getModel().s = +value;
   });
-  pubsub.on('adsrR', (value) => {
+  pubsub.sub('adsrR', (value) => {
     model.getModel().r = +value;
   });
 

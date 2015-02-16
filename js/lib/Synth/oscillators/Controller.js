@@ -52,23 +52,23 @@ module.exports = function (pubsub, adsrModel) {
       model.getModel()[type].detune;
       osc.connect(panner);
       panner.connect(gainNode);
-      pubsub.on(type + "Volume", (volume) => {
+      pubsub.sub(type + "Volume", (volume) => {
         gainNode.gain.value = model.getModel()[type].volume = +volume;
       });
 
-      pubsub.on(type + "Tune", (value) => {
+      pubsub.sub(type + "Tune", (value) => {
         model.getModel()[type].tune = +value;
         osc.detune.value = 100 * model.getModel()[type].tune +
         model.getModel()[type].detune;
       });
 
-      pubsub.on(type + "Detune", (cents) => {
+      pubsub.sub(type + "Detune", (cents) => {
         model.getModel()[type].detune = +cents;
         osc.detune.value = 100 * model.getModel()[type].tune +
         model.getModel()[type].detune;
       });
 
-      pubsub.on(type + "Panning", (value) => {
+      pubsub.sub(type + "Panning", (value) => {
         model.getModel()[type].panning = +value;
         setPannerPosition(panner, value);
       });

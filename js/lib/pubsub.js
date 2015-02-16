@@ -1,3 +1,3 @@
-var Minivents = require('minivents');
+var Pubsub = require('./Pubsub');
 
-module.exports = new Minivents();
+module.exports = Pubsub();

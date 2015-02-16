@@ -34,7 +34,7 @@ module.exports = (model, pubsub) => {
             wave
           });
           element.oninput = () => {
-            pubsub.emit(channel, element.value);
+            pubsub.pub(channel, element.value);
             output.value = formatOutput(element.value);
           };
         }

@@ -13,13 +13,13 @@ module.exports = (pubsub) => {
     count: 5,
     text: (count) => buttonLabels[count],
     callback: function (element, jsmlElement, count) {
-      element.onclick = () => pubsub.emit(buttonLabels[count].toLowerCase());
+      element.onclick = () => pubsub.pub(buttonLabels[count].toLowerCase());
     }
   },
 {
   tag: "input",
-  callback: (element) => pubsub.on('import', () => {
-    pubsub.emit("importdata", element.value);
+  callback: (element) => pubsub.sub('import', () => {
+    pubsub.pub("importdata", element.value);
     element.value = "";
   })
 }

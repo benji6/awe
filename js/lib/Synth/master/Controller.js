@@ -32,11 +32,11 @@ module.exports = (pubsub) => {
 
   panner.connect(gainNode);
 
-  pubsub.on('masterVolume', (volume) => {
+  pubsub.sub('masterVolume', (volume) => {
     gainNode.gain.value = model.getModel().volume = +volume;
   });
 
-  pubsub.on('masterPanning', (value) => {
+  pubsub.sub('masterPanning', (value) => {
     model.getModel().panning = +value;
     setPannerPosition(panner, value);
   });

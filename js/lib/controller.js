@@ -15,4 +15,4 @@ synth1.connectViewTo(document.body);
 synth1.connect(audioContext.destination);
 window.synth1 = synth1;
 
-sequencer.play();
+//sequencer.play();

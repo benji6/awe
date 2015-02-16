@@ -1,4 +1,4 @@
-var Minivents = require('minivents');
+var Pubsub = require('../Pubsub');
 
 var inputPubsub = require('../pubsub.js');
 var audioContext = require('../audioContext');
@@ -14,14 +14,14 @@ var connect = (master) =>
 
 
 module.exports = () => {
-  var pubsub = new Minivents();
+  var pubsub = Pubsub();
   var master = Master(pubsub);
   var adsr = Adsr(pubsub);
   var oscillators = Oscillators(pubsub, adsr.model);
   var presets = Presets(pubsub, adsr, master, oscillators);
 
-  inputPubsub.on('noteStart', oscillators.noteStart);
-  inputPubsub.on('noteFinish', oscillators.noteFinish);
+  inputPubsub.sub('noteStart', oscillators.noteStart);
+  inputPubsub.sub('noteFinish', oscillators.noteFinish);
 
   oscillators.connect(master.inputNode);
 
