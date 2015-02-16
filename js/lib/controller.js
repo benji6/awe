@@ -7,11 +7,11 @@ var Synth = require('./Synth/Controller.js');
 var synth0 = Synth();
 synth0.connectViewTo(document.body);
 synth0.connect(audioContext.destination);
-window.synth0 = synth0;
+keyboard.addStartChannel(synth0.channelStart);
+keyboard.addStartChannel(synth0.channelStop);
 
-var synth1 = Synth();
-synth1.connectViewTo(document.body);
-synth1.connect(audioContext.destination);
-window.synth1 = synth1;
+// var synth1 = Synth();
+// synth1.connectViewTo(document.body);
+// synth1.connect(audioContext.destination);
 
 //sequencer.play();

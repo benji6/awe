@@ -10,6 +10,7 @@ module.exports = function (adsrModel) {
 
   var Oscillator = (type) => {
     var oscillator = audioContext.createOscillator();
+
     oscillator.type = type;
 
     return oscillator;
@@ -103,8 +104,10 @@ module.exports = function (adsrModel) {
 
     var noteStart = (freq) => {
       if (activeNotes.has(freq)) {
+        console.log('has freq');
         return;
       }
+      console.log(activeNotes.size);
       newNote(freq);
     };
 

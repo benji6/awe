@@ -1,4 +1,4 @@
-var pubsub = require('../pubsub.js');
+var pubsub;
 
 var frequency = 100;
 var bpm = 180;

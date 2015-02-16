@@ -1,17 +1,34 @@
-var pubsub = require('../pubsub.js');
 var keyCodesToNotes = require('./keyCodesToNotes.js');
 var notesToFrequencies = require('./notesToFrequencies.js');
 
 var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
+var startChannels = [];
+var stopChannels = [];
 
-document.body.onkeydown = (e) => {
+var keyDownHandler = (e) => {
   var freq = getFreq(e);
   if (freq) {
-    pubsub.pub('noteStart', freq);
+    startChannels.forEach(function(channel) {
+      channel(freq);
+    });
   }
 };
 
-document.body.onkeyup = (e) => {
+var keyUpHandler = (e) => {
   var freq = getFreq(e);
-  pubsub.pub('noteFinish', freq);
+  stopChannels.forEach(function(channel) {
+    channel(freq);
+  });
+};
+
+document.body.onkeydown = keyDownHandler;
+document.body.onkeyup = keyUpHandler;
+
+module.exports = {
+  addStartChannel: function (channel) {
+    startChannels.push(channel);
+  },
+  addStopChannel: function (channel) {
+    stopChannels.push(channel);
+  }
 };

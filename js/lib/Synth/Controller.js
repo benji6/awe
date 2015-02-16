@@ -1,4 +1,3 @@
-var inputPubsub = require('../pubsub.js');
 var audioContext = require('../audioContext');
 var Oscillators = require('./oscillators/Controller.js');
 var Master = require('./master/Controller.js');
@@ -16,9 +15,6 @@ module.exports = () => {
   var oscillators = Oscillators(adsr.model);
   var presets = Presets(adsr, master, oscillators);
 
-  inputPubsub.sub('noteStart', oscillators.noteStart);
-  inputPubsub.sub('noteFinish', oscillators.noteFinish);
-
   oscillators.connect(master.inputNode);
 
   var connectViewTo = (master) =>
@@ -32,6 +28,8 @@ module.exports = () => {
   };
 
   return {
+    channelStart: oscillators.noteStart,
+    channelStop: oscillators.noteFinish,
     connect: connect(master),
     connectViewTo: connectViewTo(master)
   };
