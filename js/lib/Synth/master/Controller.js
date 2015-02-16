@@ -23,23 +23,23 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-
-module.exports = (pubsub) => {
+module.exports = () => {
   var model = Model();
-  var view = View(model, pubsub);
+  var channels = {};
+  var view = View(model, channels);
   var panner = Panner(model.getModel().panning);
   var gainNode = GainNode(model.getModel().volume);
 
   panner.connect(gainNode);
 
-  pubsub.sub('masterVolume', (volume) => {
+  channels.masterVolume = (volume) => {
     gainNode.gain.value = model.getModel().volume = +volume;
-  });
+  };
 
-  pubsub.sub('masterPanning', (value) => {
+  channels.masterPanning = (value) => {
     model.getModel().panning = +value;
     setPannerPosition(panner, value);
-  });
+  };
 
   var connect = (outputAudioNode) => {
     gainNode.connect(outputAudioNode);

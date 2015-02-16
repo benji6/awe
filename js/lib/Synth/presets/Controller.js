@@ -7,8 +7,9 @@ var everyProperty = (obj) =>
     });
   };
 
-module.exports = function (pubsub, adsr, master, oscillators) {
-  var view = View(pubsub);
+module.exports = function (adsr, master, oscillators) {
+  var channels = {};
+  var view = View(channels);
 
   var controllers = {
     adsr,
@@ -17,30 +18,30 @@ module.exports = function (pubsub, adsr, master, oscillators) {
   };
   var everyController = everyProperty(controllers);
 
-  pubsub.sub("save", () => {
+  channels.save = () => {
     var dataToStore = {};
     everyController((key) => {
       dataToStore[key] = controllers[key].model.getModel();
     });
     localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
-  });
+  };
 
-  pubsub.sub("load", () => {
+  channels.load = () => {
     var newData = JSON.parse(localStorage.getItem("synthSettings"));
     everyController((key) => {
       controllers[key].model.setModel(newData[key]);
       controllers[key].view.render();
     });
-  });
+  };
 
-  pubsub.sub("reset", () => {
+  channels.reset = () => {
     everyController((key) => {
       controllers[key].model.init();
       controllers[key].view.render();
     });
-  });
+  };
 
-  pubsub.sub("importdata", (data) => {
+  channels.importdata = (data) => {
     try {
       newData = JSON.parse(data);
     }
@@ -56,16 +57,15 @@ module.exports = function (pubsub, adsr, master, oscillators) {
       controllers[key].model.setModel(newData[key]);
       controllers[key].view.render();
     });
-  });
+  };
 
-  pubsub.sub("export", () => {
+  channels.export = () => {
     var exportData = {};
     everyController((key) => {
       exportData[key] = controllers[key].model.getModel();
     });
     alert(JSON.stringify(exportData));
-  });
-
+  };
 
   return {
     view

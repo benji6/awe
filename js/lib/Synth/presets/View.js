@@ -1,7 +1,7 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 
 
-module.exports = (pubsub) => {
+module.exports = (channels) => {
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
 
   var jsml = {
@@ -13,15 +13,15 @@ module.exports = (pubsub) => {
     count: 5,
     text: (count) => buttonLabels[count],
     callback: function (element, jsmlElement, count) {
-      element.onclick = () => pubsub.pub(buttonLabels[count].toLowerCase());
+      element.onclick = () => channels[buttonLabels[count].toLowerCase()]();
     }
   },
 {
   tag: "input",
-  callback: (element) => pubsub.sub('import', () => {
-    pubsub.pub("importdata", element.value);
+  callback: (element) => channels.import = () => {
+    channels.importdata(element.value);
     element.value = "";
-  })
+  }
 }
 ]
 };

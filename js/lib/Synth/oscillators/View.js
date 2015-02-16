@@ -3,7 +3,7 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
-module.exports = (model, pubsub) => {
+module.exports = (model, channels) => {
   var inputElements = new Set();
   var outputElements = new Set();
 
@@ -34,7 +34,7 @@ module.exports = (model, pubsub) => {
             wave
           });
           element.oninput = () => {
-            pubsub.pub(channel, element.value);
+            channels[channel](element.value);
             output.value = formatOutput(element.value);
           };
         }

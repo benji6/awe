@@ -10,6 +10,7 @@ document.body.onkeydown = (e) => {
     pubsub.pub('noteStart', freq);
   }
 };
+
 document.body.onkeyup = (e) => {
   var freq = getFreq(e);
   pubsub.pub('noteFinish', freq);

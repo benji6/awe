@@ -4,7 +4,7 @@ var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 
-module.exports = (model, pubsub) => {
+module.exports = (model, channels) => {
   var inputElements = new Set();
   var outputElements = new Set();
 
@@ -37,7 +37,7 @@ module.exports = (model, pubsub) => {
             type
           });
           element.oninput = () => {
-            pubsub.pub(channel, input.value);
+            channels[channel](input.value);
             output.value = formatOutput(input.value);
           };
         }

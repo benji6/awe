@@ -3,9 +3,7 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 
-
-
-module.exports = (model, pubsub) => {
+module.exports = (model, channels) => {
   var inputElements = new Set();
   var outputElements = new Set();
 
@@ -40,8 +38,7 @@ module.exports = (model, pubsub) => {
             type
           });
           element.oninput = () => {
-            pubsub.pub
-            (channel, input.value);
+            channels[channel](input.value);
             output.value = formatOutput(input.value);
           };
         }

@@ -1,27 +1,27 @@
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-
-module.exports = (pubsub) => {
+module.exports = () => {
   var model = Model();
-  var view = View(model, pubsub);
+  var channels = {};
+  var view = View(model, channels);
 
-  pubsub.sub('adsrA', (value) => {
+  channels.adsrA = (value) => {
     model.getModel().a = +value;
-  });
-  pubsub.sub('adsrD', (value) => {
+  };
+  channels.adsrD = (value) => {
     model.getModel().d = +value;
-  });
-  pubsub.sub('adsrS', (value) => {
+  };
+  channels.adsrS = (value) => {
     model.getModel().s = +value;
-  });
-  pubsub.sub('adsrR', (value) => {
+  };
+  channels.adsrR = (value) => {
     model.getModel().r = +value;
-  });
-
+  };
 
   return {
     model,
-    view
+    view,
+    channels
   };
 };

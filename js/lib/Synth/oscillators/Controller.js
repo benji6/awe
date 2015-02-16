@@ -2,9 +2,10 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-module.exports = function (pubsub, adsrModel) {
+module.exports = function (adsrModel) {
   var model = Model();
-  var view = View(model, pubsub);
+  var channels = {};
+  var view = View(model, channels);
   var activeNotes = new Map();
 
   var Oscillator = (type) => {
@@ -52,26 +53,26 @@ module.exports = function (pubsub, adsrModel) {
       model.getModel()[type].detune;
       osc.connect(panner);
       panner.connect(gainNode);
-      pubsub.sub(type + "Volume", (volume) => {
+      channels[type + "Volume"] = (volume) => {
         gainNode.gain.value = model.getModel()[type].volume = +volume;
-      });
+      };
 
-      pubsub.sub(type + "Tune", (value) => {
+      channels[type + "Tune"] = (value) => {
         model.getModel()[type].tune = +value;
         osc.detune.value = 100 * model.getModel()[type].tune +
         model.getModel()[type].detune;
-      });
+      };
 
-      pubsub.sub(type + "Detune", (cents) => {
+      channels[type + "Detune"] = (cents) => {
         model.getModel()[type].detune = +cents;
         osc.detune.value = 100 * model.getModel()[type].tune +
         model.getModel()[type].detune;
-      });
+      };
 
-      pubsub.sub(type + "Panning", (value) => {
+      channels[type + "Panning"] = (value) => {
         model.getModel()[type].panning = +value;
         setPannerPosition(panner, value);
-      });
+      };
 
       return {
         osc,
