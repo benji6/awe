@@ -1,6 +1,6 @@
 var audioContext = require('./audioContext.js');
 
-var keyboard = require('./keyboard/output.js');
+var keyboard = require('./keyboard/controller.js');
 var sequencer = require('./sequencer/controller.js');
 var Synth = require('./Synth/Controller.js');
 

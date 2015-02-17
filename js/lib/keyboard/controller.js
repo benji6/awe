@@ -1,8 +1,7 @@
-var keyCodesToNotes = require('./keyCodesToNotes.js');
-var notesToFrequencies = require('./notesToFrequencies.js');
-
-var startChannels = [];
-var stopChannels = [];
+var keyCodesToNotes = require('./model/keyCodesToNotes.js');
+var notesToFrequencies = require('./model/notesToFrequencies.js');
+var startChannels = require('./model/startChannels.js');
+var stopChannels = require('./model/stopChannels.js');
 
 var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
 
