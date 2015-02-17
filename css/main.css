@@ -4,6 +4,13 @@ body {
   font-family: sans-serif;
 }
 
+.synth thead {
+  text-align: center;
+}
+
+.synth .block {
+  display: block;
+}
 
 .synth table {
   display: inline;

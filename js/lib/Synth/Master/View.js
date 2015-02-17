@@ -1,6 +1,6 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 
-var capitaliseFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 
@@ -9,17 +9,15 @@ module.exports = (model, channels) => {
   var outputElements = new Set();
 
   var createRangeControl = function (parentDomEl, type, min, max, step) {
-    var channel = "master" + capitaliseFirst(type);
+    var channel = "master" + capitalizeFirst(type);
     var input;
     var output;
     var jsml = {
-      tag: "div",
-      children: {
         tag: "tr",
         children: [
       {
         tag: "td",
-        text: "Master " + type
+        text: capitalizeFirst(type)
       },
     {
       tag: "td",
@@ -58,17 +56,29 @@ module.exports = (model, channels) => {
     }
   }
   ]
-}
 };
 jsmlParse(jsml, parentDomEl);
 };
 
   var connectTo = (parentDomEl) => {
     var table = document.createElement("table");
+
+    jsmlParse({
+      tag: "thead",
+      children: {
+        tag: "tr",
+        children: {
+          tag: "th",
+          text: "Master",
+          colspan: 2
+        }
+      }
+    }, table);
     createRangeControl(table, "volume", 0, 1);
     createRangeControl(table, "panning", -1, 1);
     parentDomEl.appendChild(table);
   };
+
 
   var render = () => {
     inputElements.forEach((element) => {
