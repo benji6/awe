@@ -24,8 +24,8 @@ var Panner = (panning) => {
 };
 
 module.exports = () => {
-  var model = Model();
   var channels = {};
+  var model = Model(channels);
   var view = View(model, channels);
   var panner = Panner(model.getModel().panning);
   var gainNode = GainNode(model.getModel().volume);

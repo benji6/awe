@@ -10,7 +10,6 @@ var everyProperty = (obj) =>
 module.exports = function (adsr, master, oscillators) {
   var channels = {};
   var view = View(channels);
-
   var controllers = {
     adsr,
     master,
@@ -36,7 +35,10 @@ module.exports = function (adsr, master, oscillators) {
 
   channels.reset = () => {
     everyController((key) => {
+      console.log(key)
+      console.log(controllers[key].model.getModel())
       controllers[key].model.init();
+      console.log(controllers[key].model.getModel())
       controllers[key].view.render();
     });
   };

@@ -5,15 +5,22 @@ var createDefaultModel = () => {
   };
 };
 
-module.exports = () => {
-  var model;
-  var init = () => model = createDefaultModel();
-  
-  init();
+module.exports = (channels) => {
+  var model = createDefaultModel();
+
+  var init = () => {
+    model = createDefaultModel();
+    channels.masterVolume(model.volume);
+    channels.masterPanning(model.panning);
+  };
 
   return {
     getModel: () => model,
     init,
-    setModel: (newModel) => model = newModel
+    setModel: (newModel) => {
+      model = newModel;
+      channels.masterVolume(model.volume);
+      channels.masterPanning(model.panning);
+    }
   };
 };
