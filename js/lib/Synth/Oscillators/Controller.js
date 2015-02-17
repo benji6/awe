@@ -86,10 +86,10 @@ module.exports = function (adsrModel) {
     var setOutput = (output) => {
       return (freq) => {
         var oscillators = [
-        createOsc("sine"),
-        createOsc("square"),
-        createOsc("sawtooth"),
-        createOsc("triangle")
+          createOsc("sine"),
+          createOsc("square"),
+          createOsc("sawtooth"),
+          createOsc("triangle")
         ];
 
         oscillators.forEach((element) => {
@@ -104,10 +104,8 @@ module.exports = function (adsrModel) {
 
     var noteStart = (freq) => {
       if (activeNotes.has(freq)) {
-        console.log('has freq');
         return;
       }
-      console.log(activeNotes.size);
       newNote(freq);
     };
 
