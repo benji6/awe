@@ -8,19 +8,19 @@ var createDefaultModel = () => {
 module.exports = (channels) => {
   var model = createDefaultModel();
 
-  var init = () => {
-    model = createDefaultModel();
+  var setModel = (newModel) => {
+    model = newModel;
     channels.masterVolume(model.volume);
     channels.masterPanning(model.panning);
+  };
+
+  var init = () => {
+    setModel(createDefaultModel());
   };
 
   return {
     getModel: () => model,
     init,
-    setModel: (newModel) => {
-      model = newModel;
-      channels.masterVolume(model.volume);
-      channels.masterPanning(model.panning);
-    }
+    setModel
   };
 };
