@@ -1,11 +1,12 @@
 var keyCodesToNotes = require('./keyCodesToNotes.js');
 var notesToFrequencies = require('./notesToFrequencies.js');
 
-var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
 var startChannels = [];
 var stopChannels = [];
 
-var keyDownHandler = (e) => {
+var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
+
+document.body.onkeydown = (e) => {
   var freq = getFreq(e);
   if (freq) {
     startChannels.forEach(function(channel) {
@@ -14,15 +15,12 @@ var keyDownHandler = (e) => {
   }
 };
 
-var keyUpHandler = (e) => {
+document.body.onkeyup = (e) => {
   var freq = getFreq(e);
   stopChannels.forEach(function(channel) {
     channel(freq);
   });
 };
-
-document.body.onkeydown = keyDownHandler;
-document.body.onkeyup = keyUpHandler;
 
 module.exports = {
   addStartChannel: function (channel) {
