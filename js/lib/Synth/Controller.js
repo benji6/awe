@@ -1,8 +1,8 @@
 var audioContext = require('../audioContext');
-var Oscillators = require('./oscillators/Controller.js');
-var Master = require('./master/Controller.js');
-var Adsr = require('./adsr/Controller.js');
-var Presets = require('./presets/Controller.js');
+var Oscillators = require('./Oscillators/Controller.js');
+var Master = require('./Master/Controller.js');
+var Adsr = require('./Adsr/Controller.js');
+var Presets = require('./Presets/Controller.js');
 var view = require('./View.js');
 
 var connect = (master) =>
