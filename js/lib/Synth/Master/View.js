@@ -5,8 +5,8 @@ var formatOutput = (output) => (+output).toFixed(2);
 
 
 module.exports = (model, channels) => {
-  var inputElements = new Set();
-  var outputElements = new Set();
+  var inputElements = [];
+  var outputElements = [];
 
   var createRangeControl = function (parentDomEl, type, min, max, step) {
     var channel = "master" + capitalizeFirst(type);
@@ -30,7 +30,7 @@ module.exports = (model, channels) => {
         value: model.getModel()[type],
         callback: (element) => {
           input = element;
-          inputElements.add({
+          inputElements.push({
             element,
             type
           });
@@ -47,7 +47,7 @@ module.exports = (model, channels) => {
       tag: "output",
       callback: (element) => {
         output = element;
-        outputElements.add({
+        outputElements.push({
           element,
           type
         });

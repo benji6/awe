@@ -4,8 +4,8 @@ var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
-  var inputElements = new Set();
-  var outputElements = new Set();
+  var inputElements = [];
+  var outputElements = [];
 
   var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
     var channel = wave + capitalizeFirst(type);
@@ -28,7 +28,7 @@ module.exports = (model, channels) => {
         value:  model.getModel()[wave][type],
         callback: (element) => {
           input = element;
-          inputElements.add({
+          inputElements.push({
             element,
             type,
             wave
@@ -46,7 +46,7 @@ module.exports = (model, channels) => {
       tag: "output",
       callback: (element) => {
         output = element;
-        outputElements.add({
+        outputElements.push({
           element,
           type,
           wave
@@ -61,14 +61,14 @@ jsmlParse(jsml, parentDomEl);
 };
 
 var connectTo = (parentDomEl) => {
-  var tables = new Set();
-  var waves = new Set(["sawtooth", "sine", "square", "triangle"]);
-  var controls = new Set([
+  var tables = [];
+  var waves = ["sawtooth", "sine", "square", "triangle"];
+  var controls = [
     ["volume", 0, 1],
     ["panning", -1, 1],
     ["tune", -36, 36, 1],
     ["detune", -100, 100],
-    ]);
+  ];
 
     waves.forEach((wave) => {
       var table = document.createElement("table");
@@ -86,7 +86,7 @@ var connectTo = (parentDomEl) => {
       controls.forEach((control) => {
         createRangeControl(table, wave, control[0], control[1], control[2], control[3]);
       });
-      tables.add(table);
+      tables.push(table);
     });
     tables.forEach((table) => {
       parentDomEl.appendChild(table);

@@ -3,8 +3,8 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 module.exports = (model, channels) => {
-  var inputElements = new Set();
-  var outputElements = new Set();
+  var inputElements = [];
+  var outputElements = [];
 
   var formatOutput = (output) => (+output).toFixed(2);
 
@@ -30,7 +30,7 @@ module.exports = (model, channels) => {
           value: model.getModel()[type],
           callback: (element) => {
             input = element;
-            inputElements.add({
+            inputElements.push({
               element,
               type
             });
@@ -47,7 +47,7 @@ module.exports = (model, channels) => {
           tag: "output",
           callback: (element) => {
             output = element;
-            outputElements.add({
+            outputElements.push({
               element,
               type
             });
