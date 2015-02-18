@@ -65,9 +65,9 @@ var connectTo = (parentDomEl) => {
   var waves = new Set(["sawtooth", "sine", "square", "triangle"]);
   var controls = new Set([
     ["volume", 0, 1],
+    ["panning", -1, 1],
     ["tune", -36, 36, 1],
     ["detune", -100, 100],
-    ["panning", -1, 1],
     ]);
 
     waves.forEach((wave) => {
