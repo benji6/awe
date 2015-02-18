@@ -1,7 +1,7 @@
 var createDefaultModel = () => {
   return {
     panning: 0,
-    volume: 0.1
+    volume: 0.2
   };
 };
 
