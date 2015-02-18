@@ -8,23 +8,24 @@ module.exports = (channels) => {
     tag: "div",
     callback: (element) => synthViewHolder = element,
     children: [
-  {
-    tag: "button",
-    count: 5,
-    text: (count) => buttonLabels[count],
-    callback: function (element, jsmlElement, count) {
-      element.onclick = () => channels[buttonLabels[count].toLowerCase()]();
-    }
-  },
-{
-  tag: "input",
-  callback: (element) => channels.import = () => {
-    channels.importdata(element.value);
-    element.value = "";
-  }
-}
-]
-};
+      {
+        tag: "button",
+        count: 5,
+        text: (count) => buttonLabels[count],
+        callback: function (element, jsmlElement, count) {
+          element.onclick = () => channels[buttonLabels[count].toLowerCase()]();
+        }
+      },
+      {
+        tag: "input",
+        callback: (element) =>
+          channels.import = () => {
+            channels.importdata(element.value);
+            element.value = "";
+          }
+      }
+    ]
+  };
 
   return {
     connectTo: (parentDomElement) => {
