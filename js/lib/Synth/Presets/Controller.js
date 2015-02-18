@@ -17,12 +17,19 @@ module.exports = function (adsr, master, oscillators) {
   };
   var everyController = everyProperty(controllers);
 
-  channels.save = () => {
+  channels.save = (presetKey) => {
+    if (!presetKey) {
+      console.log("no presetKey given");
+      return;
+    }
+    alert(presetKey);
     var dataToStore = {};
     everyController((key) => {
       dataToStore[key] = controllers[key].model.getModel();
     });
-    localStorage.setItem("synthSettings", JSON.stringify(dataToStore));
+    //get stored data object, if new property append, if amended then second dialog
+    //to check with user then overwrite or abandon
+    localStorage.setItem("synthPresets", JSON.stringify(dataToStore));
   };
 
   channels.load = () => {
