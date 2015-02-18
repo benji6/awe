@@ -1,4 +1,3 @@
-var audioContext = require('../audioContext');
 var Oscillators = require('./Oscillators/Controller.js');
 var Master = require('./Master/Controller.js');
 var Adsr = require('./Adsr/Controller.js');
