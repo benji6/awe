@@ -19,7 +19,7 @@ module.exports = function (adsr, master, oscillators) {
 
   channels.save = (presetKey) => {
     if (!presetKey) {
-      console.log("no presetKey given");
+      channels.displayMessage("Please input a preset name");
       return;
     }
     alert(presetKey);
@@ -52,12 +52,12 @@ module.exports = function (adsr, master, oscillators) {
       newData = JSON.parse(data);
     }
     catch (e) {
-      console.log(`error importing preset data: ${e}`);
+      channels.displayMessage(`error importing preset data: ${e}`);
       return;
     }
     everyController((key) => {
       if (!newData[key]) {
-        console.log(`import preset data warning: no imported data for key ${key}`);
+        channels.displayMessage(`import preset data warning: no imported data for key ${key}`);
         return;
       }
       controllers[key].model.setModel(newData[key]);
