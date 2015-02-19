@@ -3,12 +3,6 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 module.exports = (channels) => {
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
   var saveAsPresetInput = null;
-  var destroyChildren = function destroyChildren (element) {
-    if (element.firstChild) {
-      element.removeChild(element.firstChild);
-      destroyChildren(element);
-    }
-  };
 
   var jsml = {
     tag: "div",
@@ -38,10 +32,17 @@ module.exports = (channels) => {
           }
       },
       {
-        tag: "p",
+        tag: "div",
         callback: (element) => channels.displayMessage = (message) => {
-          destroyChildren(element);
-          element.appendChild(document.createTextNode(message));
+          var output = element.firstChild;
+          output.value = message;
+          window.setTimeout(function () {
+            output.value = "";
+          }, 5000);
+        },
+        children: {
+          tag: "output",
+          width: "200px"
         }
       }
     ]

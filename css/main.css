@@ -14,9 +14,8 @@ body {
 
 .synth table {
   display: inline;
+  margin: 0 1em;
 }
 
 .synth output {
-  display: inline-block;
-  width: 4em;
 }

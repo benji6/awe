@@ -48,6 +48,10 @@ module.exports = function (adsr, master, oscillators) {
   };
 
   channels.importdata = (data) => {
+    if (!data) {
+      channels.displayMessage("No import data, please paste in field");
+      return;
+    }
     try {
       newData = JSON.parse(data);
     }
