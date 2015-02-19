@@ -9,7 +9,7 @@ var everyProperty = (obj) =>
 
 module.exports = function (adsr, master, oscillators) {
   var channels = {};
-  var view = View(channels);
+  var view = View(channels)(["hello", "goodbye"]);
   var controllers = {
     adsr,
     master,
@@ -19,7 +19,7 @@ module.exports = function (adsr, master, oscillators) {
 
   channels.save = (presetKey) => {
     if (!presetKey) {
-      channels.displayMessage("Please input a preset name");
+      channels.newNotification("Please input a preset name");
       return;
     }
     alert(presetKey);
@@ -49,19 +49,19 @@ module.exports = function (adsr, master, oscillators) {
 
   channels.importdata = (data) => {
     if (!data) {
-      channels.displayMessage("No import data, please paste in field");
+      channels.newNotification("No import data, please paste in field");
       return;
     }
     try {
       newData = JSON.parse(data);
     }
     catch (e) {
-      channels.displayMessage(`error importing preset data: ${e}`);
+      channels.newNotification(`error importing preset data: ${e}`);
       return;
     }
     everyController((key) => {
       if (!newData[key]) {
-        channels.displayMessage(`import preset data warning: no imported data for key ${key}`);
+        channels.newNotification(`import preset data warning: no imported data for key ${key}`);
         return;
       }
       controllers[key].model.setModel(newData[key]);

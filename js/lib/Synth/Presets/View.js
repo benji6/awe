@@ -1,8 +1,20 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 
-module.exports = (channels) => {
+module.exports = (channels) => (presets) => {
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
   var saveAsPresetInput = null;
+
+  var populatePresetsSelect = (element) => {
+    var jsml = presets.map((preset) => {
+      return {
+        tag: "option",
+        value: preset,
+        text: preset
+      };
+    });
+
+    jsmlParse(jsml, element);
+  };
 
   var jsml = {
     tag: "div",
@@ -32,8 +44,12 @@ module.exports = (channels) => {
           }
       },
       {
+        tag: "select",
+        callback: populatePresetsSelect
+      },
+      {
         tag: "div",
-        callback: (element) => channels.displayMessage = (message) => {
+        callback: (element) => channels.newNotification = (message) => {
           var output = element.firstChild;
           output.value = message;
           window.setTimeout(function () {
