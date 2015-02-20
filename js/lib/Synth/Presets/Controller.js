@@ -88,7 +88,7 @@ module.exports = function (adsr, master, oscillators) {
     everyController((key) => {
       exportData[key] = controllers[key].model.getModel();
     });
-    alert(JSON.stringify(exportData));
+    channels.newNotification(JSON.stringify(exportData));
   };
 
   return {
