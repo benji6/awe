@@ -49,13 +49,20 @@ module.exports = (channels) => (presets) => {
       },
       {
         tag: "div",
-        callback: (element) => channels.newNotification = (message) => {
-          var output = element.firstChild;
-          output.value = message;
-          window.setTimeout(function () {
-            output.value = "";
-          }, 5000);
-        },
+        callback: (element) => channels.newNotification = (() => {
+          var cachedTimeoutId;
+
+          return (message) => {
+            window.clearTimeout(cachedTimeoutId);
+            
+            var output = element.firstChild;
+
+            output.value = message;
+            cachedTimeoutId = window.setTimeout(function () {
+              output.value = "";
+            }, 5000);
+          };
+        })(),
         children: {
           tag: "output",
           width: "200px"
