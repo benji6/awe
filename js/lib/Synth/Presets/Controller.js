@@ -22,18 +22,32 @@ module.exports = function (adsr, master, oscillators) {
       channels.newNotification("Please input a preset name");
       return;
     }
-    alert(presetKey);
-    var dataToStore = {};
+
+    var dataToStore = JSON.parse(localStorage.getItem("prometheus"));
+    var presetData = {};
+
+    if (!localStorage.prometheus) {
+      dataToStore = {};
+    }
+
+    if (dataToStore[presetKey]) {
+      channels.newNotification("A preset already exists with this name, overwrite?");
+      //dev, need a dialogue box of some sort
+      return;
+    }
+
     everyController((key) => {
-      dataToStore[key] = controllers[key].model.getModel();
+      presetData[key] = controllers[key].model.getModel();
     });
-    //get stored data object, if new property append, if amended then second dialog
-    //to check with user then overwrite or abandon
-    localStorage.setItem("synthPresets", JSON.stringify(dataToStore));
+
+    dataToStore[presetKey] = presetData;
+    localStorage.setItem("prometheus", JSON.stringify(dataToStore));
+    channels.newNotification("Preset saved! :)");
   };
 
   channels.load = () => {
-    var newData = JSON.parse(localStorage.getItem("synthSettings"));
+    var newData = JSON.parse(localStorage.getItem("prometheus"));
+
     everyController((key) => {
       controllers[key].model.setModel(newData[key]);
       controllers[key].view.render();
