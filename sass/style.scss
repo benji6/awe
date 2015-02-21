@@ -1,8 +1,27 @@
 $bodyBackgroundColor: #000;
+$fontColor: #cea;
 
 body {
     background-color: $bodyBackgroundColor;
     margin: 0;
+
+    .Awe {
+      color: $fontColor;
+      border-radius: 3em;
+      box-shadow: 0em 0em 1em 0em $fontColor;
+      display: inline-block;
+      font-family: sans-serif;
+      margin: 1em;
+
+      h1 {
+        text-align: center;
+
+        &:hover {
+          cursor: default;
+          text-shadow: 0 0 1em #fff;
+        }
+      }
+    }
 
     .Prometheus {
       $fontColor: #ace;
@@ -10,32 +29,55 @@ body {
       border-radius: 3em;
       box-shadow: 0em 0em 1em 0em $fontColor;
       color: $fontColor;
+      cursor: default;
+      display: inline-block;
       font-family: sans-serif;
       margin: 1em;
       padding: 1em;
 
-      menu {
+      h2, h3 {
+        text-align: center;
+      }
+
+      nav {
         $menuBackgroundColor: #513;
         $menuFontColor: lighten(adjust-hue($menuBackgroundColor, 80%), 50%);
 
         cursor: pointer;
-        display: inline-block;
         margin: 0;
         padding: 0;
 
-        &:hover {
-          background-color: $menuBackgroundColor;
-          color: $menuFontColor;
+        ul {
+          list-style: none;
+          border-radius: 1em;
+          display: inline-block;
+          padding: 0.5em;
+          position: relative;
+        }
 
-          menuitem {
-            display: block;
+        ul li {
+          &:hover {
+            border-radius: 1em;
+            box-shadow: 0 0 1em 1em $menuBackgroundColor;
+            background-color: $menuBackgroundColor;
+            color: lighten($fontColor, 10%);
+
+
+            ul {
+              display: block;
+            }
           }
         }
 
-        menuitem {
+        ul ul {
+          display: none;
+          position: absolute;
+          z-index: 1;
+        }
+
+        ul ul li {
           background-color: lighten($menuBackgroundColor, 20%);
           color: lighten ($menuFontColor, 10%);
-          display: none;
 
           &:hover {
             background-color: darken($menuBackgroundColor, 10%);
@@ -45,14 +87,14 @@ body {
 
       }
 
-      .block {
-        display: block;
-      }
-
       table {
         display: inline;
         margin: 0 1em;
         margin: 0;
+      }
+
+      .block {
+        display: block;
       }
     }
 }

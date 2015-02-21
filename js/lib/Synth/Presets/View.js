@@ -22,36 +22,42 @@ module.exports = function (model, channels) {
   };
 
   var jsml = {
-    tag: "div",
+    tag: "nav",
     children: {
-      tag: "menu",
-      text: "Menu",
-      children: [
-        {
-          tag: "menuitem",
-          text: "Open Preset"
-        },
-        {
-          tag: "menuitem",
-          text: "Save Preset As"
-        },
-        {
-          tag: "menuitem",
-          text: "Import Preset"
-        },
-        {
-          tag: "menuitem",
-          text: "Export Preset"
-        },
-        {
-          tag: "menuitem",
-          text: "Delete Preset"
-        },
-        {
-          tag: "menuitem",
-          text: "Initialize Settings"
-        },
-      ]
+      tag: "ul",
+      children: {
+        tag: "li",
+        text: "Menu",
+        children: {
+          tag: "ul",
+          children: [
+            {
+              tag: "li",
+              text: "Open Preset"
+            },
+            {
+              tag: "li",
+              text: "Save Preset As"
+            },
+            {
+              tag: "li",
+              text: "Import Preset"
+            },
+            {
+              tag: "li",
+              text: "Export Preset"
+            },
+            {
+              tag: "li",
+              text: "Delete Preset"
+            },
+            {
+              tag: "li",
+              text: "Initialize Settings"
+            },
+          ]
+        }
+      }
     }
   };
 
