@@ -2,7 +2,10 @@ var Oscillators = require('./Oscillators/Controller.js');
 var Master = require('./Master/Controller.js');
 var Adsr = require('./Adsr/Controller.js');
 var Presets = require('./Presets/Controller.js');
-var view = require('./View.js');
+var View = require('./View.js');
+
+var pluginName = "Prometheus";
+var view = View(pluginName);
 
 var connect = (master) =>
   (outputNode) =>
@@ -12,7 +15,7 @@ module.exports = () => {
   var master = Master();
   var adsr = Adsr();
   var oscillators = Oscillators(adsr.model);
-  var presets = Presets(adsr, master, oscillators);
+  var presets = Presets(pluginName, adsr, master, oscillators);
 
   oscillators.connect(master.inputNode);
 

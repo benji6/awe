@@ -1,5 +1,5 @@
 var View = require('./View.js');
-var model = require('./model.js');
+var Model = require('./Model.js');
 
 var everyProperty = (obj) =>
   (fn) => {
@@ -8,9 +8,10 @@ var everyProperty = (obj) =>
     });
   };
 
-module.exports = function (adsr, master, oscillators) {
+module.exports = function (pluginName, adsr, master, oscillators) {
   var channels = {};
-  var view = View(channels);
+  var model = Model(pluginName);
+  var view = View(model, channels);
   var controllers = {
     adsr,
     master,
@@ -39,15 +40,6 @@ module.exports = function (adsr, master, oscillators) {
     model.savePreset(presetKey, presetData);
     channels.populatePresetsSelectList();
     channels.newNotification("Preset saved! :)");
-  };
-
-  channels.load = () => {
-    var newData = JSON.parse(localStorage.getItem("prometheus"));
-
-    everyController((key) => {
-      controllers[key].model.setModel(newData[key]);
-      controllers[key].view.render();
-    });
   };
 
   channels.reset = () => {
