@@ -1,0 +1,34 @@
+$bodyBackgroundColor: #000;
+
+body {
+    background-color: $bodyBackgroundColor;
+    margin: 0;
+
+    .Prometheus {
+      $fontColor: #ace;
+      border: .1em solid $fontColor;
+      color: $fontColor;
+      font-family: sans-serif;
+      margin: 1em;
+      padding: 1em;
+
+      menu {
+        margin: 0;
+        padding: 0;
+          menuitem {
+            background-color: white;
+            display: none;
+          }
+      }
+
+      .block {
+        display: block;
+      }
+      
+      table {
+        display: inline;
+        margin: 0 1em;
+        margin: 0;
+      }
+    }
+}
