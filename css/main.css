@@ -2,20 +2,32 @@ body {
   background-color: #000;
   color: #CCE;
   font-family: sans-serif;
+  margin: 0;
 }
 
-.synth thead {
+.Prometheus {
+  margin: 1em;
+}
+
+.Prometheus thead {
   text-align: center;
 }
 
-.synth .block {
+.Prometheus .block {
   display: block;
 }
 
-.synth table {
-  display: inline;
-  margin: 0 1em;
+.Prometheus menu {
+  margin: 0;
+  padding: 0;
+}
+.Prometheus menuitem {
+  background-color: white;
+  display: none;
 }
 
-.synth output {
+.Prometheus table {
+  display: inline;
+  margin: 0 1em;
+  margin: 0;
 }
