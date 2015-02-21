@@ -21,7 +21,7 @@ module.exports = function (model, channels) {
     jsmlParse(jsml, presetsSelectElement);
   };
 
-  var jsml = {
+  var menuJsml = {
     tag: "nav",
     children: {
       tag: "ul",
@@ -77,7 +77,7 @@ module.exports = function (model, channels) {
 
   return {
     connectTo: (parentDomElement) => {
-      jsmlParse(jsml, parentDomElement);
+      jsmlParse(menuJsml, parentDomElement);
     }
   };
 };
