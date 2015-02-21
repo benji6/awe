@@ -1,4 +1,5 @@
 var View = require('./View.js');
+var model = require('./model.js');
 
 var everyProperty = (obj) =>
   (fn) => {
@@ -9,7 +10,7 @@ var everyProperty = (obj) =>
 
 module.exports = function (adsr, master, oscillators) {
   var channels = {};
-  var view = View(channels)(["hello", "goodbye"]);
+  var view = View(channels);
   var controllers = {
     adsr,
     master,
@@ -23,25 +24,20 @@ module.exports = function (adsr, master, oscillators) {
       return;
     }
 
-    var dataToStore = JSON.parse(localStorage.getItem("prometheus"));
-    var presetData = {};
-
-    if (!localStorage.prometheus) {
-      dataToStore = {};
-    }
-
-    if (dataToStore[presetKey]) {
+    if (model.hasPresetKey(presetKey)) {
       channels.newNotification("A preset already exists with this name, overwrite?");
       //dev, need a dialogue box of some sort
       return;
     }
 
+    var presetData = {};
+
     everyController((key) => {
       presetData[key] = controllers[key].model.getModel();
     });
 
-    dataToStore[presetKey] = presetData;
-    localStorage.setItem("prometheus", JSON.stringify(dataToStore));
+    model.savePreset(presetKey, presetData);
+    channels.populatePresetsSelectList();
     channels.newNotification("Preset saved! :)");
   };
 

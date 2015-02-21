@@ -19,11 +19,11 @@ module.exports = () => {
   var connectViewTo = (master) =>
   (parentDomElement) => {
     var synthParentView = view.connectViewTo(parentDomElement);
+
+    presets.view.connectTo(synthParentView);
     master.view.connectTo(synthParentView);
     adsr.view.connectTo(synthParentView);
     oscillators.view.connectTo(synthParentView);
-
-    presets.view.connectTo(synthParentView);
   };
 
   return {

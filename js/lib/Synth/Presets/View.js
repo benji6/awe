@@ -1,11 +1,13 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var model = require('./model.js');
 
-module.exports = (channels) => (presets) => {
+module.exports = (channels) => {
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
   var saveAsPresetInput = null;
+  var presetsSelectElement = null;
 
-  var populatePresetsSelect = (element) => {
-    var jsml = presets.map((preset) => {
+  var populatePresetsSelectList = () => {
+    var jsml = model.getPresets().map((preset) => {
       return {
         tag: "option",
         value: preset,
@@ -13,7 +15,11 @@ module.exports = (channels) => (presets) => {
       };
     });
 
-    jsmlParse(jsml, element);
+    while (presetsSelectElement.firstChild) {
+      presetsSelectElement.removeChild(presetsSelectElement.firstChild);
+    }
+
+    jsmlParse(jsml, presetsSelectElement);
   };
 
   var jsml = {
@@ -45,7 +51,7 @@ module.exports = (channels) => (presets) => {
       },
       {
         tag: "select",
-        callback: populatePresetsSelect
+        callback: (element) => presetsSelectElement = element
       },
       {
         tag: "div",
@@ -54,7 +60,7 @@ module.exports = (channels) => (presets) => {
 
           return (message) => {
             window.clearTimeout(cachedTimeoutId);
-            
+
             var output = element.firstChild;
 
             output.value = message;
@@ -71,9 +77,12 @@ module.exports = (channels) => (presets) => {
     ]
   };
 
+  channels.populatePresetsSelectList = populatePresetsSelectList;
+
   return {
     connectTo: (parentDomElement) => {
       jsmlParse(jsml, parentDomElement);
+      populatePresetsSelectList();
     }
   };
 };
