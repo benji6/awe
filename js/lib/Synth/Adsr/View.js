@@ -81,7 +81,7 @@ module.exports = (model, channels) => {
 
     var container = document.createElement("div");
 
-    container.className = "block";
+    container.className = "center";
     container.appendChild(table);
     parentDomEl.appendChild(container);
   };
