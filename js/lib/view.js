@@ -5,12 +5,15 @@ var jsml = {
   text: "Awe"
 };
 
-var metaView = document.createElement("div");
+var aweView = document.createElement("div");
+var container = document.createElement("div");
 
-metaView.className = "Awe";
-document.body.appendChild(metaView);
-jsmlParse(jsml, metaView);
+container.className = "center";
+aweView.className = "Awe";
+container.appendChild(aweView);
+document.body.appendChild(container);
+jsmlParse(jsml, aweView);
 
 module.exports = {
-  destinationView: metaView
+  destinationView: aweView
 };
