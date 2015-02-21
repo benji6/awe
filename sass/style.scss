@@ -13,58 +13,82 @@ body {
       font-family: sans-serif;
       margin: 1em;
 
+
       h1 {
         text-align: center;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
         &:hover {
           cursor: default;
-          text-shadow: 0 0 1em #fff;
+          text-shadow: 0 0 1em lighten($fontColor, 10%);
         }
       }
     }
 
     .Prometheus {
-      $fontColor: #ace;
+      $colorTheme: #ace;
 
       border-radius: 3em;
-      box-shadow: 0em 0em 1em 0em $fontColor;
-      color: $fontColor;
+      box-shadow: 0em 0em 1em 0em $colorTheme;
+      color: $colorTheme;
       cursor: default;
       display: inline-block;
       font-family: sans-serif;
       margin: 1em;
       padding: 1em;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-      h2, h3 {
+      h2 {
         text-align: center;
+
+        &:hover {
+          text-shadow: 0 0 1em lighten($colorTheme, 10%);
+        }
       }
 
       nav {
-        $menuBackgroundColor: #513;
-        $menuFontColor: lighten(adjust-hue($menuBackgroundColor, 80%), 50%);
+        $menuColorTheme: darken($colorTheme, 50%);
 
         cursor: pointer;
         margin: 0;
         padding: 0;
 
         ul {
-          list-style: none;
           border-radius: 1em;
           display: inline-block;
-          padding: 0.5em;
+          list-style: none;
+          padding: 0;
           position: relative;
+          box-shadow: 0 0 1em 0.2em $menuColorTheme;
+          &:hover {
+            box-shadow: none;
+          }
         }
 
         ul li {
-          &:hover {
-            border-radius: 1em;
-            box-shadow: 0 0 1em 1em $menuBackgroundColor;
-            background-color: $menuBackgroundColor;
-            color: lighten($fontColor, 10%);
+          text-align: center;
+          width: 12em;
 
+          &:hover {
+            background-color: $menuColorTheme;
+            color: lighten($menuColorTheme, 70%);
 
             ul {
               display: block;
+            }
+
+            ul li {
+              border-radius: 0;
             }
           }
         }
@@ -73,15 +97,15 @@ body {
           display: none;
           position: absolute;
           z-index: 1;
+          box-shadow: none;
         }
 
         ul ul li {
-          background-color: lighten($menuBackgroundColor, 20%);
-          color: lighten ($menuFontColor, 10%);
+          background-color: $menuColorTheme;
 
           &:hover {
-            background-color: darken($menuBackgroundColor, 10%);
-            color: lighten ($menuFontColor, 50%);
+            background-color: darken($menuColorTheme, 10%);
+            color: lighten ($menuColorTheme, 50%);
           }
         }
 
@@ -95,6 +119,7 @@ body {
 
       .block {
         display: block;
+        text-align: center;
       }
     }
 }
