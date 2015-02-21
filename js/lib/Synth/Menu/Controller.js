@@ -19,6 +19,25 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   };
   var everyController = everyProperty(controllers);
 
+  channels.openPreset = () => {
+    alert('openPreset');
+  };
+  channels.savePresetAs = () => {
+    alert('savePresetAs');
+  };
+  channels.importPreset = () => {
+    alert('importPreset');
+  };
+  channels.exportPreset = () => {
+    alert('exportPreset');
+  };
+  channels.deletePreset = () => {
+    alert('deletePreset');
+  };
+  channels.initialize = () => {
+    alert('initialize');
+  };
+
   channels.save = (presetKey) => {
     if (!presetKey) {
       channels.newNotification("Please input a preset name");

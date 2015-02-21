@@ -33,27 +33,39 @@ module.exports = function (model, channels) {
           children: [
             {
               tag: "li",
-              text: "Open Preset"
+              text: "Open Preset",
+              callback: (element) =>
+                element.onclick = () => channels.openPreset()
             },
             {
               tag: "li",
-              text: "Save Preset As"
+              text: "Save Preset As",
+              callback: (element) =>
+                element.onclick = () => channels.savePresetAs()
             },
             {
               tag: "li",
-              text: "Import Preset"
+              text: "Import Preset",
+              callback: (element) =>
+                element.onclick = () => channels.importPreset()
             },
             {
               tag: "li",
-              text: "Export Preset"
+              text: "Export Preset",
+              callback: (element) =>
+                element.onclick = () => channels.exportPreset()
             },
             {
               tag: "li",
-              text: "Delete Preset"
+              text: "Delete Preset",
+              callback: (element) =>
+                element.onclick = () => channels.deletePreset()
             },
             {
               tag: "li",
-              text: "Initialize Settings"
+              text: "Initialize Settings",
+              callback: (element) =>
+                element.onclick = () => channels.initialize()
             },
           ]
         }
