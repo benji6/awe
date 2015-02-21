@@ -7,6 +7,7 @@ var jsml = {
 
 var metaView = document.createElement("div");
 
+metaView.className = "Awe";
 document.body.appendChild(metaView);
 jsmlParse(jsml, metaView);
 
