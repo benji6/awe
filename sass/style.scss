@@ -16,7 +16,9 @@ body {
       menu {
         $menuBackgroundColor: #513;
         $menuFontColor: lighten(adjust-hue($menuBackgroundColor, 80%), 50%);
+
         cursor: pointer;
+        display: inline-block;
         margin: 0;
         padding: 0;
 
