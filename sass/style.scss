@@ -6,6 +6,7 @@ body {
 
     .Prometheus {
       $fontColor: #ace;
+
       border: .1em solid $fontColor;
       color: $fontColor;
       font-family: sans-serif;
@@ -13,18 +14,38 @@ body {
       padding: 1em;
 
       menu {
+        $menuBackgroundColor: #513;
+        $menuFontColor: lighten(adjust-hue($menuBackgroundColor, 80%), 50%);
+        cursor: pointer;
         margin: 0;
         padding: 0;
+
+        &:hover {
+          background-color: $menuBackgroundColor;
+          color: $menuFontColor;
+
           menuitem {
-            background-color: white;
-            display: none;
+            display: block;
           }
+        }
+
+        menuitem {
+          background-color: lighten($menuBackgroundColor, 20%);
+          color: lighten ($menuFontColor, 10%);
+          display: none;
+
+          &:hover {
+            background-color: darken($menuBackgroundColor, 10%);
+            color: lighten ($menuFontColor, 50%);
+          }
+        }
+
       }
 
       .block {
         display: block;
       }
-      
+
       table {
         display: inline;
         margin: 0 1em;
