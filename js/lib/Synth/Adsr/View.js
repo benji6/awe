@@ -62,7 +62,6 @@ module.exports = (model, channels) => {
 
   var connectTo = (parentDomEl) => {
     var table = document.createElement("table");
-    table.className = "block";
 
     jsmlParse({
       tag: "thead",
@@ -80,7 +79,11 @@ module.exports = (model, channels) => {
     createRangeControl(table, "s", 0, 1);
     createRangeControl(table, "r", 0, 1);
 
-    parentDomEl.appendChild(table);
+    var container = document.createElement("div");
+
+    container.className = "block";
+    container.appendChild(table);
+    parentDomEl.appendChild(container);
   };
 
   var render = () => {

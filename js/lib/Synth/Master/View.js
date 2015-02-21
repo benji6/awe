@@ -76,7 +76,12 @@ jsmlParse(jsml, parentDomEl);
     }, table);
     createRangeControl(table, "volume", 0, 1);
     createRangeControl(table, "panning", -1, 1);
-    parentDomEl.appendChild(table);
+
+    var container = document.createElement("div");
+
+    container.className = "block";
+    container.appendChild(table);
+    parentDomEl.appendChild(container);
   };
 
 
