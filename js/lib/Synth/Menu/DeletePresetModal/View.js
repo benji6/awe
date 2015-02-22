@@ -11,7 +11,7 @@ module.exports = function (model, channels) {
     children: [
       {
         tag: "h3",
-        text: "Open Preset"
+        text: "Delete Preset"
       },
       {
         tag: "select",
@@ -19,10 +19,10 @@ module.exports = function (model, channels) {
       },
       {
         tag: "button",
-        text: "Open",
+        text: "Delete",
         callback: (element) =>
           element.onclick = () =>
-            channels.openPreset(select.value)
+            channels.deletePreset(select.value)
       },
       {
         tag: "button",

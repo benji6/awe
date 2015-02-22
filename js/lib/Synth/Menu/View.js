@@ -4,12 +4,14 @@ var OpenPresetModal = require('./OpenPresetModal/View.js');
 var SavePresetAsModal = require('./SavePresetAsModal/View.js');
 var ImportPresetModal = require('./ImportPresetModal/View.js');
 var ExportPresetModal = require('./ExportPresetModal/View.js');
+var DeletePresetModal = require('./DeletePresetModal/View.js');
 
 module.exports = function (model, channels) {
   var openPresetModal = OpenPresetModal(model, channels);
   var savePresetAsModal = SavePresetAsModal(model, channels);
   var importPresetModal = ImportPresetModal(channels);
   var exportPresetModal = ExportPresetModal(model, channels);
+  var deletePresetModal = DeletePresetModal(model, channels);
 
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
 
@@ -52,7 +54,7 @@ module.exports = function (model, channels) {
                 tag: "li",
                 text: "Delete Preset",
                 callback: (element) =>
-                  element.onclick = () => channels.deletePreset()
+                  element.onclick = deletePresetModal.open
               },
               {
                 tag: "li",
@@ -68,13 +70,17 @@ module.exports = function (model, channels) {
     openPresetModal.jsml,
     savePresetAsModal.jsml,
     importPresetModal.jsml,
-    exportPresetModal.jsml
+    exportPresetModal.jsml,
+    deletePresetModal.jsml
   ];
 
   return {
     connectTo: (parentDomElement) => {
+      var presets = model.getPresets();
+
       jsmlParse(menuJsml, parentDomElement);
-      openPresetModal.populatePresets();
+      openPresetModal.populatePresets(presets);
+      deletePresetModal.populatePresets(presets);
     }
   };
 };
