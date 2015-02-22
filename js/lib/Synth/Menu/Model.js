@@ -3,7 +3,9 @@ module.exports = (pluginName) => {
     if (!localStorage[pluginName]) {
       return;
     }
-    return Object.keys(JSON.parse(localStorage.getItem(pluginName)));
+    return Object.keys(JSON.parse(localStorage.getItem(pluginName))).sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
   };
 
   var getPreset = (key) => {
@@ -36,7 +38,7 @@ module.exports = (pluginName) => {
       return;
     }
     var storedData = JSON.parse(localStorage.getItem(pluginName));
-    
+
     delete storedData[key];
     localStorage.setItem(pluginName, JSON.stringify(storedData));
   };
