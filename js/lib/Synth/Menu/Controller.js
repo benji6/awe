@@ -35,7 +35,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     if (!value) {
       return "Please input a preset name";
     }
-
     if (model.hasPresetKey(value)) {
       return "A preset already exists with this name, overwrite?";
     }
@@ -45,7 +44,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     everyController((key) => {
       presetData[key] = controllers[key].model.getModel();
     });
-
     model.savePreset(value, presetData);
     view.populatePresets();
   };
@@ -61,7 +59,23 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   };
 
   channels.importPreset = (value) => {
-    alert(value);
+    if (!value) {
+      return "No import data, please paste in field";
+    }
+    try {
+      newData = JSON.parse(value);
+    }
+    catch (e) {
+      return `error importing preset data: ${e}`;
+    }
+    everyController((key) => {
+      if (!newData[key]) {
+        channels.newNotification(`import preset data warning: no imported data for key ${key}`);
+        return;
+      }
+      controllers[key].model.setModel(newData[key]);
+      controllers[key].view.render();
+    });
   };
 
   channels.exportPreset = () => {
@@ -84,28 +98,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   channels.initialize = () => {
     everyController((key) => {
       controllers[key].model.init();
-      controllers[key].view.render();
-    });
-  };
-
-  channels.importdata = (data) => {
-    if (!data) {
-      channels.newNotification("No import data, please paste in field");
-      return;
-    }
-    try {
-      newData = JSON.parse(data);
-    }
-    catch (e) {
-      channels.newNotification(`error importing preset data: ${e}`);
-      return;
-    }
-    everyController((key) => {
-      if (!newData[key]) {
-        channels.newNotification(`import preset data warning: no imported data for key ${key}`);
-        return;
-      }
-      controllers[key].model.setModel(newData[key]);
       controllers[key].view.render();
     });
   };

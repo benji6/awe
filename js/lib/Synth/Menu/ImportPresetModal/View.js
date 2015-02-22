@@ -3,6 +3,8 @@ var jsmlParse = require('../../../../../custom_modules/jsml/jsmlParse.js');
 module.exports = function (channels) {
   var container = null;
   var input = null;
+  var message = null;
+  var defaultMessage = "Warning: any unsaved settings will be lost";
 
   var jsml = {
     tag: "div",
@@ -18,18 +20,37 @@ module.exports = function (channels) {
         callback: (element) => input = element
       },
       {
+        tag: "div",
+        children: {
+          tag: "output",
+          value: defaultMessage,
+          callback: (element) => message = element
+        }
+      },
+      {
         tag: "button",
         text: "Import",
         callback: (element) =>
-          element.onclick = () =>
-            channels.importPreset(input.value)
+          element.onclick = () => {
+            var response = channels.importPreset(input.value);
+
+            if (response) {
+              message.value = response;
+              return;
+            }
+            container.className = "hidden";
+            message.value = defaultMessage;
+            input.value = '';
+          }
       },
       {
         tag: "button",
         text: "Cancel",
         callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
+          element.onclick = () => {
+            container.className = "hidden";
+            message.value = defaultMessage;
+          }
       }
     ]
   };
