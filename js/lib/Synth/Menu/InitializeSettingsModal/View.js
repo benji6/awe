@@ -21,7 +21,10 @@ module.exports = function (channels) {
         tag: "button",
         text: "Initialize",
         callback: (element) =>
-          element.onclick = channels.initialize
+          element.onclick = () => {
+            channels.initialize();
+            container.className = "hidden";
+          }
       },
       {
         tag: "button",

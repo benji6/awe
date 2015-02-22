@@ -46,7 +46,10 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     alert('deletePreset');
   };
   channels.initialize = () => {
-    alert('initialize');
+    everyController((key) => {
+      controllers[key].model.init();
+      controllers[key].view.render();
+    });
   };
 
   channels.save = (presetKey) => {
@@ -70,13 +73,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     model.savePreset(presetKey, presetData);
     channels.populatePresetsSelectList();
     channels.newNotification("Preset saved! :)");
-  };
-
-  channels.reset = () => {
-    everyController((key) => {
-      controllers[key].model.init();
-      controllers[key].view.render();
-    });
   };
 
   channels.importdata = (data) => {
