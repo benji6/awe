@@ -30,6 +30,7 @@ module.exports = function (pluginName, adsr, master, oscillators) {
       controllers[key].view.render();
     });
   };
+
   channels.savePresetAs = (value) => {
     if (!value) {
       return "Please input a preset name";
@@ -48,9 +49,21 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     model.savePreset(value, presetData);
     view.populatePresets();
   };
+
+  channels.overwritePreset = (value) => {
+    var presetData = {};
+
+    everyController((key) => {
+      presetData[key] = controllers[key].model.getModel();
+    });
+
+    model.savePreset(value, presetData);
+  };
+
   channels.importPreset = (value) => {
     alert(value);
   };
+
   channels.exportPreset = () => {
     var exportData = {};
 
@@ -60,12 +73,14 @@ module.exports = function (pluginName, adsr, master, oscillators) {
 
     return JSON.stringify(exportData);
   };
+
   channels.deletePreset = () => {
     if (!value) {
       return;
     }
     alert('deletePreset');
   };
+
   channels.initialize = () => {
     everyController((key) => {
       controllers[key].model.init();

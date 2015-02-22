@@ -4,6 +4,22 @@ module.exports = function (model, channels) {
   var container = null;
   var input = null;
   var message = null;
+  var saveButton = null;
+  var overwriteButton = null;
+
+  var displayOverwriteState = (response) => {
+    saveButton.className = "hidden";
+    overwriteButton.className = "";
+    input.disabled = true;
+    message.value = response;
+  };
+
+  var displaySaveState = () => {
+    saveButton.className = "";
+    overwriteButton.className = "hidden";
+    message.value = '';
+    input.disabled = false;
+  };
 
   var jsml = {
     tag: "div",
@@ -30,17 +46,32 @@ module.exports = function (model, channels) {
       {
         tag: "button",
         text: "Save",
-        callback: (element) =>
+        callback: (element) => {
+          saveButton = element;
           element.onclick = () => {
             var response = channels.savePresetAs(input.value);
 
             if (response) {
-              message.value = response;
+              displayOverwriteState(response);
               return;
             }
             container.className = "hidden";
-            message.value = '';
-          }
+            displaySaveState();
+          };
+        }
+      },
+      {
+        tag: "button",
+        text: "Overwrite",
+        className: "hidden",
+        callback: (element) => {
+          overwriteButton = element;
+          element.onclick = () => {
+            channels.overwritePreset(input.value);
+            displaySaveState();
+            container.className = "hidden";
+          };
+        }
       },
       {
         tag: "button",
@@ -48,7 +79,7 @@ module.exports = function (model, channels) {
         callback: (element) =>
           element.onclick = () => {
             container.className = "hidden";
-            message.value = '';
+            displaySaveState();
           }
       }
     ]
