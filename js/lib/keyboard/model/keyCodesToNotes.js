@@ -11,6 +11,7 @@ keyCodesToNotes[66] = 'G4';
 keyCodesToNotes[72] = 'G#4/Ab4';
 keyCodesToNotes[78] = 'A4';
 keyCodesToNotes[74] = 'A#4/Bb4';
+  keyCodesToNotes[49] = 'A#4/Bb4';
 keyCodesToNotes[77] = 'B4';
   keyCodesToNotes[81] = 'B4';
 keyCodesToNotes[87] = 'C5';

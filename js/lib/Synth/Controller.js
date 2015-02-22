@@ -1,8 +1,11 @@
 var Oscillators = require('./Oscillators/Controller.js');
 var Master = require('./Master/Controller.js');
 var Adsr = require('./Adsr/Controller.js');
-var Presets = require('./Presets/Controller.js');
-var view = require('./View.js');
+var Menu = require('./Menu/Controller.js');
+var View = require('./View.js');
+
+var pluginName = "Prometheus";
+var view = View(pluginName);
 
 var connect = (master) =>
   (outputNode) =>
@@ -12,19 +15,19 @@ module.exports = () => {
   var master = Master();
   var adsr = Adsr();
   var oscillators = Oscillators(adsr.model);
-  var presets = Presets(adsr, master, oscillators);
+  var menu = Menu(pluginName, adsr, master, oscillators);
 
   oscillators.connect(master.inputNode);
 
   var connectViewTo = (master) =>
-  (parentDomElement) => {
-    var synthParentView = view.connectViewTo(parentDomElement);
-    master.view.connectTo(synthParentView);
-    adsr.view.connectTo(synthParentView);
-    oscillators.view.connectTo(synthParentView);
+    (parentDomElement) => {
+      var synthParentView = view.connectViewTo(parentDomElement);
 
-    presets.view.connectTo(synthParentView);
-  };
+      menu.view.connectTo(synthParentView);
+      master.view.connectTo(synthParentView);
+      adsr.view.connectTo(synthParentView);
+      oscillators.view.connectTo(synthParentView);
+    };
 
   return {
     channelStart: oscillators.noteStart,

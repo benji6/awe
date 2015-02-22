@@ -1,0 +1,187 @@
+body {
+  $bodyBackgroundColor: #000;
+
+  background-color: $bodyBackgroundColor;
+  margin: 0;
+  .center {
+    text-align: center;
+
+    .Awe {
+      $fontColor: #cea;
+
+      color: $fontColor;
+      border-radius: 3em;
+      box-shadow: 0em 0em 1em 0em $fontColor;
+      display: inline-block;
+      font-family: sans-serif;
+      margin: 1em;
+
+      h1 {
+        display: inline-block;
+        text-align: center;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &:hover {
+          cursor: default;
+          text-shadow: 0 0 1em lighten($fontColor, 10%);
+        }
+      }
+    }
+  }
+
+  .Prometheus {
+    $colorTheme: #ace;
+
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    cursor: default;
+    display: inline-block;
+    font-family: sans-serif;
+    margin: 1em;
+    padding: 1em;
+    position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
+    }
+
+    nav {
+      $menuColorTheme: darken($colorTheme, 50%);
+
+      margin: 0;
+      padding: 0;
+
+      ul {
+        border-radius: 1em;
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+        position: relative;
+        box-shadow: 0 0 1em 0.2em $menuColorTheme;
+        &:hover {
+          box-shadow: none;
+        }
+      }
+
+      ul li {
+        text-align: center;
+        width: 12em;
+
+        &:hover {
+          background-color: $menuColorTheme;
+          color: lighten($menuColorTheme, 70%);
+
+          ul {
+            display: block;
+          }
+
+          ul li {
+            border-radius: 0;
+          }
+        }
+      }
+
+      ul ul {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        z-index: 1;
+        box-shadow: none;
+      }
+
+      ul ul li {
+        background-color: $menuColorTheme;
+
+        &:hover {
+          background-color: darken($menuColorTheme, 10%);
+          color: lighten ($menuColorTheme, 50%);
+        }
+      }
+    }
+
+    table {
+      display: inline;
+      margin: 0 1em;
+      margin: 0;
+
+      td {
+        text-align: left;
+
+        output {
+          display: block;
+          width: 4em;
+        }
+      }
+    }
+
+    .center {
+      display: block;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modalWindow {
+      $modalColorTheme: darken($colorTheme, 50%);
+      $width: 50%;
+      $padding: 2%;
+      $left: 50% - $width / 2 - $padding;
+      $top: 25%;
+
+      background-color: #000;
+      border-radius: 1em;
+      box-shadow:  0 0 2em 2em $modalColorTheme;
+      display: inline-block;
+      left: $left;
+      overflow: auto;
+      padding: $padding;
+      position: absolute;
+      top: $top;
+      width: $width;
+      z-index: 2;
+
+      select {
+        display: block;
+        margin: 1em auto;
+      }
+
+      input {
+        display: block;
+        margin: 1em auto;
+      }
+
+      output {
+        cursor: text;
+        -webkit-touch-callout: text;
+        -webkit-user-select: text;
+        -khtml-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+
+      .margin {
+        margin: 1em;
+      }
+    }
+  }
+}
