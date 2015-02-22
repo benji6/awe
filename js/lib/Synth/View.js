@@ -10,8 +10,12 @@ module.exports = (pluginName) => {
       synthViewHolder = element;
     },
     children: {
-      tag: "h2",
-      text: pluginName
+      tag: "div",
+      className: "center",
+      children: {
+        tag: "h2",
+        text: pluginName
+      }
     }
   };
 

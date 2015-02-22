@@ -17,6 +17,7 @@ body {
         margin: 1em;
 
         h1 {
+          display: inline-block;
           text-align: center;
           -webkit-touch-callout: none;
           -webkit-user-select: none;
@@ -52,6 +53,7 @@ body {
       user-select: none;
 
       h2 {
+        display: inline-block;
         text-align: center;
 
         &:hover {

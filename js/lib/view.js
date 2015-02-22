@@ -1,8 +1,12 @@
 var jsmlParse = require('../../custom_modules/jsml/jsmlParse.js');
 
 var jsml = {
-  tag: "h1",
-  text: "Awe"
+  tag: "div",
+  className: "center",
+  children: {
+    tag: "h1",
+    text: "Awe"
+  }
 };
 
 var aweView = document.createElement("div");
