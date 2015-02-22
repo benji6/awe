@@ -39,7 +39,6 @@ module.exports = function (model, channels) {
         tag: "div",
         children: {
           tag: "output",
-          text: "",
           callback: (element) => message = element
         }
       },
