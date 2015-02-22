@@ -32,9 +32,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   };
 
   channels.savePresetAs = (value) => {
-    if (!value) {
-      return "Please input a preset name";
-    }
     if (model.hasPresetKey(value)) {
       return "A preset already exists with this name, overwrite?";
     }
