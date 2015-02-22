@@ -62,15 +62,15 @@ module.exports = (model, channels) => {
     jsmlParse(jsml, parentDomEl);
   };
 
-var connectTo = (parentDomEl) => {
-  var tables = [];
-  var waves = ["sawtooth", "sine", "square", "triangle"];
-  var controls = [
-    ["volume", 0, 1],
-    ["panning", -1, 1],
-    ["tune", -36, 36, 1],
-    ["detune", -100, 100],
-  ];
+  var connectTo = (parentDomEl) => {
+    var tables = [];
+    var waves = ["sawtooth", "sine", "square", "triangle"];
+    var controls = [
+      ["volume", 0, 1],
+      ["panning", -1, 1],
+      ["tune", -36, 36, 1],
+      ["detune", -100, 100],
+    ];
 
     waves.forEach((wave) => {
       var table = document.createElement("table");
