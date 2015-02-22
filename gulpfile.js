@@ -23,6 +23,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task("watch", function () {
+  gulp.start('sass', 'js');
   gulp.watch('sass/style.scss', ["sass"]);
   gulp.watch('js/**/*.js', ["js"]);
 });
