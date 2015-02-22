@@ -13,7 +13,7 @@ module.exports = function (channels) {
     children: [
       {
         tag: "h3",
-        text: "Import Preset"
+        text: "Import Settings"
       },
       {
         tag: "input",
