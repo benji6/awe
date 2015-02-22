@@ -3,11 +3,13 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 var OpenPresetModal = require('./OpenPresetModal/View.js');
 var SavePresetAsModal = require('./SavePresetAsModal/View.js');
 var ImportPresetModal = require('./ImportPresetModal/View.js');
+var ExportPresetModal = require('./ExportPresetModal/View.js');
 
 module.exports = function (model, channels) {
   var openPresetModal = OpenPresetModal(model, channels);
   var savePresetAsModal = SavePresetAsModal(model, channels);
-  var importPresetModal = ImportPresetModal(model, channels);
+  var importPresetModal = ImportPresetModal(channels);
+  var exportPresetModal = ExportPresetModal(model, channels);
 
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
 
@@ -44,7 +46,7 @@ module.exports = function (model, channels) {
                 tag: "li",
                 text: "Export Preset",
                 callback: (element) =>
-                  element.onclick = () => channels.exportPreset()
+                  element.onclick = exportPresetModal.open
               },
               {
                 tag: "li",
@@ -65,7 +67,8 @@ module.exports = function (model, channels) {
     },
     openPresetModal.jsml,
     savePresetAsModal.jsml,
-    importPresetModal.jsml
+    importPresetModal.jsml,
+    exportPresetModal.jsml
   ];
 
   return {

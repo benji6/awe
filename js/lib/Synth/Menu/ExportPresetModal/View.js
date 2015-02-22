@@ -1,6 +1,6 @@
 var jsmlParse = require('../../../../../custom_modules/jsml/jsmlParse.js');
 
-module.exports = function (channels) {
+module.exports = function (model, channels) {
   var container = null;
   var input = null;
 
@@ -11,22 +11,11 @@ module.exports = function (channels) {
     children: [
       {
         tag: "h3",
-        text: "Import Preset"
-      },
-      {
-        tag: "input",
-        callback: (element) => input = element
+        text: "Export Preset"
       },
       {
         tag: "button",
-        text: "Import",
-        callback: (element) =>
-          element.onclick = () =>
-            channels.importPreset(input.value)
-      },
-      {
-        tag: "button",
-        text: "Cancel",
+        text: "OK",
         callback: (element) =>
           element.onclick = () =>
             container.className = "hidden"
