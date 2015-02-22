@@ -88,11 +88,12 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     return JSON.stringify(exportData);
   };
 
-  channels.deletePreset = () => {
+  channels.deletePreset = (value) => {
     if (!value) {
       return;
     }
-    alert('deletePreset');
+    model.deletePreset(value);
+    view.populatePresets();
   };
 
   channels.initialize = () => {

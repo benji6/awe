@@ -31,9 +31,20 @@ module.exports = (pluginName) => {
     localStorage.setItem(pluginName, JSON.stringify(storedData));
   };
 
+  var deletePreset = (key) => {
+    if (!localStorage[pluginName]) {
+      return;
+    }
+    var storedData = JSON.parse(localStorage.getItem(pluginName));
+    
+    delete storedData[key];
+    localStorage.setItem(pluginName, JSON.stringify(storedData));
+  };
+
   return {
     getPresets,
     getPreset,
+    deletePreset,
     hasPresetKey,
     savePreset
   };

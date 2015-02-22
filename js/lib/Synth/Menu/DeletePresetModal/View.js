@@ -3,6 +3,24 @@ var jsmlParse = require('../../../../../custom_modules/jsml/jsmlParse.js');
 module.exports = function (model, channels) {
   var container = null;
   var select = null;
+  var message = null;
+  var defaultMessage = "Permanently delete preset";
+  var deleteButton;
+  var confirmButton;
+
+  var enterConfirmationState = () => {
+    select.disabled = true;
+    message.value = `Are you sure you want to permanently delete preset "${select.value}"?`;
+    deleteButton.className = "hidden";
+    confirmButton.className = "";
+  };
+
+  var enterDeleteState = () => {
+    select.disabled = false;
+    message.value = defaultMessage;
+    deleteButton.className = "";
+    confirmButton.className = "hidden";
+  };
 
   var modalJsml = {
     tag: "div",
@@ -18,18 +36,43 @@ module.exports = function (model, channels) {
         callback: (element) => select = element
       },
       {
+        tag: "div",
+        children: {
+          tag: "output",
+          value: defaultMessage,
+          callback: (element) => message = element
+        }
+      },
+      {
         tag: "button",
         text: "Delete",
-        callback: (element) =>
-          element.onclick = () =>
-            channels.deletePreset(select.value)
+        callback: (element) => {
+          deleteButton = element;
+          element.onclick = enterConfirmationState;
+        }
+      },
+      {
+        tag: "button",
+        text: "Confirm Delete",
+        className: "hidden",
+        callback: (element) => {
+          confirmButton = element;
+          element.onclick = () => {
+            channels.deletePreset(select.value);
+            container.className = "hidden";
+            enterDeleteState();
+          };
+        }
+
       },
       {
         tag: "button",
         text: "Cancel",
         callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
+          element.onclick = () => {
+            container.className = "hidden";
+            enterDeleteState();
+          }
       }
     ]
   };
