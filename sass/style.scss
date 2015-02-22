@@ -161,12 +161,12 @@ body {
 
       select {
         display: block;
-        margin: auto;
+        margin: 1em auto;
       }
 
       input {
         display: block;
-        margin: auto;
+        margin: 1em auto;
       }
 
       output {
@@ -177,6 +177,10 @@ body {
         -moz-user-select: text;
         -ms-user-select: text;
         user-select: text;
+      }
+
+      .margin {
+        margin: 1em;
       }
     }
   }

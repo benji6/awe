@@ -37,6 +37,7 @@ module.exports = function (model, channels) {
       },
       {
         tag: "div",
+        className: "margin",
         children: {
           tag: "output",
           value: defaultMessage,

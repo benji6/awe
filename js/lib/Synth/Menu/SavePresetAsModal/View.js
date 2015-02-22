@@ -37,6 +37,7 @@ module.exports = function (model, channels) {
       },
       {
         tag: "div",
+        className: "margin",
         children: {
           tag: "output",
           callback: (element) => message = element
@@ -52,7 +53,7 @@ module.exports = function (model, channels) {
               message.value = "Please input a preset name";
               return;
             }
-            
+
             var response = channels.savePresetAs(input.value);
 
             if (response) {
