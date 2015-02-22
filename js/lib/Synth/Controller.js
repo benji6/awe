@@ -20,14 +20,14 @@ module.exports = () => {
   oscillators.connect(master.inputNode);
 
   var connectViewTo = (master) =>
-  (parentDomElement) => {
-    var synthParentView = view.connectViewTo(parentDomElement);
+    (parentDomElement) => {
+      var synthParentView = view.connectViewTo(parentDomElement);
 
-    menu.view.connectTo(synthParentView);
-    master.view.connectTo(synthParentView);
-    adsr.view.connectTo(synthParentView);
-    oscillators.view.connectTo(synthParentView);
-  };
+      menu.view.connectTo(synthParentView);
+      master.view.connectTo(synthParentView);
+      adsr.view.connectTo(synthParentView);
+      oscillators.view.connectTo(synthParentView);
+    };
 
   return {
     channelStart: oscillators.noteStart,

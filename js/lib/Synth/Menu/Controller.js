@@ -23,6 +23,12 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     if (!value) {
       return;
     }
+    var preset = model.getPreset(value);
+
+    everyController((key) => {
+      controllers[key].model.setModel(preset[key]);
+      controllers[key].view.render();
+    });
   };
   channels.savePresetAs = (value) => {
     if (!value) {

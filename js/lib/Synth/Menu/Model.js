@@ -6,6 +6,13 @@ module.exports = (pluginName) => {
     return Object.keys(JSON.parse(localStorage.getItem(pluginName)));
   };
 
+  var getPreset = (key) => {
+    if (!localStorage[pluginName]) {
+      return;
+    }
+    return JSON.parse(localStorage.getItem(pluginName))[key];
+  };
+
   var hasPresetKey = (key) => {
     if (!localStorage[pluginName]) {
       return false;
@@ -26,6 +33,7 @@ module.exports = (pluginName) => {
 
   return {
     getPresets,
+    getPreset,
     hasPresetKey,
     savePreset
   };
