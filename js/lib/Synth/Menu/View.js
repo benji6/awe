@@ -7,6 +7,8 @@ module.exports = function (model, channels) {
   var openPresetSelect = null;
   var savePresetAsContainer = null;
   var savePresetAsInput = null;
+  var importPresetContainer = null;
+  var importPresetInput = null;
 
   var populatePresetsSelectList = () => {
     var presets = model.getPresets();
@@ -66,7 +68,8 @@ module.exports = function (model, channels) {
                 tag: "li",
                 text: "Import Preset",
                 callback: (element) =>
-                  element.onclick = () => channels.importPreset()
+                  element.onclick = () =>
+                    importPresetContainer.className = "modalWindow"
               },
               {
                 tag: "li",
@@ -145,6 +148,35 @@ module.exports = function (model, channels) {
           text: "Cancel",
           callback: (element) =>
             element.onclick = () => savePresetAsContainer.className = "hidden"
+        }
+      ]
+    },
+    {
+      tag: "div",
+      className: "hidden",
+      callback: (element) => importPresetContainer = element,
+      children: [
+        {
+          tag: "h3",
+          text: "Import Preset"
+        },
+        {
+          tag: "input",
+          callback: (element) =>
+            importPresetInput = element
+        },
+        {
+          tag: "button",
+          text: "Import",
+          callback: (element) =>
+            element.onclick = () =>
+              channels.importPreset(importPresetInput.value)
+        },
+        {
+          tag: "button",
+          text: "Cancel",
+          callback: (element) =>
+            element.onclick = () => importPresetContainer.className = "hidden"
         }
       ]
     }

@@ -27,8 +27,8 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   channels.savePresetAs = (value) => {
     alert(value);
   };
-  channels.importPreset = () => {
-    alert('importPreset');
+  channels.importPreset = (value) => {
+    alert(value);
   };
   channels.exportPreset = () => {
     alert('exportPreset');
