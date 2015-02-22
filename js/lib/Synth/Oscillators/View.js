@@ -13,52 +13,54 @@ module.exports = (model, channels) => {
     var output;
     var jsml = {
       tag: "tr",
-      children: [{
-        tag: "td",
-        text: capitalizeFirst(type)
-      },
-    {
-      tag: "td",
-      children: {
-        tag: "input",
-        type: "range",
-        min,
-        max,
-        step: step || (max - min) / 100,
-        value:  model.getModel()[wave][type],
-        callback: (element) => {
-          input = element;
-          inputElements.push({
-            element,
-            type,
-            wave
-          });
-          element.oninput = () => {
-            channels[channel](element.value);
-            output.value = formatOutput(element.value);
-          };
+      children: [
+        {
+          tag: "td",
+          text: capitalizeFirst(type)
+        },
+        {
+          tag: "td",
+          children: {
+            tag: "input",
+            type: "range",
+            min,
+            max,
+            step: step || (max - min) / 100,
+            value:  model.getModel()[wave][type],
+            callback: (element) => {
+              input = element;
+              inputElements.push({
+                element,
+                type,
+                wave
+              });
+              element.oninput = () => {
+                channels[channel](element.value);
+                output.value = formatOutput(element.value);
+              };
+            }
+          }
+        },
+        {
+          tag: "td",
+          children: {
+            tag: "output",
+            callback: (element) => {
+              output = element;
+              outputElements.push({
+                element,
+                type,
+                wave
+              });
+              element.value = formatOutput(input.value);
+            }
+          }
         }
-      }
-    },
-  {
-    tag: "td",
-    children: {
-      tag: "output",
-      callback: (element) => {
-        output = element;
-        outputElements.push({
-          element,
-          type,
-          wave
-        });
-        element.value = formatOutput(input.value);
-      }
-    }
-  }]
-};
+      ]
+    };
 
-jsmlParse(jsml, parentDomEl);
-};
+    jsmlParse(jsml, parentDomEl);
+  };
 
 var connectTo = (parentDomEl) => {
   var tables = [];
