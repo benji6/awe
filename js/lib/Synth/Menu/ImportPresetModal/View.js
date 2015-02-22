@@ -17,6 +17,7 @@ module.exports = function (channels) {
       },
       {
         tag: "input",
+        placeholder: "Paste preset data here",
         callback: (element) => input = element
       },
       {
