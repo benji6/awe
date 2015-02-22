@@ -31,9 +31,18 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     alert(value);
   };
   channels.exportPreset = () => {
-    alert('exportPreset');
+    var exportData = {};
+
+    everyController((key) => {
+      exportData[key] = controllers[key].model.getModel();
+    });
+
+    return JSON.stringify(exportData);
   };
   channels.deletePreset = () => {
+    if (!value) {
+      return;
+    }
     alert('deletePreset');
   };
   channels.initialize = () => {
@@ -90,14 +99,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
       controllers[key].model.setModel(newData[key]);
       controllers[key].view.render();
     });
-  };
-
-  channels.export = () => {
-    var exportData = {};
-    everyController((key) => {
-      exportData[key] = controllers[key].model.getModel();
-    });
-    channels.newNotification(JSON.stringify(exportData));
   };
 
   return {

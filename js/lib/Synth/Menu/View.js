@@ -42,13 +42,13 @@ module.exports = function (model, channels) {
               },
               {
                 tag: "li",
-                text: "Import Preset",
+                text: "Import Settings",
                 callback: (element) =>
-                element.onclick = importPresetModal.open
+                  element.onclick = importPresetModal.open
               },
               {
                 tag: "li",
-                text: "Export Preset",
+                text: "Export Settings",
                 callback: (element) =>
                   element.onclick = exportPresetModal.open
               },
