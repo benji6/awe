@@ -1,6 +1,6 @@
 *.log
 .sass-cache
-bundle.js
+bundle.js*
 css
 custom_modules
 jasmine-2.1.3
