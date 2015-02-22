@@ -49,7 +49,7 @@ module.exports = function (model, channels) {
         callback: (element) => {
           saveButton = element;
           element.onclick = () => {
-            if (!input.value) {
+            if (input.value === "") {
               message.value = "Please input a preset name";
               return;
             }

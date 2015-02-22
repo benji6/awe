@@ -39,7 +39,7 @@ module.exports = function (model, channels) {
   var populatePresets = (presets) => {
     var jsml = null;
 
-    if (presets) {
+    if (presets && presets.length) {
       jsml = presets.map((preset) => {
         return {
           tag: "option",

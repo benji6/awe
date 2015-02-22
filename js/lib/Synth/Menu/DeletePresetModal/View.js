@@ -49,7 +49,12 @@ module.exports = function (model, channels) {
         text: "Delete",
         callback: (element) => {
           deleteButton = element;
-          element.onclick = enterConfirmationState;
+          element.onclick = () => {
+            if (select.value === '') {
+              return;
+            }
+            enterConfirmationState();
+          };
         }
       },
       {
@@ -81,7 +86,7 @@ module.exports = function (model, channels) {
   var populatePresets = (presets) => {
     var jsml = null;
 
-    if (presets) {
+    if (presets && presets.length) {
       jsml = presets.map((preset) => {
         return {
           tag: "option",
