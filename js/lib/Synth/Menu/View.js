@@ -3,8 +3,10 @@ var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
 module.exports = function (model, channels) {
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
   var saveAsPresetInput = null;
-  var presetsSelectElement = null;
-  var modalContainer = null;
+  var openPresetContainer = null;
+  var openPresetSelect = null;
+  var savePresetAsContainer = null;
+  var savePresetAsInput = null;
 
   var populatePresetsSelectList = () => {
     var presets = model.getPresets();
@@ -23,15 +25,16 @@ module.exports = function (model, channels) {
         disabled: "disabled",
         selected: "selected",
         tag: "option",
-        text: "No Saved Presets"
+        text: "No Saved Presets",
+        value: ""
       };
     }
 
-    while (presetsSelectElement.firstChild) {
-      presetsSelectElement.removeChild(presetsSelectElement.firstChild);
+    while (openPresetSelect.firstChild) {
+      openPresetSelect.removeChild(openPresetSelect.firstChild);
     }
 
-    jsmlParse(jsml, presetsSelectElement);
+    jsmlParse(jsml, openPresetSelect);
   };
 
   var menuJsml = [
@@ -49,13 +52,15 @@ module.exports = function (model, channels) {
                 tag: "li",
                 text: "Open Preset",
                 callback: (element) =>
-                  element.onclick = () => openPresetDialog()
+                  element.onclick = () =>
+                    openPresetContainer.className = "modalWindow"
               },
               {
                 tag: "li",
                 text: "Save Preset As",
                 callback: (element) =>
-                  element.onclick = () => channels.savePresetAs()
+                  element.onclick = () =>
+                    savePresetAsContainer.className = "modalWindow"
               },
               {
                 tag: "li",
@@ -88,6 +93,8 @@ module.exports = function (model, channels) {
     },
     {
       tag: "div",
+      className: "hidden",
+      callback: (element) => openPresetContainer = element,
       children: [
         {
           tag: "h3",
@@ -95,27 +102,53 @@ module.exports = function (model, channels) {
         },
         {
           tag: "select",
-          callback: (element) => presetsSelectElement = element
+          callback: (element) => openPresetSelect = element
         },
         {
           tag: "button",
-          text: "Open"
+          text: "Open",
+          callback: (element) =>
+            element.onclick = () =>
+              channels.openPreset(openPresetSelect.value)
         },
         {
           tag: "button",
           text: "Cancel",
           callback: (element) =>
-            element.onclick = () => modalContainer.className = "hidden"
+            element.onclick = () => openPresetContainer.className = "hidden"
         }
-      ],
+      ]
+    },
+    {
+      tag: "div",
       className: "hidden",
-      callback: (element) => modalContainer = element
+      callback: (element) => savePresetAsContainer = element,
+      children: [
+        {
+          tag: "h3",
+          text: "Save Preset As"
+        },
+        {
+          tag: "input",
+          callback: (element) =>
+            savePresetAsInput = element
+        },
+        {
+          tag: "button",
+          text: "Save",
+          callback: (element) =>
+            element.onclick = () =>
+              channels.savePresetAs(savePresetAsInput.value)
+        },
+        {
+          tag: "button",
+          text: "Cancel",
+          callback: (element) =>
+            element.onclick = () => savePresetAsContainer.className = "hidden"
+        }
+      ]
     }
   ];
-
-  var openPresetDialog = () => {
-    modalContainer.className = "modalWindow";
-  };
 
   channels.populatePresetsSelectList = populatePresetsSelectList;
 

@@ -19,11 +19,13 @@ module.exports = function (pluginName, adsr, master, oscillators) {
   };
   var everyController = everyProperty(controllers);
 
-  channels.openPreset = () => {
-    alert('openPreset');
+  channels.openPreset = (value) => {
+    if (!value) {
+      return;
+    }
   };
-  channels.savePresetAs = () => {
-    alert('savePresetAs');
+  channels.savePresetAs = (value) => {
+    alert(value);
   };
   channels.importPreset = () => {
     alert('importPreset');
