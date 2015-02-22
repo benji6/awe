@@ -1,6 +1,10 @@
 module.exports = (pluginName) => {
-  var getPresets = () =>
-    Object.keys(JSON.parse(localStorage.getItem(pluginName)));
+  var getPresets = () => {
+    if (!localStorage[pluginName]) {
+      return;
+    }
+    return Object.keys(JSON.parse(localStorage.getItem(pluginName)));
+  };
 
   var hasPresetKey = (key) =>
     JSON.parse(localStorage.getItem(pluginName))[key] !== undefined;

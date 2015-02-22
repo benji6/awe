@@ -7,13 +7,25 @@ module.exports = function (model, channels) {
   var modalContainer = null;
 
   var populatePresetsSelectList = () => {
-    var jsml = model.getPresets().map((preset) => {
-      return {
+    var presets = model.getPresets();
+    var jsml = null;
+
+    if (presets) {
+      jsml = presets.map((preset) => {
+        return {
+          tag: "option",
+          value: preset,
+          text: preset
+        };
+      });
+    } else {
+      jsml = {
+        disabled: "disabled",
+        selected: "selected",
         tag: "option",
-        value: preset,
-        text: preset
+        text: "No Saved Presets"
       };
-    });
+    }
 
     while (presetsSelectElement.firstChild) {
       presetsSelectElement.removeChild(presetsSelectElement.firstChild);
@@ -82,8 +94,8 @@ module.exports = function (model, channels) {
           text: "Open Preset"
         },
         {
-          tag: "p",
-          text: "some text"
+          tag: "select",
+          callback: (element) => presetsSelectElement = element
         },
         {
           tag: "button",
@@ -110,6 +122,7 @@ module.exports = function (model, channels) {
   return {
     connectTo: (parentDomElement) => {
       jsmlParse(menuJsml, parentDomElement);
+      populatePresetsSelectList();
     }
   };
 };

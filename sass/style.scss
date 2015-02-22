@@ -155,6 +155,11 @@ body {
       top: $top;
       width: $width;
       z-index: 2;
+
+      select {
+        display: block;
+        margin: auto;
+      }
     }
   }
 }
