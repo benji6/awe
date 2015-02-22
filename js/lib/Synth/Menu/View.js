@@ -77,13 +77,20 @@ module.exports = function (model, channels) {
     initializeSettingsModal.jsml
   ];
 
-  return {
-    connectTo: (parentDomElement) => {
-      var presets = model.getPresets();
+  var populatePresets = () => {
+    var presets = model.getPresets();
 
-      jsmlParse(menuJsml, parentDomElement);
-      openPresetModal.populatePresets(presets);
-      deletePresetModal.populatePresets(presets);
-    }
+    openPresetModal.populatePresets(presets);
+    deletePresetModal.populatePresets(presets);
+  };
+
+  var connectTo = (parentDomElement) => {
+    jsmlParse(menuJsml, parentDomElement);
+    populatePresets();
+  };
+
+  return {
+    connectTo,
+    populatePresets
   };
 };

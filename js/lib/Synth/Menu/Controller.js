@@ -25,7 +25,22 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     }
   };
   channels.savePresetAs = (value) => {
-    alert(value);
+    if (!value) {
+      return "Please input a preset name";
+    }
+
+    if (model.hasPresetKey(value)) {
+      return "A preset already exists with this name, overwrite?";
+    }
+
+    var presetData = {};
+
+    everyController((key) => {
+      presetData[key] = controllers[key].model.getModel();
+    });
+
+    model.savePreset(value, presetData);
+    view.populatePresets();
   };
   channels.importPreset = (value) => {
     alert(value);
@@ -50,29 +65,6 @@ module.exports = function (pluginName, adsr, master, oscillators) {
       controllers[key].model.init();
       controllers[key].view.render();
     });
-  };
-
-  channels.save = (presetKey) => {
-    if (!presetKey) {
-      channels.newNotification("Please input a preset name");
-      return;
-    }
-
-    if (model.hasPresetKey(presetKey)) {
-      channels.newNotification("A preset already exists with this name, overwrite?");
-      //dev, need a dialogue box of some sort
-      return;
-    }
-
-    var presetData = {};
-
-    everyController((key) => {
-      presetData[key] = controllers[key].model.getModel();
-    });
-
-    model.savePreset(presetKey, presetData);
-    channels.populatePresetsSelectList();
-    channels.newNotification("Preset saved! :)");
   };
 
   channels.importdata = (data) => {
