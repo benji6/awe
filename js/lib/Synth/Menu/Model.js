@@ -1,3 +1,5 @@
+var defaultPresets = require('./defaultPresets/model.js');
+
 module.exports = (pluginName) => {
   var getPresets = () => {
     if (!localStorage[pluginName]) {
@@ -42,6 +44,10 @@ module.exports = (pluginName) => {
     delete storedData[key];
     localStorage.setItem(pluginName, JSON.stringify(storedData));
   };
+
+  Object.keys(defaultPresets).forEach((key) => {
+    savePreset(key, defaultPresets[key]);
+  });
 
   return {
     getPresets,
