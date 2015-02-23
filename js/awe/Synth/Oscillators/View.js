@@ -8,7 +8,7 @@ module.exports = (model, channels) => {
   var outputElements = [];
 
   var createRangeControl = function (parentDomEl, wave, type, min, max, step) {
-    var channel = wave + capitalizeFirst(type);
+    var channel = wave + type;
     var input;
     var output;
     var jsml = {
