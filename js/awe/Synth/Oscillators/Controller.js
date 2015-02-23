@@ -16,8 +16,6 @@ var oscillatorParams = [
   "panning"
 ];
 
-
-
 module.exports = function (adsrModel) {
   var model = Model();
   var channels = {};
@@ -68,80 +66,82 @@ module.exports = function (adsrModel) {
     adsrGain.gain.setValueAtTime(0, audioContext.currentTime);
     adsrGain.gain.linearRampToValueAtTime(1, audioContext.currentTime +
       adsrModel.getModel().a);
-      adsrGain.gain.linearRampToValueAtTime(adsrModel.getModel().s,
+    adsrGain.gain.linearRampToValueAtTime(adsrModel.getModel().s,
       audioContext.currentTime +
       adsrModel.getModel().a +
       adsrModel.getModel().d);
 
-      osc.detune.value = 100 * model.getModel()[type].tune +
+    osc.detune.value = 100 * model.getModel()[type].tune +
       model.getModel()[type].detune;
       osc.connect(panner);
       adsrGain.connect(masterGain);
       panner.connect(adsrGain);
-      channels[type + "volume"] = (volume) => {
-        masterGain.gain.value = model.getModel()[type].volume = +volume;
-      };
 
-      channels[type + "tune"] = (value) => {
-        model.getModel()[type].tune = +value;
-        osc.detune.value = 100 * model.getModel()[type].tune +
-        model.getModel()[type].detune;
-      };
-
-      channels[type + "detune"] = (cents) => {
-        model.getModel()[type].detune = +cents;
-        osc.detune.value = 100 * model.getModel()[type].tune +
-        model.getModel()[type].detune;
-      };
-
-      channels[type + "panning"] = (value) => {
-        model.getModel()[type].panning = +value;
-        setPannerPosition(panner, value);
-      };
-
-      return {
-        adsrGain,
-        masterGain,
-        osc
-      };
+    channels[type + "volume"] = (volume) => {
+      masterGain.gain.value = model.getModel()[type].volume = +volume;
     };
 
-    var setOutput = (output) => {
-      return (freq) => {
-        var oscillators = oscillatorTypes.map((oscillatorType) => {
-          return createOsc(oscillatorType);
-        });
-
-        oscillators.forEach((element) => {
-          element.masterGain.connect(output);
-          element.osc.frequency.value = freq;
-          element.osc.start();
-        });
-
-        activeNotes.set(freq, oscillators);
-      };
+    channels[type + "tune"] = (value) => {
+      model.getModel()[type].tune = +value;
+      osc.detune.value = 100 * model.getModel()[type].tune +
+      model.getModel()[type].detune;
     };
 
-    var noteStart = (freq) => {
-      if (activeNotes.has(freq)) {
-        return;
-      }
-      newNote(freq);
+    channels[type + "detune"] = (cents) => {
+      model.getModel()[type].detune = +cents;
+      osc.detune.value = 100 * model.getModel()[type].tune +
+      model.getModel()[type].detune;
     };
 
-    var noteFinish = (freq) => {
-      var oscillators = activeNotes.get(freq);
-      if (!oscillators) {
-        return;
-      }
-      oscillators.forEach((elem) => {
-        elem.adsrGain.gain.cancelScheduledValues(audioContext.currentTime);
-        elem.adsrGain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-          adsrModel.getModel().r);
-          window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r);
-        });
-        activeNotes.delete(freq);
-      };
+    channels[type + "panning"] = (value) => {
+      model.getModel()[type].panning = +value;
+      setPannerPosition(panner, value);
+    };
+
+    return {
+      adsrGain,
+      masterGain,
+      osc
+    };
+  };
+
+  var setOutput = (output) => {
+    return (freq) => {
+      var oscillators = oscillatorTypes.map((oscillatorType) => {
+        return createOsc(oscillatorType);
+      });
+
+      oscillators.forEach((element) => {
+        element.masterGain.connect(output);
+        element.osc.frequency.value = freq;
+        element.osc.start();
+      });
+
+      activeNotes.set(freq, oscillators);
+    };
+  };
+
+  var noteStart = (freq) => {
+    if (activeNotes.has(freq)) {
+      return;
+    }
+    newNote(freq);
+  };
+
+  var noteFinish = (freq) => {
+    var oscillators = activeNotes.get(freq);
+
+    if (!oscillators) {
+      return;
+    }
+    oscillators.forEach((elem) => {
+      elem.adsrGain.gain.cancelScheduledValues(audioContext.currentTime);
+      elem.adsrGain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
+        adsrModel.getModel().r);
+        window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r);
+    });
+    activeNotes.delete(freq);
+  };
 
   return {
     connect: (outputAudioNode) => {
