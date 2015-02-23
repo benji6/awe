@@ -1,1 +1,1 @@
-require('./lib/controller.js');
+require('./awe/controller.js');
