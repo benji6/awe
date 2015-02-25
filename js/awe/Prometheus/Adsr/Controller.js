@@ -24,24 +24,26 @@ module.exports = () => {
     var gain = audioContext.createGain();
     var startTime = audioContext.currentTime;
 
-    var noteFinish = () => {
+    var noteFinishTheStopOsc = (oscillator) => {
       var timeElapsed = audioContext.currentTime - startTime;
       var currentGain = 0;
-      
+      var releaseTime;
+
       if (timeElapsed < model.a) {
         currentGain = timeElapsed / model.a;
-      } else if (timeElapsed < model.d) {
+      } else if (timeElapsed < model.a + model.d) {
         currentGain = 1 - (1 - model.s) * (timeElapsed - model.a) / model.d;
       } else {
-        gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-          model.r);
-        return;
+        currentGain = model.s;
       }
 
+      releaseTime = model.r * currentGain;
       gain.gain.cancelScheduledValues(audioContext.currentTime);
       gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
       gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-        model.r);
+        releaseTime);
+
+      window.setTimeout(() => oscillator.stop(), 1000 * releaseTime + 100);
     };
 
     gain.gain.setValueAtTime(0, audioContext.currentTime);
@@ -55,7 +57,7 @@ module.exports = () => {
     return {
       connect: (node) => gain.connect(node),
       destination: gain,
-      noteFinish
+      noteFinishTheStopOsc
     };
   };
 
