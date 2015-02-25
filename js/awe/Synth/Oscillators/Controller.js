@@ -138,7 +138,7 @@ module.exports = function (adsrModel) {
       elem.adsrGain.gain.cancelScheduledValues(audioContext.currentTime);
       elem.adsrGain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
         adsrModel.getModel().r);
-      window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r);
+      window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r + 100);
     });
     activeNotes.delete(freq);
   };
