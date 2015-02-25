@@ -14,7 +14,7 @@ var connect = (master) =>
 module.exports = () => {
   var master = Master();
   var adsr = Adsr();
-  var oscillators = Oscillators(adsr.model);
+  var oscillators = Oscillators(adsr);
   var menu = Menu(pluginName, adsr, master, oscillators);
 
   oscillators.connect(master.inputNode);

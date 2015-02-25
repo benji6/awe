@@ -16,7 +16,7 @@ var oscillatorParams = [
   "panning"
 ];
 
-module.exports = function (adsrModel) {
+module.exports = function (adsr) {
   var model = Model();
   var channels = {};
   var view = View(model, channels);
@@ -58,24 +58,16 @@ module.exports = function (adsrModel) {
 
   var createOsc = function (type) {
     var osc = Oscillator(type);
-    var adsrGain = Gain();
+    var adsrNode = adsr.createNode();
     var masterGain = Gain(model.getModel()[type].volume);
     var panner = Panner(model.getModel()[type].panning);
     var newNote = null;
 
-    adsrGain.gain.setValueAtTime(0, audioContext.currentTime);
-    adsrGain.gain.linearRampToValueAtTime(1, audioContext.currentTime +
-      adsrModel.getModel().a);
-    adsrGain.gain.linearRampToValueAtTime(adsrModel.getModel().s,
-      audioContext.currentTime +
-      adsrModel.getModel().a +
-      adsrModel.getModel().d);
-
     osc.detune.value = 100 * model.getModel()[type].tune +
       model.getModel()[type].detune;
       osc.connect(panner);
-      adsrGain.connect(masterGain);
-      panner.connect(adsrGain);
+      adsrNode.connect(masterGain);
+      panner.connect(adsrNode.destination);
 
     channels[type + "volume"] = (volume) => {
       masterGain.gain.value = model.getModel()[type].volume = +volume;
@@ -99,7 +91,7 @@ module.exports = function (adsrModel) {
     };
 
     return {
-      adsrGain,
+      adsrNode,
       masterGain,
       osc
     };
@@ -135,10 +127,8 @@ module.exports = function (adsrModel) {
       return;
     }
     oscillators.forEach((elem) => {
-      elem.adsrGain.gain.cancelScheduledValues(audioContext.currentTime);
-      elem.adsrGain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-        adsrModel.getModel().r);
-      window.setTimeout(() => elem.osc.stop(), 1000 * adsrModel.getModel().r + 100);
+      elem.adsrNode.noteFinish();
+      window.setTimeout(() => elem.osc.stop(), 1000 * adsr.model.getModel().r + 100);
     });
     activeNotes.delete(freq);
   };
