@@ -27,7 +27,7 @@ module.exports = (model, channels) => {
           min,
           max,
           step: step || (max - min) / 100,
-          value: model.getModel()[type],
+          value: model[type],
           callback: (element) => {
             input = element;
             inputElements.push({
@@ -88,10 +88,10 @@ module.exports = (model, channels) => {
 
   var render = () => {
     inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
+      element.element.value = model[element.type];
     });
     outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.type]) ;
+      element.element.value = formatOutput(model[element.type]) ;
     });
   };
 

@@ -128,7 +128,7 @@ module.exports = function (adsr) {
     }
     oscillators.forEach((elem) => {
       elem.adsrNode.noteFinish();
-      window.setTimeout(() => elem.osc.stop(), 1000 * adsr.model.getModel().r + 100);
+      window.setTimeout(() => elem.osc.stop(), 1000 * adsr.model.r + 100);
     });
     activeNotes.delete(freq);
   };
