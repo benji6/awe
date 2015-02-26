@@ -47,7 +47,7 @@ module.exports = () => {
 
   return {
     connect,
-    inputNode: panner,
+    destination: panner,
     model,
     view
   };

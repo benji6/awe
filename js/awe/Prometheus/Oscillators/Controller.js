@@ -133,8 +133,8 @@ module.exports = function (adsr) {
   };
 
   return {
-    connect: (outputAudioNode) => {
-      newNote = setOutput(outputAudioNode);
+    connect: (node) => {
+      newNote = setOutput(node);
     },
     model,
     noteFinish,
