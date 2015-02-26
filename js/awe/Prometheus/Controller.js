@@ -29,6 +29,7 @@ module.exports = () => {
       menu.view.connectTo(synthParentView);
       master.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
+      filter.view.connect(synthParentView);
       oscillators.view.connectTo(synthParentView);
     };
 

@@ -8,7 +8,7 @@ module.exports = (model, channels) => {
   var outputElements = [];
 
   var createRangeControl = function (parentDomEl, type, min, max, step) {
-    var channel = "master" + capitalizeFirst(type);
+    var channel = type;
     var input;
     var output;
     var jsml = {
@@ -59,43 +59,43 @@ module.exports = (model, channels) => {
     jsmlParse(jsml, parentDomEl);
   };
 
-  var connectTo = (parentDomEl) => {
-    var table = document.createElement("table");
+var connect = (parentDomEl) => {
+  var table = document.createElement("table");
 
-    jsmlParse({
-      tag: "thead",
+  jsmlParse({
+    tag: "thead",
+    children: {
+      tag: "tr",
       children: {
-        tag: "tr",
-        children: {
-          tag: "th",
-          text: "Master",
-          colspan: 2
-        }
+        tag: "th",
+        text: "Filter",
+        colspan: 2
       }
-    }, table);
-    createRangeControl(table, "volume", 0, 1);
-    createRangeControl(table, "panning", -1, 1);
+    }
+  }, table);
+  createRangeControl(table, "frequency", 30, 12000);
+  createRangeControl(table, "q", 0.0001, 1000);
 
-    var container = document.createElement("div");
+  var container = document.createElement("div");
 
-    container.className = "center";
-    container.appendChild(table);
-    parentDomEl.appendChild(container);
-  };
-
-
-  var render = () => {
-    inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
-    });
-    outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.type]) ;
-    });
-  };
+  container.className = "center";
+  container.appendChild(table);
+  parentDomEl.appendChild(container);
+};
 
 
-  return {
-    connectTo,
-    render
-  };
+var render = () => {
+  inputElements.forEach((element) => {
+    element.element.value = model.getModel()[element.type];
+  });
+  outputElements.forEach((element) => {
+    element.element.value = formatOutput(model.getModel()[element.type]) ;
+  });
+};
+
+
+return {
+  connect,
+  render
+};
 };

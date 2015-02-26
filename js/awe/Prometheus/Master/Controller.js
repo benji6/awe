@@ -41,12 +41,8 @@ module.exports = () => {
     setPannerPosition(panner, value);
   };
 
-  var connect = (outputAudioNode) => {
-    gainNode.connect(outputAudioNode);
-  };
-
   return {
-    connect,
+    connect: (node) => gainNode.connect(node),
     destination: panner,
     model,
     view
