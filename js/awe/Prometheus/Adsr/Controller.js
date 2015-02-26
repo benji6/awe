@@ -8,16 +8,16 @@ module.exports = () => {
   var view = View(model, channels);
 
   channels.adsrA = (value) => {
-    model.a = +value;
+    model.getModel().a = +value;
   };
   channels.adsrD = (value) => {
-    model.d = +value;
+    model.getModel().d = +value;
   };
   channels.adsrS = (value) => {
-    model.s = +value;
+    model.getModel().s = +value;
   };
   channels.adsrR = (value) => {
-    model.r = +value;
+    model.getModel().r = +value;
   };
 
   var createNode = () => {
@@ -29,15 +29,16 @@ module.exports = () => {
       var currentGain = 0;
       var releaseTime;
 
-      if (timeElapsed < model.a) {
-        currentGain = timeElapsed / model.a;
-      } else if (timeElapsed < model.a + model.d) {
-        currentGain = 1 - (1 - model.s) * (timeElapsed - model.a) / model.d;
+      if (timeElapsed < model.getModel().a) {
+        currentGain = timeElapsed / model.getModel().a;
+      } else if (timeElapsed < model.getModel().a + model.getModel().d) {
+        currentGain = 1 - (1 - model.getModel().s) *
+          (timeElapsed - model.getModel().a) / model.getModel().d;
       } else {
-        currentGain = model.s;
+        currentGain = model.getModel().s;
       }
 
-      releaseTime = model.r * currentGain;
+      releaseTime = model.getModel().r * currentGain;
       gain.gain.cancelScheduledValues(audioContext.currentTime);
       gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
       gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
@@ -48,11 +49,11 @@ module.exports = () => {
 
     gain.gain.setValueAtTime(0, audioContext.currentTime);
     gain.gain.linearRampToValueAtTime(1, audioContext.currentTime +
-      model.a);
-    gain.gain.linearRampToValueAtTime(model.s,
+      model.getModel().a);
+    gain.gain.linearRampToValueAtTime(model.getModel().s,
       audioContext.currentTime +
-      model.a +
-      model.d);
+      model.getModel().a +
+      model.getModel().d);
 
     return {
       connect: (node) => gain.connect(node),

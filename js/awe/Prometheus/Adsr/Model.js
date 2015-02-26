@@ -15,10 +15,7 @@ module.exports = () =>{
   init();
 
   return {
-    a: model.a,
-    d: model.d,
-    s: model.s,
-    r: model.r,
+    getModel: () => model,
     init,
     setModel: (newModel) => model = newModel
   };
