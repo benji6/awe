@@ -59,43 +59,84 @@ module.exports = (model, channels) => {
     jsmlParse(jsml, parentDomEl);
   };
 
-var connect = (parentDomEl) => {
-  var table = document.createElement("table");
-
-  jsmlParse({
-    tag: "thead",
-    children: {
+  var createSelectControl = function (parentDomEl, type, options) {
+    var channel = type;
+    var input;
+    var jsml = {
       tag: "tr",
+      children: [
+        {
+          tag: "td",
+          text: capitalizeFirst(type)
+        },
+        {
+          tag: "td",
+          children: {
+            tag: "select",
+            children: [
+              {
+                tag: "option",
+                text: model.getModel()[type],
+                value: model.getModel()[type]
+              }
+            ],
+            callback: (element) => {
+              input = element;
+              inputElements.push({
+                element,
+                type
+              });
+              element.oninput = () => {
+                channels[channel](input.value);
+                output.value = formatOutput(input.value);
+              };
+            }
+          }
+        }
+      ]
+    };
+  jsmlParse(jsml, parentDomEl);
+  };
+
+  var connect = (parentDomEl) => {
+    var table = document.createElement("table");
+
+    jsmlParse({
+      tag: "thead",
       children: {
-        tag: "th",
-        text: "Filter",
-        colspan: 2
+        tag: "tr",
+        children: {
+          tag: "th",
+          text: "Filter",
+          colspan: 2
+        }
       }
-    }
-  }, table);
-  createRangeControl(table, "frequency", 30, 12000);
-  createRangeControl(table, "q", 0.0001, 1000);
+    }, table);
 
-  var container = document.createElement("div");
+    createSelectControl(table, "type", ["lowpass"]);
+    createRangeControl(table, "frequency", 30, 12000);
+    createRangeControl(table, "q", 0.0001, 1000);
 
-  container.className = "center";
-  container.appendChild(table);
-  parentDomEl.appendChild(container);
-};
+    var container = document.createElement("div");
 
-
-var render = () => {
-  inputElements.forEach((element) => {
-    element.element.value = model.getModel()[element.type];
-  });
-  outputElements.forEach((element) => {
-    element.element.value = formatOutput(model.getModel()[element.type]) ;
-  });
-};
+    container.className = "center";
+    container.appendChild(table);
+    parentDomEl.appendChild(container);
+  };
 
 
-return {
-  connect,
-  render
-};
+  var render = () => {
+    inputElements.forEach((element) => {
+      element.element.value = model.getModel()[element.type];
+    });
+    outputElements.forEach((element) => {
+      element.element.value = formatOutput(model.getModel()[element.type]) ;
+    });
+  };
+
+
+  return {
+    connect,
+    render
+  };
 };
