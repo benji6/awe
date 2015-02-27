@@ -60,6 +60,24 @@ module.exports = (model, channels) => {
   };
 
   var createSelectControl = function (parentDomEl, type, options) {
+    var createOptions = () => {
+      var types = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"];
+      var modelType = model.getModel().type;
+      return types.map((type) => {
+        jsmlChild = {
+          tag: "option",
+          text: type,
+          value: type
+        };
+
+        if (type === modelType) {
+          jsmlChild.selected = true;
+        }
+
+        return jsmlChild;
+      });
+    };
+
     var channel = type;
     var input;
     var jsml = {
@@ -73,13 +91,7 @@ module.exports = (model, channels) => {
           tag: "td",
           children: {
             tag: "select",
-            children: [
-              {
-                tag: "option",
-                text: model.getModel()[type],
-                value: model.getModel()[type]
-              }
-            ],
+            children: createOptions(),
             callback: (element) => {
               input = element;
               inputElements.push({
