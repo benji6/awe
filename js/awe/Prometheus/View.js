@@ -1,4 +1,4 @@
-var jsmlParse = require('../../../custom_modules/jsml/jsmlParse.js');
+var jsmlParse = require('jsml-parse');
 
 var synthViewHolder = null;
 
