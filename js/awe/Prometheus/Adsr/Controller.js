@@ -7,16 +7,16 @@ module.exports = () => {
   var channels = {};
   var view = View(model, channels);
 
-  channels.adsrA = (value) => {
+  channels.a = (value) => {
     model.getModel().a = +value;
   };
-  channels.adsrD = (value) => {
+  channels.d = (value) => {
     model.getModel().d = +value;
   };
-  channels.adsrS = (value) => {
+  channels.s = (value) => {
     model.getModel().s = +value;
   };
-  channels.adsrR = (value) => {
+  channels.r = (value) => {
     model.getModel().r = +value;
   };
 

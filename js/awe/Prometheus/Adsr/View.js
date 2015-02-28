@@ -1,64 +1,13 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var createRangeControl = require('../../Components/createRangeControl.js');
+var extend = require('../../utils/extend.js');
 
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
   var inputElements = [];
   var outputElements = [];
-
-  var formatOutput = (output) => (+output).toFixed(2);
-
-  var createRangeControl = function (parentDomEl, type, min, max, step) {
-    var channel = "adsr" + capitalizeFirst(type);
-    var input;
-    var output;
-    var jsml = {
-      tag: "tr",
-      children: [
-        {
-          tag: "td",
-          text: capitalizeFirst(type)
-        },
-        {
-          tag: "td",
-          children: {
-          tag: "input",
-          type: "range",
-          min,
-          max,
-          step: step || (max - min) / 100,
-          value: model.getModel()[type],
-          callback: (element) => {
-            input = element;
-            inputElements.push({
-              element,
-              type
-            });
-            element.oninput = () => {
-              channels[channel](input.value);
-              output.value = formatOutput(input.value);
-            };
-          }
-        }
-      },
-      {
-        tag: "td",
-        children: {
-          tag: "output",
-          callback: (element) => {
-            output = element;
-            outputElements.push({
-              element,
-              type
-            });
-            element.value = formatOutput(input.value);
-          }
-        }
-      }
-      ]
-    };
-    jsmlParse(jsml, parentDomEl);
-  };
+  var ioObj = null;
 
   var connectTo = (parentDomEl) => {
     var table = document.createElement("table");
@@ -74,10 +23,37 @@ module.exports = (model, channels) => {
         }
       }
     }, table);
-    createRangeControl(table, "a", 0, 1);
-    createRangeControl(table, "d", 0, 1);
-    createRangeControl(table, "s", 0, 1);
-    createRangeControl(table, "r", 0, 1);
+
+    var componentParams = {
+      parent: table,
+      name: "a",
+      min: 0,
+      max: 1,
+      observer: channels,
+      model
+    };
+
+    ioObj = createRangeControl(componentParams);
+    inputElements.push(ioObj.input);
+    outputElements.push(ioObj.output);
+
+    ioObj = createRangeControl(extend({
+      name: "d"
+    }, componentParams));
+    inputElements.push(ioObj.input);
+    outputElements.push(ioObj.output);
+
+    ioObj = createRangeControl(extend({
+      name: "s"
+    }, componentParams));
+    inputElements.push(ioObj.input);
+    outputElements.push(ioObj.output);
+
+    ioObj = createRangeControl(extend({
+      name: "r"
+    }, componentParams));
+    inputElements.push(ioObj.input);
+    outputElements.push(ioObj.output);
 
     var container = document.createElement("div");
 
@@ -88,10 +64,10 @@ module.exports = (model, channels) => {
 
   var render = () => {
     inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
+      element.input.value = model.getModel()[element.name];
     });
     outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.type]) ;
+      element.output.value = formatOutput(model.getModel()[element.name]) ;
     });
   };
 
