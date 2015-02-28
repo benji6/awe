@@ -1,4 +1,4 @@
-var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var jsmlParse = require('jsml-parse');
 
 var OpenPresetModal = require('./OpenPresetModal/View.js');
 var SavePresetAsModal = require('./SavePresetAsModal/View.js');

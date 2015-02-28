@@ -1,4 +1,4 @@
-var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var jsmlParse = require('jsml-parse');
 var extend = require('../../utils/extend.js');
 var createRangeControl = require('../../Components/createRangeControl.js');
 
@@ -7,6 +7,9 @@ var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
   var components = [];
+
+  var inputElements = [];//dev need a select component
+  var outputElement = [];
 
   var createSelectControl = function (parentDomEl, type, options) {
     var createOptions = () => {
