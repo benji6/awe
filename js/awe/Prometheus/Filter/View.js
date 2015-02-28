@@ -1,63 +1,13 @@
 var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var extend = require('../../utils/extend.js');
 
+var createRangeControl = require('../../Components/createRangeControl.js');
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
   var inputElements = [];
   var outputElements = [];
-
-  var createRangeControl = function (parentDomEl, type, min, max, step) {
-    var channel = type;
-    var input;
-    var output;
-    var jsml = {
-      tag: "tr",
-      children: [
-        {
-          tag: "td",
-          text: capitalizeFirst(type)
-        },
-        {
-          tag: "td",
-          children: {
-            tag: "input",
-            type: "range",
-            min,
-            max,
-            step: step || (max - min) / 100,
-            value: model.getModel()[type],
-            callback: (element) => {
-              input = element;
-              inputElements.push({
-                element,
-                type
-              });
-              element.oninput = () => {
-                channels[channel](input.value);
-                output.value = formatOutput(input.value);
-              };
-            }
-          }
-        },
-        {
-          tag: "td",
-          children: {
-            tag: "output",
-            callback: (element) => {
-              output = element;
-              outputElements.push({
-                element,
-                type
-              });
-              element.value = formatOutput(input.value);
-            }
-          }
-        }
-      ]
-    };
-    jsmlParse(jsml, parentDomEl);
-  };
 
   var createSelectControl = function (parentDomEl, type, options) {
     var createOptions = () => {
@@ -126,8 +76,23 @@ module.exports = (model, channels) => {
     }, table);
 
     createSelectControl(table, "type", ["lowpass"]);
-    createRangeControl(table, "frequency", 30, 12000);
-    createRangeControl(table, "q", 0.0001, 1000);
+
+    var componentParams = {
+      observer: channels,
+      parent: table,
+      name: "frequency",
+      max: 12000,
+      min: 30,
+      model
+    };
+
+    createRangeControl(componentParams);
+    createRangeControl(
+      extend({
+        max: 1000,
+        min: 0.0001,
+        name: "q"
+      }, componentParams));
 
     var container = document.createElement("div");
 
