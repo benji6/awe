@@ -89,7 +89,7 @@ module.exports = (model, channels) => {
 
     ioObj = createRangeControl(componentParams);
     inputElements.push(ioObj.input);
-    inputElements.push(ioObj.output);
+    outputElements.push(ioObj.output);
 
     ioObj = createRangeControl(
       extend({
@@ -98,7 +98,7 @@ module.exports = (model, channels) => {
         name: "q"
       }, componentParams));
     inputElements.push(ioObj.input);
-    inputElements.push(ioObj.output);
+    outputElements.push(ioObj.output);
 
     var container = document.createElement("div");
 
@@ -107,13 +107,12 @@ module.exports = (model, channels) => {
     parentDomEl.appendChild(container);
   };
 
-
   var render = () => {
     inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.name];
+      element.input.value = model.getModel()[element.name];
     });
     outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.name]) ;
+      element.output.value = formatOutput(model.getModel()[element.name]) ;
     });
   };
 

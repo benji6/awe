@@ -10,8 +10,8 @@ module.exports = (channels) => {
 
   var setModel = (newModel) => {
     model = newModel;
-    channels.masterVolume(model.volume);
-    channels.masterPanning(model.panning);
+    channels.volume(model.volume);
+    channels.panning(model.panning);
   };
 
   var init = () => {
