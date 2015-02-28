@@ -7,6 +7,12 @@ module.exports = function (params) {
   var input = null;
   var output = null;
 
+  var render = () => {
+    output.value = formatOutput(
+      input.value = params.model.getModel()[params.name]
+    );
+  };
+
   var jsml = {
     tag: "tr",
     children: [
@@ -46,9 +52,5 @@ module.exports = function (params) {
   };
   jsmlParse(jsml, params.parent);
 
-  return {
-    input,
-    name: params.name,
-    output
-  };
+  return render;
 };

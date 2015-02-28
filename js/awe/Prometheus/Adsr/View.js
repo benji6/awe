@@ -23,7 +23,7 @@ module.exports = (model, channels) => {
     }, parent);
 
     var componentParams = {
-      parent: parent,
+      parent,
       name: "a",
       min: 0,
       max: 1,
@@ -49,16 +49,8 @@ module.exports = (model, channels) => {
     parentDomEl.appendChild(container);
   };
 
-  var render = () => {
-    components.forEach((component) => {
-      component.output.value = formatOutput(
-        component.input.value = model.getModel()[component.name]
-      );
-    });
-  };
-
   return {
     connectTo,
-    render
+    render: () => components.forEach((render) => render())
   };
 };

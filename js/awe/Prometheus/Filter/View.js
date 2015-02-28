@@ -6,8 +6,7 @@ var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
-  var inputElements = [];
-  var outputElements = [];
+  var components = [];
 
   var createSelectControl = function (parentDomEl, type, options) {
     var createOptions = () => {
@@ -62,7 +61,6 @@ module.exports = (model, channels) => {
 
   var connect = (parentDomEl) => {
     var table = document.createElement("table");
-    var ioObj = null;
 
     jsmlParse({
       tag: "thead",
@@ -87,18 +85,12 @@ module.exports = (model, channels) => {
       model
     };
 
-    ioObj = createRangeControl(componentParams);
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
-
-    ioObj = createRangeControl(
-      extend({
-        max: 1000,
-        min: 0.0001,
-        name: "q"
-      }, componentParams));
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
+    components.push(createRangeControl(componentParams));
+    components.push(createRangeControl(extend({
+      max: 1000,
+      min: 0.0001,
+      name: "q"
+    }, componentParams)));
 
     var container = document.createElement("div");
 
@@ -107,18 +99,8 @@ module.exports = (model, channels) => {
     parentDomEl.appendChild(container);
   };
 
-  var render = () => {
-    inputElements.forEach((element) => {
-      element.input.value = model.getModel()[element.name];
-    });
-    outputElements.forEach((element) => {
-      element.output.value = formatOutput(model.getModel()[element.name]) ;
-    });
-  };
-
-
   return {
     connect,
-    render
+    render: () => components.forEach((render) => render())
   };
 };
