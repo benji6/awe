@@ -5,12 +5,10 @@ var extend = require('../../utils/extend.js');
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
-  var inputElements = [];
-  var outputElements = [];
-  var ioObj = null;
+  var components = [];
 
   var connectTo = (parentDomEl) => {
-    var table = document.createElement("table");
+    var parent = document.createElement("table");
 
     jsmlParse({
       tag: "thead",
@@ -22,10 +20,10 @@ module.exports = (model, channels) => {
           colspan: 2
         }
       }
-    }, table);
+    }, parent);
 
     var componentParams = {
-      parent: table,
+      parent: parent,
       name: "a",
       min: 0,
       max: 1,
@@ -33,41 +31,29 @@ module.exports = (model, channels) => {
       model
     };
 
-    ioObj = createRangeControl(componentParams);
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
-
-    ioObj = createRangeControl(extend({
+    components.push(createRangeControl(componentParams));
+    components.push(createRangeControl(extend({
       name: "d"
-    }, componentParams));
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
-
-    ioObj = createRangeControl(extend({
+    }, componentParams)));
+    components.push(createRangeControl(extend({
       name: "s"
-    }, componentParams));
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
-
-    ioObj = createRangeControl(extend({
+    }, componentParams)));
+    components.push(createRangeControl(extend({
       name: "r"
-    }, componentParams));
-    inputElements.push(ioObj.input);
-    outputElements.push(ioObj.output);
+    }, componentParams)));
 
     var container = document.createElement("div");
 
     container.className = "center";
-    container.appendChild(table);
+    container.appendChild(parent);
     parentDomEl.appendChild(container);
   };
 
   var render = () => {
-    inputElements.forEach((element) => {
-      element.input.value = model.getModel()[element.name];
-    });
-    outputElements.forEach((element) => {
-      element.output.value = formatOutput(model.getModel()[element.name]) ;
+    components.forEach((component) => {
+      component.output.value = formatOutput(
+        component.input.value = model.getModel()[component.name]
+      );
     });
   };
 
