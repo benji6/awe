@@ -3,7 +3,7 @@ var jsmlParse = require('jsml-parse');
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 module.exports = function (params) {
-  var modelType = model.getModel().type;
+  var modelType = params.model.getModel().type;
   var select;
 
   var createOptions = () => {
@@ -14,7 +14,7 @@ module.exports = function (params) {
         value: option
       };
 
-      if (type === modelType) {
+      if (params.name === modelType) {
         jsmlChild.selected = true;
       }
 
@@ -27,7 +27,7 @@ module.exports = function (params) {
     children: [
       {
         tag: "td",
-        text: capitalizeFirst(type)
+        text: capitalizeFirst(params.name)
       },
       {
         tag: "td",
@@ -44,11 +44,11 @@ module.exports = function (params) {
       }
     ]
   };
-  jsmlParse(jsml, parentDomEl);
+  jsmlParse(jsml, params.parent);
 
   var render = () => {
     select.value = params.model.getModel()[params.name];
   };
-  
+
   return render;
 };
