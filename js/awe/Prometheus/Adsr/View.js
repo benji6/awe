@@ -8,7 +8,7 @@ module.exports = (model, channels) => {
   var components = [];
 
   var connectTo = (parentDomEl) => {
-    var parent = document.createElement("table");
+    var table = document.createElement("table");
 
     jsmlParse({
       tag: "thead",
@@ -20,10 +20,10 @@ module.exports = (model, channels) => {
           colspan: 2
         }
       }
-    }, parent);
+    }, table);
 
     var componentParams = {
-      parent,
+      parent: table,
       name: "a",
       min: 0,
       max: 1,
@@ -45,7 +45,7 @@ module.exports = (model, channels) => {
     var container = document.createElement("div");
 
     container.className = "center";
-    container.appendChild(parent);
+    container.appendChild(table);
     parentDomEl.appendChild(container);
   };
 
