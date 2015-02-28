@@ -1,4 +1,4 @@
-var jsmlParse = require('../../../../custom_modules/jsml/jsmlParse.js');
+var jsmlParse = require('jsml-parse');
 
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
