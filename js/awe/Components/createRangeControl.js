@@ -45,4 +45,15 @@ module.exports = function (params) {
     ]
   };
   jsmlParse(jsml, params.parent);
+
+  return {
+    input: {
+      input,
+      name: params.name
+    },
+    output: {
+      output,
+      name: params.name
+    },
+  };
 };
