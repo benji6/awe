@@ -13,7 +13,7 @@ module.exports = () => {
   };
 
   channels.q = (value) => {
-    filter.Q.value = model.getModel().Q = +value;
+    filter.Q.value = model.getModel().q = +value;
   };
 
   channels.type = (value) => {
