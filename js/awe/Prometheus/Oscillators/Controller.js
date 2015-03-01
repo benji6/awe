@@ -34,13 +34,13 @@ const oscillatorParams = [
   "detune",
   "panning"
 ];
-window.maps = [];
+
 module.exports = function (adsr, type) {
   var model = Model();
   var channels = {};
   var view = View(model, channels, type);
   var activeNotes = {};
-  window.maps.push(activeNotes);
+
   oscillatorParams.forEach((oscillatorParam) => {
     channels[oscillatorParam] = (value) => {
       model.getModel()[oscillatorParam] = +value;
@@ -52,7 +52,6 @@ module.exports = function (adsr, type) {
     var adsrNode = adsr.createNode();
     var masterGain = Gain(model.getModel().volume);
     var panner = Panner(model.getModel().panning);
-    var newNote = null;
 
     oscillator.detune.value = 100 * model.getModel().tune +
       model.getModel().detune;
@@ -87,46 +86,35 @@ module.exports = function (adsr, type) {
       oscillator
     };
   };
+  var newNote = () => {};
+  var connect = (output) => newNote = (freq) => {
+    var oscillator = createOscillator(type);
 
-  var connect = (output) => {
-    return (freq) => {
-      var oscillator = createOscillator();
+    oscillator.masterGain.connect(output);
+    oscillator.oscillator.frequency.value = freq;
+    oscillator.oscillator.start();
 
-      oscillator.masterGain.connect(output);
-      oscillator.oscillator.frequency.value = freq;
-      oscillator.oscillator.start();
-
-      activeNotes[freq] = oscillator;
-    };
+    activeNotes[freq] = oscillator;
   };
 
   var noteStart = (freq) => {
-    // console.log(activeNotes === maps[1]);
-    //console.log(`try start ${type}`);
     if (activeNotes[freq]) {
       return;
     }
-    console.log(`start ${type}`);
     newNote(freq);
   };
 
   var noteFinish = (freq) => {
-    console.log(activeNotes === maps[0]);
     var oscillator = activeNotes[freq];
-    //console.log(`try stop ${type}`);
     if (!oscillator) {
       return;
     }
-    console.log(`stop ${type}`);
     oscillator.adsrNode.noteFinishThenStopOsc(oscillator.oscillator);
     activeNotes[freq] = null;
   };
 
   return {
-    connect: (node) => {
-      maps.push(activeNotes);
-      newNote = connect(node);
-    },
+    connect,
     model,
     noteFinish,
     noteStart,

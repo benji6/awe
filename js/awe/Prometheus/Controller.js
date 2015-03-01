@@ -16,16 +16,15 @@ module.exports = () => {
   var master = Master();
   var adsr = Adsr();
   var filter = Filter();
-  var oscillators = [];
   var menu = Menu(pluginName, adsr, master, oscillators);
 
-  [
+  var oscillators = [
     "sine",
     "square",
-    // "sawtooth",
-    // "triangle"
-  ].forEach((type) => {
-    oscillators.push(Oscillators(adsr, type));
+    "sawtooth",
+    "triangle"
+  ].map((type) => {
+    return Oscillators(adsr, type);
   });
 
   oscillators.forEach((oscillator) => {
