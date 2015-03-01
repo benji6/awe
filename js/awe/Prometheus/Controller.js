@@ -1,4 +1,4 @@
-var Oscillators = require('./Oscillators/Controller.js');
+var Oscillator = require('./Oscillator/Controller.js');
 var Master = require('./Master/Controller.js');
 var Adsr = require('./Adsr/Controller.js');
 var Filter = require('./Filter/Controller.js');
@@ -24,7 +24,7 @@ module.exports = () => {
     "sawtooth",
     "triangle"
   ].map((type) => {
-    return Oscillators(adsr, type);
+    return Oscillator(adsr, type);
   });
 
   oscillators.forEach((oscillator) => {
