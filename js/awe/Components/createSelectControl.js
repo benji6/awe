@@ -7,7 +7,16 @@ module.exports = function (params) {
   var select;
 
   var render = () => {
-    select.value = params.model.getModel()[params.name];
+    var modelParam = params.model.getModel()[params.name];
+    var options = select.children;
+
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].value === modelParam) {
+        options[i].selected = true;
+      } else {
+        options[i].selected = false;
+      }
+    }
   };
 
   var createOptions = () => {

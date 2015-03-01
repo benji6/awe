@@ -16,6 +16,10 @@ module.exports = () => {
     filter.Q.value = model.getModel().Q = +value;
   };
 
+  channels.type = (value) => {
+    filter.type.value = model.getModel().type = +value;
+  };
+
   currentModelState = model.getModel();
   filter.type = currentModelState.type;
   filter.frequency.value = currentModelState.frequency;

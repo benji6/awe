@@ -74,9 +74,9 @@ module.exports = function (pluginName, controllers) {
   };
 
   channels.initialize = () => {
-    everyController((key) => {
-      controllers[key].model.init();
-      controllers[key].view.render();
+    controllers.forEach((controller) => {
+      controller.model.init();
+      controller.view.render();
     });
   };
 
