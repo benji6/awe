@@ -24,7 +24,7 @@ module.exports = () => {
     var gain = audioContext.createGain();
     var startTime = audioContext.currentTime;
 
-    var noteFinishTheStopOsc = (oscillator) => {
+    var noteFinishThenStopOsc = (oscillator) => {
       var timeElapsed = audioContext.currentTime - startTime;
       var currentGain = 0;
       var releaseTime;
@@ -44,7 +44,7 @@ module.exports = () => {
       gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
         releaseTime);
 
-      window.setTimeout(() => oscillator.stop(), 1000 * releaseTime + 100);
+      window.setTimeout(() => oscillator.stop(), 1000 * releaseTime + 50);
     };
 
     gain.gain.setValueAtTime(0, audioContext.currentTime);
@@ -58,7 +58,7 @@ module.exports = () => {
     return {
       connect: (node) => gain.connect(node),
       destination: gain,
-      noteFinishTheStopOsc
+      noteFinishThenStopOsc
     };
   };
 
