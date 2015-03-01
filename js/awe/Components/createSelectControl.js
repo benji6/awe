@@ -49,7 +49,7 @@ module.exports = function (params) {
           children: createOptions(),
           callback: (element) => {
             select = element;
-            element.oninput = () => {
+            element.onchange = () => {
               params.observer[params.name](select.value);
             };
           }
