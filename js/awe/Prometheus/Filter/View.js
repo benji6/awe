@@ -7,7 +7,7 @@ var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
-  var components = [];
+  var components = null;
 
   var connect = (parentDomEl) => {
     var container = document.createElement("div");
@@ -33,29 +33,30 @@ module.exports = (model, channels) => {
       }
     }, table);
 
-    components.push(createSelectControl({
-      parent: table,
-      model,
-      name: "type",
-      observer: channels,
-      options: [
-        "lowpass",
-        "highpass",
-        "bandpass",
-        "lowshelf",
-        "highshelf",
-        "peaking",
-        "notch",
-        "allpass"
-      ]
-    }));
-
-    components.push(createRangeControl(componentParams));
-    components.push(createRangeControl(extend({
-      max: 1000,
-      min: 0.0001,
-      name: "q"
-    }, componentParams)));
+    components = [
+      createSelectControl({
+        parent: table,
+        model,
+        name: "type",
+        observer: channels,
+        options: [
+          "lowpass",
+          "highpass",
+          "bandpass",
+          "lowshelf",
+          "highshelf",
+          "peaking",
+          "notch",
+          "allpass"
+        ]
+      }),
+      createRangeControl(componentParams),
+      createRangeControl(extend({
+        max: 1000,
+        min: 0.0001,
+        name: "q"
+      }, componentParams))
+    ];
 
     container.className = "center";
     container.appendChild(table);

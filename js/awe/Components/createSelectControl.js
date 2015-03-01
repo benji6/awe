@@ -6,6 +6,10 @@ module.exports = function (params) {
   var modelType = params.model.getModel().type;
   var select;
 
+  var render = () => {
+    select.value = params.model.getModel()[params.name];
+  };
+
   var createOptions = () => {
     return params.options.map((option) => {
       jsmlChild = {
@@ -45,10 +49,6 @@ module.exports = function (params) {
     ]
   };
   jsmlParse(jsml, params.parent);
-
-  var render = () => {
-    select.value = params.model.getModel()[params.name];
-  };
 
   return render;
 };

@@ -5,7 +5,7 @@ var extend = require('../../utils/extend.js');
 var formatOutput = (output) => (+output).toFixed(2);
 
 module.exports = (model, channels) => {
-  var components = [];
+  var components = null;
 
   var connectTo = (parentDomEl) => {
     var parent = document.createElement("table");
@@ -31,12 +31,14 @@ module.exports = (model, channels) => {
       model
     };
 
-    components.push(createRangeControl(componentParams));
-    components.push(createRangeControl(extend({
-      name: "panning",
-      max: 1,
-      min: -1
-    }, componentParams)));
+    components = [
+      createRangeControl(componentParams),
+      createRangeControl(extend({
+        name: "panning",
+        max: 1,
+        min: -1
+      }, componentParams))
+    ];
 
     var container = document.createElement("div");
 
