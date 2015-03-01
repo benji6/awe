@@ -6,6 +6,7 @@ var formatOutput = (output) => (+output).toFixed(2);
 module.exports = function (params) {
   var input = null;
   var output = null;
+  var modelValue = params.model.getModel()[params.name];
 
   var render = () => {
     output.value = formatOutput(
@@ -28,7 +29,7 @@ module.exports = function (params) {
           max: params.max,
           min: params.min,
           step: params.step || (params.max - params.min) / 100,
-          value: params.model.getModel()[params.name],
+          value: modelValue,
           callback: (element) => {
             input = element;
             element.oninput = () => {
@@ -42,10 +43,8 @@ module.exports = function (params) {
         tag: "td",
         children: {
           tag: "output",
-          callback: (element) => {
-            output = element;
-            element.value = formatOutput(input.value);
-          }
+          value: formatOutput(modelValue),
+          callback: (element) => output = element
         }
       }
     ]

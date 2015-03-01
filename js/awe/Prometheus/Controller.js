@@ -16,6 +16,7 @@ module.exports = () => {
   var master = Master();
   var adsr = Adsr();
   var filter = Filter();
+  
   var oscillators = [
     "sine",
     "square",
