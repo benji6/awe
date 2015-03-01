@@ -1,23 +1,10 @@
 var View = require('./View.js');
 var Model = require('./Model.js');
 
-var everyProperty = (obj) =>
-  (fn) => {
-    Object.keys(obj).forEach((key) => {
-      fn(key);
-    });
-  };
-
-module.exports = function (pluginName, adsr, master, oscillators) {
+module.exports = function (pluginName, controllers) {
   var channels = {};
   var model = Model(pluginName);
   var view = View(model, channels);
-  var controllers = {
-    adsr,
-    master,
-    oscillators
-  };
-  var everyController = everyProperty(controllers);
 
   channels.openPreset = (value) => {
     if (!value) {
@@ -75,15 +62,8 @@ module.exports = function (pluginName, adsr, master, oscillators) {
     });
   };
 
-  channels.exportPreset = () => {
-    var exportData = {};
-
-    everyController((key) => {
-      exportData[key] = controllers[key].model.getModel();
-    });
-
-    return JSON.stringify(exportData);
-  };
+  channels.exportPreset = () => JSON.stringify(controllers.map((controller) =>
+    controller.model.getModel()));
 
   channels.deletePreset = (value) => {
     if (!value) {

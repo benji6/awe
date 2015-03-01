@@ -1,5 +1,6 @@
 var createDefaultModel = () => {
   return {
+    name: "master",
     panning: 0,
     volume: 0.2
   };

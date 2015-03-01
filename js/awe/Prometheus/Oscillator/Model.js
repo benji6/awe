@@ -1,5 +1,6 @@
 var createDefaultModel = () => {
   return {
+    name: "oscillator",
     detune: 0,
     panning: 0,
     tune: 0,
