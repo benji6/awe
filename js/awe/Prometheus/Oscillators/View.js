@@ -5,63 +5,56 @@ var extend = require('../../utils/extend.js');
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
-module.exports = (model, channels) => {
+module.exports = (model, channels, type) => {
   var components = [];
 
   var connectTo = (parentDomEl) => {
     var tables = [];
-    var waves = ["sawtooth", "sine", "square", "triangle"];
 
-    waves.forEach((wave) => {
-      var table = document.createElement("table");
+    var table = document.createElement("table");
 
-      jsmlParse({
-        tag: "thead",
+    jsmlParse({
+      tag: "thead",
+      children: {
+        tag: "tr",
         children: {
-          tag: "tr",
-          children: {
-            tag: "th",
-            text: capitalizeFirst(wave),
-            colspan: 2
-          }
+          tag: "th",
+          text: capitalizeFirst(type),
+          colspan: 2
         }
-      }, table);
+      }
+    }, table);
 
-      var componentParams = {
-        channel: wave + "volume",
-        parent: table,
-        name: "volume",
-        observer: channels,
+    var componentParams = {
+      parent: table,
+      name: "volume",
+      observer: channels,
+      max: 1,
+      min: 0,
+      model
+    };
+
+    components = components.concat([
+      createRangeControl(componentParams),
+      createRangeControl(extend({
         max: 1,
-        min: 0,
-        model
-      };
+        min: -1,
+        name: "panning"
+      }, componentParams)),
+      createRangeControl(extend({
+        max: 36,
+        min: -36,
+        name: "tune",
+        step: 1
+      }, componentParams)),
+      createRangeControl(extend({
+        max: 100,
+        min: -100,
+        name: "detune"
+      }, componentParams))
+    ]);
 
-      components = components.concat([
-        createRangeControl(componentParams),
-        createRangeControl(extend({
-          channel: wave + "panning",
-          max: 1,
-          min: -1,
-          name: "panning"
-        }, componentParams)),
-        createRangeControl(extend({
-          channel: wave + "tune",
-          max: 36,
-          min: -36,
-          name: "tune",
-          step: 1
-        }, componentParams)),
-        createRangeControl(extend({
-          channel: wave + "detune",
-          max: 100,
-          min: -100,
-          name: "detune"
-        }, componentParams))
-      ]);
-
-      tables.push(table);
-    });
+    tables.push(table);
 
     tables.forEach((table) => {
       parentDomEl.appendChild(table);

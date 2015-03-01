@@ -16,10 +16,21 @@ module.exports = () => {
   var master = Master();
   var adsr = Adsr();
   var filter = Filter();
-  var oscillators = Oscillators(adsr);
+  var oscillators = [];
   var menu = Menu(pluginName, adsr, master, oscillators);
 
-  oscillators.connect(filter.destination);
+  [
+    "sine",
+    "square",
+    // "sawtooth",
+    // "triangle"
+  ].forEach((type) => {
+    oscillators.push(Oscillators(adsr, type));
+  });
+
+  oscillators.forEach((oscillator) => {
+    oscillator.connect(filter.destination);
+  });
   filter.connect(master.destination);
 
   var connectViewTo = (master) =>
@@ -30,12 +41,22 @@ module.exports = () => {
       master.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
       filter.view.connect(synthParentView);
-      oscillators.view.connectTo(synthParentView);
+      oscillators.forEach((oscillator) => {
+        oscillator.view.connectTo(synthParentView);
+      });
     };
 
   return {
-    channelStart: oscillators.noteStart,
-    channelStop: oscillators.noteFinish,
+    channelStart: (freq) => {
+      oscillators.forEach((oscillator) => {
+        oscillator.noteStart(freq);
+      });
+    },
+    channelStop: (freq) => {
+      oscillators.forEach((oscillator) => {
+        oscillator.noteFinish(freq);
+      });
+    },
     connect: connect(master),
     connectViewTo: connectViewTo(master)
   };
