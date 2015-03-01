@@ -36,7 +36,7 @@ const oscillatorParams = [
 ];
 
 module.exports = function (adsr, type) {
-  var model = Model();
+  var model = Model(type);
   var channels = {};
   var view = View(model, channels, type);
   var activeNotes = {};

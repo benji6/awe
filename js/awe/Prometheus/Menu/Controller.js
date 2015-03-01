@@ -12,34 +12,33 @@ module.exports = function (pluginName, controllers) {
     }
     var preset = model.getPreset(value);
 
-    everyController((key) => {
-      controllers[key].model.setModel(preset[key]);
-      controllers[key].view.render();
+    preset.forEach((presetObj) => {
+      var controller = controllers.filter((controller) => {
+        return controller.model.getModel().name === presetObj.name;
+      })[0];
+      controller.model.setModel(presetObj);
+      controller.view.render();
     });
+  };
+
+  var savePreset = (name) => {
+    var presetData = controllers.map((controller) => {
+      return controller.model.getModel();
+    });
+
+    model.savePreset(name, presetData);
+    view.populatePresets();
   };
 
   channels.savePresetAs = (value) => {
     if (model.hasPresetKey(value)) {
       return "A preset already exists with this name, overwrite?";
     }
-
-    var presetData = {};
-
-    everyController((key) => {
-      presetData[key] = controllers[key].model.getModel();
-    });
-    model.savePreset(value, presetData);
-    view.populatePresets();
+    savePreset(value);
   };
 
   channels.overwritePreset = (value) => {
-    var presetData = {};
-
-    everyController((key) => {
-      presetData[key] = controllers[key].model.getModel();
-    });
-
-    model.savePreset(value, presetData);
+    savePreset(value);
   };
 
   channels.importPreset = (value) => {
