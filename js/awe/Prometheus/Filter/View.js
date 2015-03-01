@@ -13,8 +13,8 @@ module.exports = (model, channels) => {
     var container = document.createElement("div");
     var table = document.createElement("table");
     var componentParams = {
-      max: 12000,
-      min: 30,
+      max: 15000,
+      min: 10,
       model,
       name: "frequency",
       observer: channels,
@@ -53,7 +53,7 @@ module.exports = (model, channels) => {
       createRangeControl(componentParams),
       createRangeControl(extend({
         max: 1000,
-        min: 0.0001,
+        min: 0,
         name: "q"
       }, componentParams))
     ];

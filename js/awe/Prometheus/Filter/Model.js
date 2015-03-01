@@ -1,8 +1,8 @@
 var createDefaultModel = () => {
   return {
     name: "filter",
-    frequency: 1000,
-    q: 25,
+    frequency: 15000,
+    q: 0,
     type: "lowpass"
   };
 };
