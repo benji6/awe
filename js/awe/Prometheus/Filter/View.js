@@ -52,7 +52,7 @@ module.exports = (model, channels) => {
       }),
       createRangeControl(componentParams),
       createRangeControl(extend({
-        max: 1000,
+        max: 100,
         min: 0,
         name: "q"
       }, componentParams))

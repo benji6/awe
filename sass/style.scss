@@ -124,7 +124,9 @@ body {
 
       td {
         text-align: left;
-
+        input {
+          width: 16em;
+        }
         output {
           display: block;
           width: 4em;
