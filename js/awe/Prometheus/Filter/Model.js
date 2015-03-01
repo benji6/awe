@@ -2,7 +2,7 @@ var createDefaultModel = () => {
   return {
     name: "filter",
     frequency: 1000,
-    Q: 25,
+    q: 25,
     type: "lowpass"
   };
 };
@@ -13,7 +13,7 @@ module.exports = (channels) => {
   var setModel = (newModel) => {
     model = newModel;
     channels.frequency(model.frequency);
-    channels.Q(model.Q);
+    channels.q(model.q);
     channels.type(model.type);
   };
 

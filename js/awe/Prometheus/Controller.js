@@ -17,14 +17,14 @@ module.exports = () => {
   var adsr = Adsr();
   var filter = Filter();
   var oscillators = [
-  "sine",
-  "square",
-  "sawtooth",
-  "triangle"
+    "sine",
+    "square",
+    "sawtooth",
+    "triangle"
   ].map((type) => {
     return Oscillator(adsr, type);
   });
-  var menu = Menu(pluginName, [adsr, master].concat(oscillators));
+  var menu = Menu(pluginName, [adsr, master, filter].concat(oscillators));
 
   oscillators.forEach((oscillator) => {
     oscillator.connect(filter.destination);

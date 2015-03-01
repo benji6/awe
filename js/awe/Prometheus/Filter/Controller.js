@@ -19,7 +19,7 @@ module.exports = () => {
   currentModelState = model.getModel();
   filter.type = currentModelState.type;
   filter.frequency.value = currentModelState.frequency;
-  filter.Q.value = currentModelState.Q;
+  filter.Q.value = currentModelState.q;
 
   return {
     connect: (node) => filter.connect(node),
