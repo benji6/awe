@@ -6,22 +6,7 @@ module.exports = function (pluginName, controllers) {
   var model = Model(pluginName);
   var view = View(model, channels);
 
-  channels.openPreset = (value) => {
-    if (!value) {
-      return;
-    }
-    var preset = model.getPreset(value);
-
-    preset.forEach((presetObj) => {
-      var controller = controllers.filter((controller) => {
-        return controller.model.getModel().name === presetObj.name;
-      })[0];
-      controller.model.setModel(presetObj);
-      controller.view.render();
-    });
-  };
-
-  var savePreset = (name) => {
+  var savePresetWithName = (name) => {
     var presetData = controllers.map((controller) => {
       return controller.model.getModel();
     });
@@ -30,15 +15,32 @@ module.exports = function (pluginName, controllers) {
     view.populatePresets();
   };
 
+  var loadPresetFromData = (presetData) => {
+    presetData.forEach((presetObj) => {
+      var controller = controllers.filter((controller) => {
+        return controller.model.getModel().name === presetObj.name;
+      })[0];
+      controller.model.setModel(presetObj);
+      controller.view.render();
+    });
+  };
+
+  channels.openPreset = (value) => {
+    if (!value) {
+      return;
+    }
+    loadPresetFromData(model.getPreset(value));
+  };
+
   channels.savePresetAs = (value) => {
     if (model.hasPresetKey(value)) {
       return "A preset already exists with this name, overwrite?";
     }
-    savePreset(value);
+    savePresetWithName(value);
   };
 
   channels.overwritePreset = (value) => {
-    savePreset(value);
+    savePresetWithName(value);
   };
 
   channels.importPreset = (value) => {
@@ -51,14 +53,7 @@ module.exports = function (pluginName, controllers) {
     catch (e) {
       return `error importing preset data: ${e}`;
     }
-    everyController((key) => {
-      if (!newData[key]) {
-        channels.newNotification(`import preset data warning: no imported data for key ${key}`);
-        return;
-      }
-      controllers[key].model.setModel(newData[key]);
-      controllers[key].view.render();
-    });
+    loadPresetFromData(newData);
   };
 
   channels.exportPreset = () => JSON.stringify(controllers.map((controller) =>
