@@ -18,6 +18,7 @@ module.exports = () => {
 
   channels.type = (value) => {
     filter.type = model.getModel().type = value;
+    view.render(value);
   };
 
   channels.gain = (value) => {

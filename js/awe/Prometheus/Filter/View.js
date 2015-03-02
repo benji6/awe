@@ -65,13 +65,58 @@ module.exports = (model, channels) => {
       }, componentParams))
     ];
 
+    components[2].rootNode.style.display = controlDisplays.lowpass.q;
+    components[3].rootNode.style.display = controlDisplays.lowpass.gain;
+
     container.className = "center";
     container.appendChild(table);
     parentDomEl.appendChild(container);
   };
 
+  var controlDisplays = {
+    lowpass: {
+      q: "",
+      gain: "none"
+    },
+    highpass: {
+      q: "",
+      gain: "none"
+    },
+    bandpass: {
+      q: "",
+      gain: "none"
+    },
+    lowshelf: {
+      q: "none",
+      gain: ""
+    },
+    highshelf: {
+      q: "none",
+      gain: ""
+    },
+    peaking: {
+      q: "",
+      gain: ""
+    },
+    notch: {
+      q: "",
+      gain: "none"
+    },
+    allpass: {
+      q: "",
+      gain: "none"
+    }
+  };
+
   return {
     connect,
-    render: () => components.forEach((component) => component.render())
+    render: (type) => {
+      components.forEach((component) => component.render());
+      if (!type) {
+        return;
+      }
+      components[2].rootNode.style.display = controlDisplays[type].q;
+      components[3].rootNode.style.display = controlDisplays[type].gain;
+    }
   };
 };
