@@ -55,6 +55,11 @@ module.exports = (model, channels) => {
         max: 100,
         min: 0,
         name: "q"
+      }, componentParams)),
+      createRangeControl(extend({
+        max: -12,
+        min: 12,
+        name: "gain"
       }, componentParams))
     ];
 

@@ -20,10 +20,15 @@ module.exports = () => {
     filter.type = model.getModel().type = value;
   };
 
+  channels.gain = (value) => {
+    filter.gain.value = model.getModel().gain = +value;
+  };
+
   currentModelState = model.getModel();
   filter.type = currentModelState.type;
   filter.frequency.value = currentModelState.frequency;
   filter.Q.value = currentModelState.q;
+  filter.gain.value = currentModelState.gain;
 
   return {
     connect: (node) => filter.connect(node),
