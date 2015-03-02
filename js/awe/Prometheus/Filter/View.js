@@ -13,7 +13,8 @@ module.exports = (model, channels) => {
     var container = document.createElement("div");
     var table = document.createElement("table");
     var componentParams = {
-      max: 15000,
+      logarithmic: true,
+      max: 18000,
       min: 10,
       model,
       name: "frequency",
@@ -53,10 +54,11 @@ module.exports = (model, channels) => {
       createRangeControl(componentParams),
       createRangeControl(extend({
         max: 100,
-        min: 0,
+        min: 0.0001,
         name: "q"
       }, componentParams)),
       createRangeControl(extend({
+        logarithmic: false,
         max: 36,
         min: -36,
         name: "gain"
