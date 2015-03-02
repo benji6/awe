@@ -1,67 +1,14 @@
 var jsmlParse = require('jsml-parse');
+var createRangeControl = require('../../Components/createRangeControl.js');
+var extend = require('../../utils/extend.js');
 
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
-
 module.exports = (model, channels) => {
-  var inputElements = [];
-  var outputElements = [];
-
-  var createRangeControl = function (parentDomEl, type, min, max, step) {
-    var channel = "master" + capitalizeFirst(type);
-    var input;
-    var output;
-    var jsml = {
-        tag: "tr",
-        children: [
-      {
-        tag: "td",
-        text: capitalizeFirst(type)
-      },
-    {
-      tag: "td",
-      children: {
-        tag: "input",
-        type: "range",
-        min,
-        max,
-        step: step || (max - min) / 100,
-        value: model.getModel()[type],
-        callback: (element) => {
-          input = element;
-          inputElements.push({
-            element,
-            type
-          });
-          element.oninput = () => {
-            channels[channel](input.value);
-            output.value = formatOutput(input.value);
-          };
-        }
-      }
-    },
-  {
-    tag: "td",
-    children: {
-      tag: "output",
-      callback: (element) => {
-        output = element;
-        outputElements.push({
-          element,
-          type
-        });
-        element.value = formatOutput(input.value);
-      }
-    }
-  }
-  ]
-};
-jsmlParse(jsml, parentDomEl);
-};
+  var components = null;
 
   var connectTo = (parentDomEl) => {
-    var table = document.createElement("table");
+    var parent = document.createElement("table");
 
     jsmlParse({
       tag: "thead",
@@ -73,30 +20,35 @@ jsmlParse(jsml, parentDomEl);
           colspan: 2
         }
       }
-    }, table);
-    createRangeControl(table, "volume", 0, 1);
-    createRangeControl(table, "panning", -1, 1);
+    }, parent);
+
+    var componentParams = {
+      parent: parent,
+      name: "volume",
+      min: 0,
+      max: 1,
+      observer: channels,
+      model
+    };
+
+    components = [
+      createRangeControl(componentParams),
+      createRangeControl(extend({
+        name: "panning",
+        max: 1,
+        min: -1
+      }, componentParams))
+    ];
 
     var container = document.createElement("div");
 
     container.className = "center";
-    container.appendChild(table);
+    container.appendChild(parent);
     parentDomEl.appendChild(container);
   };
 
-
-  var render = () => {
-    inputElements.forEach((element) => {
-      element.element.value = model.getModel()[element.type];
-    });
-    outputElements.forEach((element) => {
-      element.element.value = formatOutput(model.getModel()[element.type]) ;
-    });
-  };
-
-
   return {
     connectTo,
-    render
+    render: () => components.forEach((component) => component.render())
   };
 };

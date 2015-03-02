@@ -1,6 +1,6 @@
 // not currently used
 
-var recursiveDeepCopy = (obj) => {
+module.exports = (obj) => {
   if (typeof obj === 'object') {
     var newObj;
     if (Array.isArray(obj)) {

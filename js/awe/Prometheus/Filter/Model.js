@@ -1,8 +1,10 @@
 var createDefaultModel = () => {
   return {
-    name: "master",
-    panning: 0,
-    volume: 0.2
+    name: "filter",
+    frequency: 8000,
+    gain: 0,
+    q: 0,
+    type: "lowpass"
   };
 };
 
@@ -11,8 +13,10 @@ module.exports = (channels) => {
 
   var setModel = (newModel) => {
     model = newModel;
-    channels.volume(model.volume);
-    channels.panning(model.panning);
+    channels.frequency(model.frequency);
+    channels.q(model.q);
+    channels.type(model.type);
+    channels.gain(model.gain);
   };
 
   var init = () => {

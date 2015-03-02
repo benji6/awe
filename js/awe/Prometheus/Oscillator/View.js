@@ -2,12 +2,15 @@ var jsmlParse = require('jsml-parse');
 var createRangeControl = require('../../Components/createRangeControl.js');
 var extend = require('../../utils/extend.js');
 
+var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
-module.exports = (model, channels) => {
-  var components = null;
+module.exports = (model, channels, type) => {
+  var components = [];
 
   var connectTo = (parentDomEl) => {
+    var tables = [];
+
     var table = document.createElement("table");
 
     jsmlParse({
@@ -16,7 +19,7 @@ module.exports = (model, channels) => {
         tag: "tr",
         children: {
           tag: "th",
-          text: "ADSR",
+          text: capitalizeFirst(type),
           colspan: 2
         }
       }
@@ -24,31 +27,38 @@ module.exports = (model, channels) => {
 
     var componentParams = {
       parent: table,
-      name: "a",
-      min: 0,
-      max: 1,
+      name: "volume",
       observer: channels,
+      max: 1,
+      min: 0,
       model
     };
 
-    components = [
+    components = components.concat([
       createRangeControl(componentParams),
       createRangeControl(extend({
-        name: "d"
+        max: 1,
+        min: -1,
+        name: "panning"
       }, componentParams)),
       createRangeControl(extend({
-        name: "s"
+        max: 36,
+        min: -36,
+        name: "tune",
+        step: 1
       }, componentParams)),
       createRangeControl(extend({
-        name: "r"
+        max: 100,
+        min: -100,
+        name: "detune"
       }, componentParams))
-    ];
+    ]);
 
-    var container = document.createElement("div");
+    tables.push(table);
 
-    container.className = "center";
-    container.appendChild(table);
-    parentDomEl.appendChild(container);
+    tables.forEach((table) => {
+      parentDomEl.appendChild(table);
+    });
   };
 
   return {
