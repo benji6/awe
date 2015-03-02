@@ -63,6 +63,6 @@ module.exports = (model, channels, type) => {
 
   return {
     connectTo,
-    render: () => components.forEach((render) => render())
+    render: () => components.forEach((component) => component.render())
   };
 };

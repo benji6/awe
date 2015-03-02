@@ -59,5 +59,8 @@ module.exports = function (params) {
   };
   jsmlParse(jsml, params.parent);
 
-  return render;
+
+  return {
+    render
+  };
 };
