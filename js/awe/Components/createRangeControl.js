@@ -25,6 +25,7 @@ var maybe = function (callback) {
 module.exports = function (params) {
   var input = null;
   var output = null;
+  var rootNode = null;
   var maybeExp = maybe(exp12)(params.logarithmic);
   var maybeLog = maybe(log12)(params.logarithmic);
   var max = maybeLog(params.max);
@@ -47,6 +48,9 @@ module.exports = function (params) {
 
   var jsml = {
     tag: "tr",
+    callback: function (element) {
+      rootNode = element;
+    },
     children: [
       {
         tag: "td",
@@ -82,6 +86,7 @@ module.exports = function (params) {
   jsmlParse(jsml, params.parent);
 
   return {
-    render
+    render,
+    rootNode
   };
 };
