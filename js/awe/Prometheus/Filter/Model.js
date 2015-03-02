@@ -16,6 +16,7 @@ module.exports = (channels) => {
     channels.frequency(model.frequency);
     channels.q(model.q);
     channels.type(model.type);
+    channels.gain(model.gain);
   };
 
   var init = () => {
