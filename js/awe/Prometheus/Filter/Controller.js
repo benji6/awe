@@ -17,7 +17,7 @@ module.exports = () => {
   };
 
   channels.type = (value) => {
-    filter.type.value = model.getModel().type = value;
+    filter.type = model.getModel().type = value;
   };
 
   currentModelState = model.getModel();
