@@ -1,5 +1,5 @@
 var jsmlParse = require('jsml-parse');
-const PRECISION = 8;
+const PRECISION = 12;
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
