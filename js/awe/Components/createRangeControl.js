@@ -27,8 +27,8 @@ module.exports = function (params) {
   var output = null;
   var maybeExp = maybe(exp12)(params.logarithmic);
   var maybeLog = maybe(log12)(params.logarithmic);
-  var max = (params.logarithmic ? log12(params.max) : params.max).toPrecision(PRECISION);
-  var min = (params.logarithmic ? log12(params.min) : params.min).toPrecision(PRECISION);
+  var max = maybeLog(params.max);
+  var min = maybeLog(params.min);
 
   var modelValue = maybeLog(params.model.getModel()[params.name]);
 
