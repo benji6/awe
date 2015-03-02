@@ -3,11 +3,19 @@ const PRECISION = 8;
 var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 var formatOutput = (output) => (+output).toFixed(2);
 
+var log12 = function (x) {
+  return Math.log(x) / Math.log(12);
+};
+
+var exp12 = function (x) {
+  return Math.pow(12, x);
+};
+
 var maybe = function (callback) {
   return function (boo) {
     return function (x) {
       if (boo) {
-        return callback(x).toPrecision(PRECISION);
+        return +callback(x).toPrecision(PRECISION);
       }
       return x;
     };
@@ -17,16 +25,16 @@ var maybe = function (callback) {
 module.exports = function (params) {
   var input = null;
   var output = null;
+  var maybeExp = maybe(exp12)(params.logarithmic);
+  var maybeLog = maybe(log12)(params.logarithmic);
+  var max = (params.logarithmic ? log12(params.max) : params.max).toPrecision(PRECISION);
+  var min = (params.logarithmic ? log12(params.min) : params.min).toPrecision(PRECISION);
 
-  var max = (params.logarithmic ? Math.log(params.max) : params.max).toPrecision(PRECISION);
-  var min = (params.logarithmic ? Math.log(params.min) : params.min).toPrecision(PRECISION);
-  var maybeExp = maybe(Math.exp)(params.logarithmic);
-  var maybeLn = maybe(Math.log)(params.logarithmic);
-  var modelValue = maybeLn(params.model.getModel()[params.name]);
+  var modelValue = maybeLog(params.model.getModel()[params.name]);
 
   var render = () => {
     var modelValue = params.model.getModel()[params.name];
-    input.value = maybeLn(modelValue);
+    input.value = maybeLog(modelValue);
     output.value = formatOutput(modelValue);
   };
 
