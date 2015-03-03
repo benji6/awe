@@ -124,8 +124,14 @@ body {
 
       td {
         text-align: left;
-        input {
+        input, select {
+          margin: 0 1em;
+          padding: 0 0.1em;
           width: 12em;
+        }
+        select {
+          text-align: center;
+          width: 12.5em;
         }
         output {
           display: block;
