@@ -15,7 +15,7 @@ module.exports = (model, channels) => {
     var componentParams = {
       logarithmic: true,
       max: 18000,
-      min: 10,
+      min: 20,
       model,
       name: "frequency",
       observer: channels,
