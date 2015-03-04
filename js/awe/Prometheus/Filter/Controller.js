@@ -2,7 +2,7 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-module.exports = () => {
+module.exports = function () {
   var channels = {};
   var model = Model(channels);
   var view = View(model, channels);

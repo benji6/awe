@@ -38,7 +38,7 @@ module.exports = function (model, channels) {
     ]
   };
 
-  var open = () => {
+  var open = function () {
     presetDataView.value = channels.exportPreset();
     container.className = "modalWindow";
   };

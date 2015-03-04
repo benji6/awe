@@ -33,7 +33,7 @@ module.exports = function (channels) {
         tag: "button",
         text: "Import",
         callback: (element) =>
-          element.onclick = () => {
+          element.onclick = function () {
             var response = channels.importPreset(input.value);
 
             if (response) {
@@ -49,7 +49,7 @@ module.exports = function (channels) {
         tag: "button",
         text: "Cancel",
         callback: (element) =>
-          element.onclick = () => {
+          element.onclick = function () {
             container.className = "hidden";
             message.value = defaultMessage;
           }

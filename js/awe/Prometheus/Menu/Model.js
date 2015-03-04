@@ -1,7 +1,7 @@
 var defaultPresets = require('./defaultPresets/model.js');
 
 module.exports = (pluginName) => {
-  var getPresets = () => {
+  var getPresets = function () {
     if (!localStorage[pluginName]) {
       return;
     }

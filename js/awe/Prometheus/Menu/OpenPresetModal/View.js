@@ -21,7 +21,7 @@ module.exports = function (model, channels) {
         tag: "button",
         text: "Open",
         callback: (element) =>
-          element.onclick = () => {
+          element.onclick = function () {
             channels.openPreset(select.value);
             container.className = "hidden";
           }

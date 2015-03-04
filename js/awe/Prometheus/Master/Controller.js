@@ -23,7 +23,7 @@ var Panner = (panning) => {
   return setPannerPosition(panner, panning);
 };
 
-module.exports = () => {
+module.exports = function () {
   var channels = {};
   var model = Model(channels);
   var view = View(model, channels);

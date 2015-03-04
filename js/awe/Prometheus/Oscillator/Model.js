@@ -1,5 +1,5 @@
 module.exports = (type) => {
-  var createDefaultModel = () => {
+  var createDefaultModel = function () {
     return {
       name: type,
       detune: 0,

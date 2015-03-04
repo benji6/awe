@@ -77,7 +77,7 @@ module.exports = function (model, channels) {
     initializeSettingsModal.jsml
   ];
 
-  var populatePresets = () => {
+  var populatePresets = function () {
     var presets = model.getPresets();
 
     openPresetModal.populatePresets(presets);

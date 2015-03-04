@@ -1,4 +1,4 @@
-var createDefaultModel = () => {
+var createDefaultModel = function () {
   return {
     name: "adsr",
     a: 1,

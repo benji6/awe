@@ -14,7 +14,7 @@ module.exports = function (model, channels) {
     message.value = response;
   };
 
-  var displaySaveState = () => {
+  var displaySaveState = function () {
     saveButton.className = "";
     overwriteButton.className = "hidden";
     message.value = '';
@@ -48,7 +48,7 @@ module.exports = function (model, channels) {
         text: "Save",
         callback: (element) => {
           saveButton = element;
-          element.onclick = () => {
+          element.onclick = function () {
             if (input.value === "") {
               message.value = "Please input a preset name";
               return;
@@ -71,7 +71,7 @@ module.exports = function (model, channels) {
         className: "hidden",
         callback: (element) => {
           overwriteButton = element;
-          element.onclick = () => {
+          element.onclick = function () {
             channels.overwritePreset(input.value);
             displaySaveState();
             container.className = "hidden";
@@ -82,7 +82,7 @@ module.exports = function (model, channels) {
         tag: "button",
         text: "Cancel",
         callback: (element) =>
-          element.onclick = () => {
+          element.onclick = function () {
             container.className = "hidden";
             displaySaveState();
           }

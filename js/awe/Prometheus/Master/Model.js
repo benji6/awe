@@ -1,4 +1,4 @@
-var createDefaultModel = () => {
+var createDefaultModel = function () {
   return {
     name: "master",
     panning: 0,
@@ -15,7 +15,7 @@ module.exports = (channels) => {
     channels.panning(model.panning);
   };
 
-  var init = () => {
+  var init = function () {
     setModel(createDefaultModel());
   };
 

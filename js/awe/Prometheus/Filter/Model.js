@@ -1,4 +1,4 @@
-var createDefaultModel = () => {
+var createDefaultModel = function () {
   return {
     name: "filter",
     frequency: 8000,
@@ -19,7 +19,7 @@ module.exports = (channels) => {
     channels.gain(model.gain);
   };
 
-  var init = () => {
+  var init = function () {
     setModel(createDefaultModel());
   };
 

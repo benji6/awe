@@ -8,14 +8,14 @@ module.exports = function (model, channels) {
   var deleteButton;
   var confirmButton;
 
-  var enterConfirmationState = () => {
+  var enterConfirmationState = function () {
     select.disabled = true;
     message.value = `Are you sure you want to permanently delete preset "${select.value}"?`;
     deleteButton.className = "hidden";
     confirmButton.className = "";
   };
 
-  var enterDeleteState = () => {
+  var enterDeleteState = function () {
     select.disabled = false;
     message.value = defaultMessage;
     deleteButton.className = "";
@@ -49,7 +49,7 @@ module.exports = function (model, channels) {
         text: "Delete",
         callback: (element) => {
           deleteButton = element;
-          element.onclick = () => {
+          element.onclick = function () {
             if (select.value === '') {
               return;
             }
@@ -63,7 +63,7 @@ module.exports = function (model, channels) {
         className: "hidden",
         callback: (element) => {
           confirmButton = element;
-          element.onclick = () => {
+          element.onclick = function () {
             channels.deletePreset(select.value);
             container.className = "hidden";
             enterDeleteState();
@@ -75,7 +75,7 @@ module.exports = function (model, channels) {
         tag: "button",
         text: "Cancel",
         callback: (element) =>
-          element.onclick = () => {
+          element.onclick = function () {
             container.className = "hidden";
             enterDeleteState();
           }

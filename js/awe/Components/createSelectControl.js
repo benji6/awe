@@ -6,7 +6,7 @@ module.exports = function (params) {
   var modelType = params.model.getModel().type;
   var select;
 
-  var render = () => {
+  var render = function () {
     var modelParam = params.model.getModel()[params.name];
     var options = select.children;
 
@@ -19,7 +19,7 @@ module.exports = function (params) {
     }
   };
 
-  var createOptions = () => {
+  var createOptions = function () {
     return params.options.map((option) => {
       jsmlChild = {
         tag: "option",
@@ -49,7 +49,7 @@ module.exports = function (params) {
           children: createOptions(),
           callback: (element) => {
             select = element;
-            element.onchange = () => {
+            element.onchange = function () {
               params.observer[params.name](select.value);
             };
           }

@@ -8,15 +8,17 @@ var View = require('./View.js');
 var pluginName = "Prometheus";
 var view = View(pluginName);
 
-var connect = (master) =>
-  (outputNode) =>
+var connect = function (master) {
+  return function (outputNode) {
     master.connect(outputNode);
+  };
+};
 
-module.exports = () => {
+module.exports = function () {
   var master = Master();
   var adsr = Adsr();
   var filter = Filter();
-  
+
   var oscillators = [
     "sine",
     "square",

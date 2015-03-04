@@ -86,7 +86,7 @@ module.exports = function (adsr, type) {
       oscillator
     };
   };
-  var newNote = () => {};
+  var newNote = function () {};
   var connect = (output) => newNote = (freq) => {
     var oscillator = createOscillator(type);
 

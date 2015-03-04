@@ -2,7 +2,7 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-module.exports = () => {
+module.exports = function () {
   var model = Model();
   var channels = {};
   var view = View(model, channels);
@@ -20,7 +20,7 @@ module.exports = () => {
     model.getModel().r = +value;
   };
 
-  var createNode = () => {
+  var createNode = function () {
     var gain = audioContext.createGain();
     var startTime = audioContext.currentTime;
 

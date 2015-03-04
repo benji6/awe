@@ -33,7 +33,7 @@ module.exports = function (params) {
 
   var modelValue = maybeLog(params.model.getModel()[params.name]);
 
-  var render = () => {
+  var render = function () {
     var modelValue = params.model.getModel()[params.name];
     input.value = maybeLog(modelValue);
     output.value = formatOutput(modelValue);
