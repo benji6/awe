@@ -4,10 +4,10 @@ var createDefaultModel = function () {
   };
 };
 
-module.exports = (controllerChannel) => {
+module.exports = function (controllerChannel) {
   var model = createDefaultModel();
 
-  var setModel = (newModel) => {
+  var setModel = function (newModel) {
     model = newModel;
     controllerChannel.panning(model.panning);
   };

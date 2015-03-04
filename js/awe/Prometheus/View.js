@@ -2,11 +2,11 @@ var jsmlParse = require('jsml-parse');
 
 var synthViewHolder = null;
 
-module.exports = (pluginName) => {
+module.exports = function (pluginName) {
   var jsml = {
     tag: "div",
     className: pluginName,
-    callback: (element) => {
+    callback: function (element) {
       synthViewHolder = element;
     },
     children: {
@@ -20,7 +20,7 @@ module.exports = (pluginName) => {
   };
 
   return {
-    connectViewTo: (parentDomEl) => {
+    connectViewTo: function (parentDomEl) {
       jsmlParse(jsml, parentDomEl);
       return synthViewHolder;
     }

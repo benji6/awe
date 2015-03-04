@@ -8,10 +8,10 @@ var createDefaultModel = function () {
   };
 };
 
-module.exports = (channels) => {
+module.exports = function (channels) {
   var model = createDefaultModel();
 
-  var setModel = (newModel) => {
+  var setModel = function (newModel) {
     model = newModel;
     channels.frequency(model.frequency);
     channels.q(model.q);
@@ -24,7 +24,9 @@ module.exports = (channels) => {
   };
 
   return {
-    getModel: () => model,
+    getModel: function () {
+      return model;
+    },
     init,
     setModel
   };

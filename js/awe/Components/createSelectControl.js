@@ -1,6 +1,8 @@
 var jsmlParse = require('jsml-parse');
 
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+var capitalizeFirst = function (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 module.exports = function (params) {
   var modelType = params.model.getModel().type;
@@ -20,7 +22,7 @@ module.exports = function (params) {
   };
 
   var createOptions = function () {
-    return params.options.map((option) => {
+    return params.options.map(function (option) {
       jsmlChild = {
         tag: "option",
         text: option,
@@ -47,7 +49,7 @@ module.exports = function (params) {
         children: {
           tag: "select",
           children: createOptions(),
-          callback: (element) => {
+          callback: function (element) {
             select = element;
             element.onchange = function () {
               params.observer[params.name](select.value);

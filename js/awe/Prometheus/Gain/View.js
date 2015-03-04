@@ -1,6 +1,6 @@
 var createRangeControl = require('../../Components/createRangeControl.js');
 
-module.exports = (model, channels) => {
+module.exports = function (model, channels) {
   var component = null;
 
   var connectTo = function (parentDomEl) {

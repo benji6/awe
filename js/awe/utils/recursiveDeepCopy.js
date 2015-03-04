@@ -1,19 +1,20 @@
 // not currently used
 
-module.exports = (obj) => {
+module.exports = function (obj) {
   if (typeof obj === 'object') {
     var newObj;
     if (Array.isArray(obj)) {
       newObj = [];
-      obj.forEach((element) => {
+      obj.forEach(function (element) {
         newObj.push(recursiveDeepCopy(element));
       });
       return newObj;
     }
 
     newObj = {};
-    Object.keys(obj).forEach((key) =>
-    newObj[key] = recursiveDeepCopy(obj[key]));
+    Object.keys(obj).forEach(function (key) {
+      newObj[key] = recursiveDeepCopy(obj[key]);
+    });
 
     return newObj;
   }

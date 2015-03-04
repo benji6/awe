@@ -9,15 +9,21 @@ var createDefaultModel = function () {
 };
 
 
-module.exports = () =>{
+module.exports = function () {
   var model;
-  var init = () => model = createDefaultModel();
+  var init = function () {
+    return model = createDefaultModel();
+  };
 
   init();
 
   return {
-    getModel: () => model,
+    getModel: function () {
+      return model;
+    },
     init,
-    setModel: (newModel) => model = newModel
+    setModel: function (newModel) {
+      return model = newModel;
+    }
   };
 };

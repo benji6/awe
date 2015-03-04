@@ -1,7 +1,13 @@
 var jsmlParse = require('jsml-parse');
-const PRECISION = 12;
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-var formatOutput = (output) => (+output).toFixed(2);
+const PRECISION = 12
+
+var capitalizeFirst = function (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+var formatOutput = function (output) {
+  return (+output).toFixed(2);
+};
 
 var log12 = function (x) {
   return Math.log(x) / Math.log(12);
@@ -65,7 +71,7 @@ module.exports = function (params) {
           min: min,
           step: (params.step || (max - min) / 100).toPrecision(PRECISION),
           value: modelValue,
-          callback: (element) => {
+          callback: function (element) {
             input = element;
             element.oninput = function () {
               oninputCallback(input.value);
@@ -78,7 +84,9 @@ module.exports = function (params) {
         children: {
           tag: "output",
           value: formatOutput(maybeExp(modelValue)),
-          callback: (element) => output = element
+          callback: function (element) {
+            output = element;
+          }
         }
       }
     ]

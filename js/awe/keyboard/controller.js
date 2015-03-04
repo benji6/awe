@@ -3,9 +3,11 @@ var notesToFrequencies = require('./model/notesToFrequencies.js');
 var startChannels = require('./model/startChannels.js');
 var stopChannels = require('./model/stopChannels.js');
 
-var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
+var getFreq = function (e) {
+  return notesToFrequencies[keyCodesToNotes[e.keyCode]];
+};
 
-document.body.onkeydown = (e) => {
+document.body.onkeydown = function (e) {
   var freq = getFreq(e);
   if (freq) {
     startChannels.forEach(function(channel) {
@@ -14,7 +16,7 @@ document.body.onkeydown = (e) => {
   }
 };
 
-document.body.onkeyup = (e) => {
+document.body.onkeyup = function (e) {
   var freq = getFreq(e);
   stopChannels.forEach(function(channel) {
     channel(freq);
