@@ -1,26 +1,27 @@
 var createDefaultModel = function () {
   return {
-    name: "master",
     panning: 0,
-    volume: 0.2
   };
 };
 
-module.exports = (channels) => {
+module.exports = (controllerChannel) => {
   var model = createDefaultModel();
 
   var setModel = (newModel) => {
     model = newModel;
-    channels.volume(model.volume);
-    channels.panning(model.panning);
+    controllerChannel.panning(model.panning);
   };
 
   var init = function () {
     setModel(createDefaultModel());
   };
 
+  var getModel = function () {
+    return model;
+  };
+
   return {
-    getModel: () => model,
+    getModel,
     init,
     setModel
   };

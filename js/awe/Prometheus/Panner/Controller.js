@@ -2,13 +2,6 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-var GainNode = (volume) => {
-  var gainNode = audioContext.createGain();
-  gainNode.gain.value = volume;
-
-  return gainNode;
-};
-
 var setPannerPosition = function (panner, panning) {
   var x = panning;
   var z = 1 - Math.abs(x);
@@ -16,33 +9,29 @@ var setPannerPosition = function (panner, panning) {
   return panner;
 };
 
-var Panner = (panning) => {
+var Panner = function (panning) {
   var panner = audioContext.createPanner();
   panner.panningModel = 'equalpower';
-
   return setPannerPosition(panner, panning);
 };
 
 module.exports = function () {
-  var channels = {};
-  var model = Model(channels);
-  var view = View(model, channels);
+  var controllerChannel = {};
+  var model = Model(controllerChannel);
+  var view = View(model, controllerChannel);
   var panner = Panner(model.getModel().panning);
-  var gainNode = GainNode(model.getModel().volume);
 
-  panner.connect(gainNode);
-
-  channels.volume = (volume) => {
-    gainNode.gain.value = model.getModel().volume = +volume;
-  };
-
-  channels.panning = (value) => {
+  controllerChannel.panning = function (value) {
     model.getModel().panning = +value;
     setPannerPosition(panner, value);
   };
 
+  var connect = function (node) {
+    panner.connect(node);
+  };
+
   return {
-    connect: (node) => gainNode.connect(node),
+    connect,
     destination: panner,
     model,
     view
