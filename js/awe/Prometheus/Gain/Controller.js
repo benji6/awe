@@ -13,8 +13,9 @@ module.exports = function () {
   var model = Model(controllerChannel);
   var view = View(model, controllerChannel);
   var gain = GainNode(model.getModel().gain);
-  controllerChannel.volume = function (volume) {
-    gain.gain.value = model.getModel().gain = +volume;
+  
+  controllerChannel.gain = function (value) {
+    gain.gain.value = model.getModel().gain = +value;
   };
 
   var connect = function (node) {
