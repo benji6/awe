@@ -23,18 +23,18 @@ module.exports = function () {
     "square",
     "sawtooth",
     "triangle"
-  ].map((type) => {
+  ].map(function (type) {
     return Oscillator(adsr, type);
   });
   var menu = Menu(pluginName, [adsr, filter].concat(oscillators));
 
-  oscillators.forEach((oscillator) => {
+  oscillators.forEach(function (oscillator) {
     oscillator.connect(filter.destination);
   });
   filter.connect(masterPanner.destination);
 
-  var connectViewTo = (master) =>
-    (parentDomElement) => {
+  var connectViewTo = function (master) {
+    return function (parentDomElement) {
       var synthParentView = view.connectViewTo(parentDomElement);
 
       masterGain.view.connect(synthParentView);
@@ -43,23 +43,24 @@ module.exports = function () {
       menu.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
       filter.view.connect(synthParentView);
-      oscillators.forEach((oscillator) => {
+      oscillators.forEach(function (oscillator) {
         oscillator.view.connectTo(synthParentView);
       });
     };
+  };
 
   var connect = function (node) {
     masterGain.connect(node);
   };
 
   return {
-    channelStart: (freq) => {
-      oscillators.forEach((oscillator) => {
+    channelStart: function (freq) {
+      oscillators.forEach(function (oscillator) {
         oscillator.noteStart(freq);
       });
     },
-    channelStop: (freq) => {
-      oscillators.forEach((oscillator) => {
+    channelStop: function (freq) {
+      oscillators.forEach(function (oscillator) {
         oscillator.noteFinish(freq);
       });
     },
