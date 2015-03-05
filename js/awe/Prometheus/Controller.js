@@ -37,6 +37,9 @@ module.exports = function () {
     (parentDomElement) => {
       var synthParentView = view.connectViewTo(parentDomElement);
 
+      masterGain.view.connect(synthParentView);
+      masterPanner.view.connect(synthParentView);
+
       menu.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
       filter.view.connect(synthParentView);

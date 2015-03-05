@@ -3,9 +3,9 @@ var createRangeControl = require('../../Components/createRangeControl.js');
 module.exports = function (model, channels) {
   var component = null;
 
-  var connectTo = function (parentDomEl) {
-    var component = createRangeControl({
-      parent: parent,
+  var connect = function (parentDomEl) {
+    component = createRangeControl({
+      parent: parentDomEl,
       name: "panning",
       min: -1,
       max: 1,
@@ -19,7 +19,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connectTo,
+    connect,
     render
   };
 };
