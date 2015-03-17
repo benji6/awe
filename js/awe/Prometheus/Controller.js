@@ -16,6 +16,9 @@ module.exports = function () {
   var filter = Filter();
   var masterGain = Gain();
   var masterPanner = Panner();
+
+  var audioGraphRouter = AudioGraphRouter();
+
   masterPanner.connect(masterGain.destination);
 
   var oscillators = [
