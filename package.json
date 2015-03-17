@@ -34,6 +34,6 @@
     "watchify": "^2.4.0"
   },
   "dependencies": {
-    "jsml-parse": "^1.0.2"
+    "jsml-parse": "^2.0.0"
   }
 }
