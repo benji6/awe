@@ -25,7 +25,7 @@ module.exports = function () {
     filter.gain.value = model.getModel().gain = +value;
   };
 
-  currentModelState = model.getModel();
+  var currentModelState = model.getModel();
   filter.type = currentModelState.type;
   filter.frequency.value = currentModelState.frequency;
   filter.Q.value = currentModelState.q;

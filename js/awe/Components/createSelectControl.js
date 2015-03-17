@@ -23,7 +23,7 @@ module.exports = function (params) {
 
   var createOptions = function () {
     return params.options.map(function (option) {
-      jsmlChild = {
+      var jsmlChild = {
         tag: "option",
         text: option,
         value: option
