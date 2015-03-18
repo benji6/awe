@@ -2,12 +2,14 @@ var jsmlParse = require('jsml-parse');
 var createRangeControl = require('../../Components/createRangeControl.js');
 var extend = require('../../utils/extend.js');
 
-var formatOutput = (output) => (+output).toFixed(2);
+var formatOutput = function (output) {
+  return (+output).toFixed(2);
+};
 
-module.exports = (model, channels) => {
+module.exports = function (model, channels) {
   var components = null;
 
-  var connectTo = (parentDomEl) => {
+  var connectTo = function (parentDomEl) {
     var table = document.createElement("table");
 
     jsmlParse({
@@ -53,6 +55,10 @@ module.exports = (model, channels) => {
 
   return {
     connectTo,
-    render: () => components.forEach((component) => component.render())
+    render: function () {
+      components.forEach(function (component) {
+        component.render();
+      });
+    }
   };
 };

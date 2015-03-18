@@ -6,8 +6,8 @@ module.exports = function (pluginName, controllers) {
   var model = Model(pluginName);
   var view = View(model, channels);
 
-  var savePresetWithName = (name) => {
-    var presetData = controllers.map((controller) => {
+  var savePresetWithName = function (name) {
+    var presetData = controllers.map(function (controller) {
       return controller.model.getModel();
     });
 
@@ -15,9 +15,9 @@ module.exports = function (pluginName, controllers) {
     view.populatePresets();
   };
 
-  var loadPresetFromData = (presetData) => {
-    presetData.forEach((presetObj) => {
-      var controller = controllers.filter((controller) => {
+  var loadPresetFromData = function (presetData) {
+    presetData.forEach(function (presetObj) {
+      var controller = controllers.filter(function (controller) {
         return controller.model.getModel().name === presetObj.name;
       })[0];
       controller.model.setModel(presetObj);
@@ -25,25 +25,25 @@ module.exports = function (pluginName, controllers) {
     });
   };
 
-  channels.openPreset = (value) => {
+  channels.openPreset = function (value) {
     if (!value) {
       return;
     }
     loadPresetFromData(model.getPreset(value));
   };
 
-  channels.savePresetAs = (value) => {
+  channels.savePresetAs = function (value) {
     if (model.hasPresetKey(value)) {
       return "A preset already exists with this name, overwrite?";
     }
     savePresetWithName(value);
   };
 
-  channels.overwritePreset = (value) => {
+  channels.overwritePreset = function (value) {
     savePresetWithName(value);
   };
 
-  channels.importPreset = (value) => {
+  channels.importPreset = function (value) {
     if (!value) {
       return "No import data, please paste in field";
     }
@@ -56,10 +56,13 @@ module.exports = function (pluginName, controllers) {
     loadPresetFromData(newData);
   };
 
-  channels.exportPreset = () => JSON.stringify(controllers.map((controller) =>
-    controller.model.getModel()));
+  channels.exportPreset = function () {
+    return JSON.stringify(controllers.map(function (controller) {
+      return controller.model.getModel();
+    }));
+  };
 
-  channels.deletePreset = (value) => {
+  channels.deletePreset = function (value) {
     if (!value) {
       return;
     }
@@ -68,7 +71,7 @@ module.exports = function (pluginName, controllers) {
   };
 
   channels.initialize = function () {
-    controllers.forEach((controller) => {
+    controllers.forEach(function (controller) {
       controller.model.init();
       controller.view.render();
     });

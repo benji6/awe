@@ -3,13 +3,17 @@ var extend = require('../../utils/extend.js');
 var createRangeControl = require('../../Components/createRangeControl.js');
 var createSelectControl = require('../../Components/createSelectControl.js');
 
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-var formatOutput = (output) => (+output).toFixed(2);
+var capitalizeFirst = function (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+var formatOutput = function (output) {
+  (+output).toFixed(2);
+};
 
-module.exports = (model, channels) => {
+module.exports = function (model, channels) {
   var components = null;
 
-  var connect = (parentDomEl) => {
+  var connect = function (parentDomEl) {
     var container = document.createElement("div");
     var table = document.createElement("table");
     var componentParams = {
@@ -110,8 +114,10 @@ module.exports = (model, channels) => {
 
   return {
     connect,
-    render: (type) => {
-      components.forEach((component) => component.render());
+    render: function (type) {
+      components.forEach(function (component) {
+        component.render();
+      });
       if (!type) {
         return;
       }

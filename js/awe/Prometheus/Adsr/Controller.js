@@ -7,16 +7,16 @@ module.exports = function () {
   var channels = {};
   var view = View(model, channels);
 
-  channels.a = (value) => {
+  channels.a = function (value) {
     model.getModel().a = +value;
   };
-  channels.d = (value) => {
+  channels.d = function (value) {
     model.getModel().d = +value;
   };
-  channels.s = (value) => {
+  channels.s = function (value) {
     model.getModel().s = +value;
   };
-  channels.r = (value) => {
+  channels.r = function (value) {
     model.getModel().r = +value;
   };
 
@@ -24,7 +24,7 @@ module.exports = function () {
     var gain = audioContext.createGain();
     var startTime = audioContext.currentTime;
 
-    var noteFinishThenStopOsc = (oscillator) => {
+    var noteFinishThenStopOsc = function (oscillator) {
       var timeElapsed = audioContext.currentTime - startTime;
       var currentGain = 0;
       var releaseTime;
@@ -44,7 +44,9 @@ module.exports = function () {
       gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
         releaseTime);
 
-      window.setTimeout(() => oscillator.stop(), 1000 * releaseTime + 50);
+      window.setTimeout(function () {
+        oscillator.stop();
+      }, 1000 * releaseTime + 50);
     };
 
     gain.gain.setValueAtTime(0, audioContext.currentTime);
@@ -56,7 +58,9 @@ module.exports = function () {
       model.getModel().d);
 
     return {
-      connect: (node) => gain.connect(node),
+      connect: function (node) {
+        gain.connect(node);
+      },
       destination: gain,
       noteFinishThenStopOsc
     };

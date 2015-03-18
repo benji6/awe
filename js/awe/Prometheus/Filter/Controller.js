@@ -8,20 +8,20 @@ module.exports = function () {
   var view = View(model, channels);
   var filter = audioContext.createBiquadFilter();
 
-  channels.frequency = (value) => {
+  channels.frequency = function (value) {
     filter.frequency.value = model.getModel().frequency = +value;
   };
 
-  channels.q = (value) => {
+  channels.q = function (value) {
     filter.Q.value = model.getModel().q = +value;
   };
 
-  channels.type = (value) => {
+  channels.type = function (value) {
     filter.type = model.getModel().type = value;
     view.render(value);
   };
 
-  channels.gain = (value) => {
+  channels.gain = function (value) {
     filter.gain.value = model.getModel().gain = +value;
   };
 
@@ -32,7 +32,9 @@ module.exports = function () {
   filter.gain.value = currentModelState.gain;
 
   return {
-    connect: (node) => filter.connect(node),
+    connect: function (node) {
+      filter.connect(node);
+    },
     destination: filter,
     model,
     view
