@@ -14,12 +14,8 @@ var view = View(pluginName);
 module.exports = function () {
   var adsr = Adsr();
   var filter = Filter();
-  var masterGain = Gain();
-  var masterPanner = Panner();
 
   var audioGraphRouter = AudioGraphRouter();
-
-  masterPanner.connect(masterGain.destination);
 
   var oscillators = [
     "sine",
@@ -34,14 +30,12 @@ module.exports = function () {
   oscillators.forEach(function (oscillator) {
     oscillator.connect(filter.destination);
   });
-  filter.connect(masterPanner.destination);
+  filter.connect(audioGraphRouter.destination);
 
   var connectViewTo = function (master) {
     return function (parentDomElement) {
       var synthParentView = view.connectViewTo(parentDomElement);
-
-      masterGain.view.connect(synthParentView);
-      masterPanner.view.connect(synthParentView);
+      audioGraphRouter.connectView(synthParentView);
 
       menu.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
@@ -53,7 +47,7 @@ module.exports = function () {
   };
 
   var connect = function (node) {
-    masterGain.connect(node);
+    audioGraphRouter.connect(node);
   };
 
   return {
