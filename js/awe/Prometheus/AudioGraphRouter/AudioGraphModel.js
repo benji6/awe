@@ -6,6 +6,10 @@ var createDefaultModel = function () {
     {
       type: "stereoPanner",
       connections: [0]
+    },
+    {
+      type: "filter",
+      connections: [1]
     }
   ];
 };
