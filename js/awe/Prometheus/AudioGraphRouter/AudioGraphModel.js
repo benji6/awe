@@ -14,22 +14,38 @@ var createDefaultModel = function () {
     {
       params: "square",
       type: "oscillator",
-      connections: [2]
+      connections: [2],
+      eventListeners: [
+        "noteStart",
+        "noteFinish"
+      ]
     },
     {
       params: "square",
       type: "oscillator",
-      connections: [2]
+      connections: [2],
+      eventListeners: [
+        "noteStart",
+        "noteFinish"
+      ]
     },
     {
       params: "square",
       type: "oscillator",
-      connections: [2]
+      connections: [2],
+      eventListeners: [
+        "noteStart",
+        "noteFinish"
+      ]
     },
     {
       params: "square",
       type: "oscillator",
-      connections: [2]
+      connections: [2],
+      eventListeners: [
+        "noteStart",
+        "noteFinish"
+      ]
     }
   ];
 };

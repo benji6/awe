@@ -4,11 +4,27 @@ var TypeToNodeFactoryMap = require('./TypeToNodeFactoryMap.js');
 module.exports = function () {
   var audioGraphModel = AudioGraphModel();
 
+  var eventListeners = {
+    noteStart: [],
+    noteStop: []
+  };
+
   var nodes = audioGraphModel.model.map(function (modelNode) {
     return TypeToNodeFactoryMap[modelNode.type](modelNode.params);
   });
 
   audioGraphModel.model.forEach(function (modelNode, index, array) {
+    if (modelNode.eventListeners) {
+      modelNode.eventListeners.forEach(function (event) {
+        switch (event) {
+          case "noteStart":
+            eventListeners.noteStart.push(nodes[index]);
+          case "noteStop":
+            eventListeners.noteStop.push(nodes[index]);
+          }
+      });
+    }
+
     if (modelNode.connections) {
       modelNode.connections.forEach(function (connection) {
         nodes[index].connect(nodes[connection].destination);
@@ -26,13 +42,27 @@ module.exports = function () {
     });
   };
 
-  var noteStart = function (freq) {
-    nodes[nodes.length - 1].noteStart(freq);
-  };
+  var noteStart = (function () {
+    var listeners = eventListeners.noteStop;
+    var i;
 
-  var noteStop = function (freq) {
-    nodes[nodes.length - 1].noteStop(freq);
-  };
+    return function (freq) {
+      for (i = 0; i < listeners.length; i++) {
+        listeners[i].noteStart(freq);
+      }
+    };
+  }());
+
+  var noteStop = (function () {
+    var listeners = eventListeners.noteStop;
+    var i;
+
+    return function (freq) {
+      for (i = 0; i < listeners.length; i++) {
+        listeners[i].noteStop(freq);
+      }
+    };
+  }());
 
   return {
     connect,
