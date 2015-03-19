@@ -35,7 +35,10 @@ const oscillatorParams = [
   "panning"
 ];
 
-module.exports = function (adsr, type) {
+module.exports = function (/*adsr, */type) {
+  //hackhackhack
+  var adsr = require('../Adsr/Controller.js')();
+
   var model = Model(type);
   var channels = {};
   var view = View(model, channels, type);
@@ -104,7 +107,7 @@ module.exports = function (adsr, type) {
     newNote(freq);
   };
 
-  var noteFinish = (freq) => {
+  var noteStop = (freq) => {
     var oscillator = activeNotes[freq];
     if (!oscillator) {
       return;
@@ -116,7 +119,7 @@ module.exports = function (adsr, type) {
   return {
     connect,
     model,
-    noteFinish,
+    noteStop,
     noteStart,
     view
   };

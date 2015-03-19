@@ -1,5 +1,4 @@
 var AudioGraphRouter = require('./AudioGraphRouter/Controller.js');
-var Oscillator = require('./Oscillator/Controller.js');
 var Adsr = require('./Adsr/Controller.js');
 var Menu = require('./Menu/Controller.js');
 var View = require('./View.js');
@@ -12,19 +11,7 @@ module.exports = function () {
 
   var audioGraphRouter = AudioGraphRouter();
 
-  var oscillators = [
-    "sine",
-    "square",
-    "sawtooth",
-    "triangle"
-  ].map(function (type) {
-    return Oscillator(adsr, type);
-  });
-  var menu = Menu(pluginName, [adsr].concat(oscillators));
-
-  oscillators.forEach(function (oscillator) {
-    oscillator.connect(audioGraphRouter.destination);
-  });
+  var menu = Menu(pluginName, [adsr]);
 
   var connectViewTo = function (master) {
     return function (parentDomElement) {
@@ -33,9 +20,6 @@ module.exports = function () {
 
       menu.view.connectTo(synthParentView);
       adsr.view.connectTo(synthParentView);
-      oscillators.forEach(function (oscillator) {
-        oscillator.view.connectTo(synthParentView);
-      });
     };
   };
 
@@ -45,14 +29,10 @@ module.exports = function () {
 
   return {
     channelStart: function (freq) {
-      oscillators.forEach(function (oscillator) {
-        oscillator.noteStart(freq);
-      });
+      audioGraphRouter.noteStart(freq);
     },
     channelStop: function (freq) {
-      oscillators.forEach(function (oscillator) {
-        oscillator.noteFinish(freq);
-      });
+      audioGraphRouter.noteStop(freq);
     },
     connect,
     connectViewTo: connectViewTo(document.body)

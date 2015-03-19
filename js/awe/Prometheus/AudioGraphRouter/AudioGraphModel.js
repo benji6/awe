@@ -10,6 +10,26 @@ var createDefaultModel = function () {
     {
       type: "filter",
       connections: [1]
+    },
+    {
+      params: "square",
+      type: "oscillator",
+      connections: [2]
+    },
+    {
+      params: "square",
+      type: "oscillator",
+      connections: [2]
+    },
+    {
+      params: "square",
+      type: "oscillator",
+      connections: [2]
+    },
+    {
+      params: "square",
+      type: "oscillator",
+      connections: [2]
     }
   ];
 };
@@ -26,8 +46,8 @@ module.exports = function (controller) {
   };
 
   return {
-    model,
     init,
+    model,
     setModel
   };
 };

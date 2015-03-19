@@ -8,7 +8,7 @@ var formatOutput = (output) => (+output).toFixed(2);
 module.exports = (model, channels, type) => {
   var components = [];
 
-  var connectTo = (parentDomEl) => {
+  var connect = (parentDomEl) => {
     var tables = [];
 
     var table = document.createElement("table");
@@ -62,7 +62,7 @@ module.exports = (model, channels, type) => {
   };
 
   return {
-    connectTo,
+    connect,
     render: () => components.forEach((component) => component.render())
   };
 };

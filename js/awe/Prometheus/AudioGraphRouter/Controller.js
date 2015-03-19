@@ -4,8 +4,8 @@ var TypeToNodeFactoryMap = require('./TypeToNodeFactoryMap.js');
 module.exports = function () {
   var audioGraphModel = AudioGraphModel();
 
-  var nodes = audioGraphModel.model.map(function (node) {
-    return TypeToNodeFactoryMap[node.type]();
+  var nodes = audioGraphModel.model.map(function (modelNode) {
+    return TypeToNodeFactoryMap[modelNode.type](modelNode.params);
   });
 
   audioGraphModel.model.forEach(function (modelNode, index, array) {
@@ -26,9 +26,18 @@ module.exports = function () {
     });
   };
 
+  var noteStart = function (freq) {
+    nodes[nodes.length - 1].noteStart(freq);
+  };
+
+  var noteStop = function (freq) {
+    nodes[nodes.length - 1].noteStop(freq);
+  };
+
   return {
     connect,
     connectView,
-    destination: nodes[nodes.length - 1].destination
+    noteStart,
+    noteStop
   };
 };
