@@ -53,11 +53,10 @@ module.exports = function (type) {
     var masterGain = Gain(model.getModel().volume);
     var panner = Panner(model.getModel().panning);
 
-    oscillator.detune.value = 100 * model.getModel().tune +
-      model.getModel().detune;
+    oscillator.detune.value = 100 * model.getModel().tune + model.getModel().detune;
     oscillator.connect(panner);
-    adsrNode.connect(masterGain);
-    panner.connect(adsrNode.destination);
+    adsrNode.connect(masterGain.gain);
+    panner.connect(masterGain);
 
     channels.volume = (volume) => {
       masterGain.gain.value = model.getModel().volume = +volume;
@@ -81,7 +80,6 @@ module.exports = function (type) {
     };
 
     return {
-      adsrNode,
       masterGain,
       oscillator
     };
@@ -109,7 +107,7 @@ module.exports = function (type) {
     if (!oscillator) {
       return;
     }
-    oscillator.adsrNode.noteFinishThenStopOsc(oscillator.oscillator);
+    oscillator.oscillator.stop();
     activeNotes[freq] = null;
   };
 

@@ -2,6 +2,17 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
+var bufferSource = (function () {
+  var bufferSource = audioContext.createBufferSource();
+  var buffer = audioContext.createBuffer(1, 2, audioContext.sampleRate);
+  buffer.getChannelData(0).set(new Float32Array([1,1]));
+  bufferSource.buffer = buffer;
+  bufferSource.loop = true;
+  bufferSource.start();
+
+  return bufferSource;
+}());
+
 module.exports = function () {
   var model = Model();
   var channels = {};
@@ -20,51 +31,43 @@ module.exports = function () {
     model.getModel().r = +value;
   };
 
-  var createNode = function () {
-    var gain = audioContext.createGain();
-    var startTime = audioContext.currentTime;
+  var gain = audioContext.createGain();
+  bufferSource.connect(gain);
+  var startTime = audioContext.currentTime;
 
-    var noteFinishThenStopOsc = function (oscillator) {
-      var timeElapsed = audioContext.currentTime - startTime;
-      var currentGain = 0;
-      var releaseTime;
+  var noteFinishThenStopOsc = function (oscillator) {
+    var timeElapsed = audioContext.currentTime - startTime;
+    var currentGain = 0;
+    var releaseTime;
 
-      if (timeElapsed < model.getModel().a) {
-        currentGain = timeElapsed / model.getModel().a;
-      } else if (timeElapsed < model.getModel().a + model.getModel().d) {
-        currentGain = 1 - (1 - model.getModel().s) *
-          (timeElapsed - model.getModel().a) / model.getModel().d;
-      } else {
-        currentGain = model.getModel().s;
-      }
+    if (timeElapsed < model.getModel().a) {
+      currentGain = timeElapsed / model.getModel().a;
+    } else if (timeElapsed < model.getModel().a + model.getModel().d) {
+      currentGain = 1 - (1 - model.getModel().s) *
+        (timeElapsed - model.getModel().a) / model.getModel().d;
+    } else {
+      currentGain = model.getModel().s;
+    }
 
-      releaseTime = model.getModel().r * currentGain;
-      gain.gain.cancelScheduledValues(audioContext.currentTime);
-      gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime +
-        releaseTime);
+    releaseTime = model.getModel().r * currentGain;
+    gain.gain.cancelScheduledValues(audioContext.currentTime);
+    gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
+    gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
 
-      window.setTimeout(function () {
-        oscillator.stop();
-      }, 1000 * releaseTime + 50);
-    };
-
-    gain.gain.setValueAtTime(0, audioContext.currentTime);
-    gain.gain.linearRampToValueAtTime(1, audioContext.currentTime +
-      model.getModel().a);
-    gain.gain.linearRampToValueAtTime(model.getModel().s,
-      audioContext.currentTime +
-      model.getModel().a +
-      model.getModel().d);
-
-    return {
-      connect: function (node) {
-        gain.connect(node);
-      },
-      destination: gain,
-      noteFinishThenStopOsc
-    };
+    window.setTimeout(function () {
+      oscillator.stop();
+    }, 1000 * releaseTime + 50);
   };
 
-  return createNode();
+  gain.gain.setValueAtTime(0, audioContext.currentTime);
+  gain.gain.linearRampToValueAtTime(1, audioContext.currentTime + model.getModel().a);
+  gain.gain.linearRampToValueAtTime(model.getModel().s,
+    audioContext.currentTime + model.getModel().a + model.getModel().d);
+
+  return {
+    connect: function (node) {
+      gain.connect(node);
+    },
+    noteFinishThenStopOsc
+  };
 };
