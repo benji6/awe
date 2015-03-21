@@ -35,10 +35,7 @@ const oscillatorParams = [
   "panning"
 ];
 
-module.exports = function (/*adsr, */type) {
-  //hackhackhack
-  var adsr = require('../Adsr/Controller.js')();
-
+module.exports = function (type) {
   var model = Model(type);
   var channels = {};
   var view = View(model, channels, type);
@@ -52,7 +49,7 @@ module.exports = function (/*adsr, */type) {
 
   var createOscillator = function () {
     var oscillator = Oscillator(type);
-    var adsrNode = adsr.createNode();
+    var adsrNode = require('../Adsr/Controller.js')();
     var masterGain = Gain(model.getModel().volume);
     var panner = Panner(model.getModel().panning);
 

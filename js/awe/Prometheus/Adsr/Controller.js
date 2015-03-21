@@ -66,10 +66,5 @@ module.exports = function () {
     };
   };
 
-  return {
-    createNode,
-    model,
-    view,
-    channels
-  };
+  return createNode();
 };
