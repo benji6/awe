@@ -64,10 +64,11 @@ module.exports = function () {
   gain.gain.linearRampToValueAtTime(model.getModel().s,
     audioContext.currentTime + model.getModel().a + model.getModel().d);
 
+  var connect = function (node) {
+    gain.connect(node);
+  };
+
   return {
-    connect: function (node) {
-      gain.connect(node);
-    },
-    noteFinishThenStopOsc
+    connect
   };
 };

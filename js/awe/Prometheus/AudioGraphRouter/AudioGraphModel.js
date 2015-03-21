@@ -1,4 +1,9 @@
 var createDefaultModel = function () {
+  var eventListeners = [
+    "noteStart",
+    "noteFinish"
+  ];
+
   return [
     {
       type: "gain"
@@ -16,49 +21,52 @@ var createDefaultModel = function () {
       }
     },
     {
-      params: "square",
-      type: "oscillator",
       connections: {
         2: "input"
       },
-      eventListeners: [
-        "noteStart",
-        "noteFinish"
-      ]
+      eventListeners,
+      inputs: {
+        gain: 7
+      },
+      params: "square",
+      type: "oscillator"
     },
     {
-      params: "square",
-      type: "oscillator",
       connections: {
         2: "input"
       },
-      eventListeners: [
-        "noteStart",
-        "noteFinish"
-      ]
+      eventListeners,
+      inputs: {
+        gain: 7
+      },
+      params: "square",
+      type: "oscillator"
     },
     {
-      params: "square",
-      type: "oscillator",
       connections: {
         2: "input"
       },
-      eventListeners: [
-        "noteStart",
-        "noteFinish"
-      ]
+      eventListeners,
+      inputs: {
+        gain: 7
+      },
+      params: "square",
+      type: "oscillator"
     },
     {
-      params: "square",
-      type: "oscillator",
       connections: {
         2: "input"
       },
-      eventListeners: [
-        "noteStart",
-        "noteFinish"
-      ]
-    }
+      eventListeners,
+      inputs: {
+        gain: 7
+      },
+      params: "square",
+      type: "oscillator"
+    },
+    // {
+    //   type: "adsr"
+    // }
   ];
 };
 
