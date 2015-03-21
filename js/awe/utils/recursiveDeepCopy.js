@@ -1,7 +1,7 @@
 // not currently used
 
 module.exports = function (obj) {
-  if (typeof obj === 'object') {
+  if (typeof obj === 'object' && obj !== null) {
     var newObj;
     if (Array.isArray(obj)) {
       newObj = [];
