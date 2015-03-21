@@ -5,16 +5,22 @@ var createDefaultModel = function () {
     },
     {
       type: "stereoPanner",
-      connections: [0]
+      connections: {
+        0: "input"
+      }
     },
     {
       type: "filter",
-      connections: [1]
+      connections: {
+        1: "input"
+      }
     },
     {
       params: "square",
       type: "oscillator",
-      connections: [2],
+      connections: {
+        2: "input"
+      },
       eventListeners: [
         "noteStart",
         "noteFinish"
@@ -23,7 +29,9 @@ var createDefaultModel = function () {
     {
       params: "square",
       type: "oscillator",
-      connections: [2],
+      connections: {
+        2: "input"
+      },
       eventListeners: [
         "noteStart",
         "noteFinish"
@@ -32,7 +40,9 @@ var createDefaultModel = function () {
     {
       params: "square",
       type: "oscillator",
-      connections: [2],
+      connections: {
+        2: "input"
+      },
       eventListeners: [
         "noteStart",
         "noteFinish"
@@ -41,7 +51,9 @@ var createDefaultModel = function () {
     {
       params: "square",
       type: "oscillator",
-      connections: [2],
+      connections: {
+        2: "input"
+      },
       eventListeners: [
         "noteStart",
         "noteFinish"

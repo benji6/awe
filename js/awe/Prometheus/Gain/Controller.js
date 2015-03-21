@@ -13,7 +13,7 @@ module.exports = function () {
   var model = Model(controllerChannel);
   var view = View(model, controllerChannel);
   var gain = GainNode(model.getModel().gain);
-  
+
   controllerChannel.gain = function (value) {
     gain.gain.value = model.getModel().gain = +value;
   };
@@ -22,11 +22,13 @@ module.exports = function () {
     gain.connect(node);
   };
 
-  var destination = gain;
+  var destinations = {
+    input: gain
+  };
 
   return {
     connect,
-    destination,
+    destinations,
     model,
     view
   };

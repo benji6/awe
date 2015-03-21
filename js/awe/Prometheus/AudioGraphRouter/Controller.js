@@ -14,8 +14,11 @@ module.exports = function () {
   });
 
   audioGraphModel.model.forEach(function (modelNode, index, array) {
-    if (modelNode.eventListeners) {
-      modelNode.eventListeners.forEach(function (event) {
+    var modelNodeEventListeners = modelNode.eventListeners;
+    var connections = modelNode.connections;
+
+    if (modelNodeEventListeners) {
+      modelNodeEventListeners.forEach(function (event) {
         switch (event) {
           case "noteStart":
             eventListeners.noteStart.push(nodes[index]);
@@ -25,9 +28,10 @@ module.exports = function () {
       });
     }
 
-    if (modelNode.connections) {
-      modelNode.connections.forEach(function (connection) {
-        nodes[index].connect(nodes[connection].destination);
+    if (connections) {
+      Object.keys(connections).forEach(function (connectionKey) {
+        var connectionValue = connections[connectionKey];
+        nodes[index].connect(nodes[connectionKey].destinations[connectionValue]);
       });
     }
   });

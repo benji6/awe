@@ -31,11 +31,15 @@ module.exports = function () {
   filter.Q.value = currentModelState.q;
   filter.gain.value = currentModelState.gain;
 
+  var destinations = {
+    input: filter,
+  };
+
   return {
     connect: function (node) {
       filter.connect(node);
     },
-    destination: filter,
+    destinations,
     model,
     view
   };

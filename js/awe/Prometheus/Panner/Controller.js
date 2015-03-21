@@ -30,9 +30,13 @@ module.exports = function () {
     panner.connect(node);
   };
 
+  var destinations = {
+    input: panner
+  };
+
   return {
     connect,
-    destination: panner,
+    destinations,
     model,
     view
   };
