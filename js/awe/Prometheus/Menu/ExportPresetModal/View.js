@@ -8,7 +8,9 @@ module.exports = function (model, channels) {
   var jsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -23,7 +25,9 @@ module.exports = function (model, channels) {
       },
       {
         tag: "output",
-        callback: (element) => presetDataView = element
+        callback: function (element) {
+          presetDataView = element;
+        }
       },
       {
         tag: "hr"
@@ -31,9 +35,11 @@ module.exports = function (model, channels) {
       {
         tag: "button",
         text: "OK",
-        callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
+        callback: function (element) {
+          element.onclick = function () {
+            container.className = "hidden";
+          };
+        }
       }
     ]
   };

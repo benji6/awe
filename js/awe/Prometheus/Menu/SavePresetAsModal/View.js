@@ -7,7 +7,7 @@ module.exports = function (model, channels) {
   var saveButton = null;
   var overwriteButton = null;
 
-  var displayOverwriteState = (response) => {
+  var displayOverwriteState = function (response) {
     saveButton.className = "hidden";
     overwriteButton.className = "";
     input.disabled = true;
@@ -24,7 +24,9 @@ module.exports = function (model, channels) {
   var jsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -33,20 +35,24 @@ module.exports = function (model, channels) {
       {
         tag: "input",
         placeholder: "Input Preset Name",
-        callback: (element) => input = element
+        callback: function (element) {
+          input = element;
+        }
       },
       {
         tag: "div",
         className: "margin",
         children: {
           tag: "output",
-          callback: (element) => message = element
+          callback: function (element) {
+            message = element;
+          }
         }
       },
       {
         tag: "button",
         text: "Save",
-        callback: (element) => {
+        callback: function (element) {
           saveButton = element;
           element.onclick = function () {
             if (input.value === "") {
@@ -69,7 +75,7 @@ module.exports = function (model, channels) {
         tag: "button",
         text: "Overwrite",
         className: "hidden",
-        callback: (element) => {
+        callback: function (element) {
           overwriteButton = element;
           element.onclick = function () {
             channels.overwritePreset(input.value);
@@ -81,16 +87,19 @@ module.exports = function (model, channels) {
       {
         tag: "button",
         text: "Cancel",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             container.className = "hidden";
             displaySaveState();
-          }
+          };
+        }
       }
     ]
   };
 
-  var open = () => container.className = "modalWindow";
+  var open = function () {
+    container.className = "modalWindow";
+  };
 
   return {
     jsml,

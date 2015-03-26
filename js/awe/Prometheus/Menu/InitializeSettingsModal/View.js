@@ -7,7 +7,9 @@ module.exports = function (channels) {
   var jsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -20,23 +22,28 @@ module.exports = function (channels) {
       {
         tag: "button",
         text: "Initialize",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             channels.initialize();
             container.className = "hidden";
-          }
+          };
+        }
       },
       {
         tag: "button",
         text: "Cancel",
-        callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
+        callback: function (element) {
+          element.onclick = function () {
+            container.className = "hidden";
+          };
+        }
       }
     ]
   };
 
-  var open = () => container.className = "modalWindow";
+  var open = function () {
+    container.className = "modalWindow";
+  };
 
   return {
     jsml,

@@ -25,7 +25,9 @@ module.exports = function (model, channels) {
   var modalJsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -33,7 +35,9 @@ module.exports = function (model, channels) {
       },
       {
         tag: "select",
-        callback: (element) => select = element
+        callback: function (element) {
+          select = element;
+        }
       },
       {
         tag: "div",
@@ -41,13 +45,15 @@ module.exports = function (model, channels) {
         children: {
           tag: "output",
           value: defaultMessage,
-          callback: (element) => message = element
+          callback: function (element) {
+            message = element;
+          }
         }
       },
       {
         tag: "button",
         text: "Delete",
-        callback: (element) => {
+        callback: function (element) {
           deleteButton = element;
           element.onclick = function () {
             if (select.value === '') {
@@ -61,7 +67,7 @@ module.exports = function (model, channels) {
         tag: "button",
         text: "Confirm Delete",
         className: "hidden",
-        callback: (element) => {
+        callback: function (element) {
           confirmButton = element;
           element.onclick = function () {
             channels.deletePreset(select.value);
@@ -74,20 +80,21 @@ module.exports = function (model, channels) {
       {
         tag: "button",
         text: "Cancel",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             container.className = "hidden";
             enterDeleteState();
-          }
+          };
+        }
       }
     ]
   };
 
-  var populatePresets = (presets) => {
+  var populatePresets = function (presets) {
     var jsml = null;
 
     if (presets && presets.length) {
-      jsml = presets.map((preset) => {
+      jsml = presets.map(function (preset) {
         return {
           tag: "option",
           value: preset,
@@ -111,7 +118,9 @@ module.exports = function (model, channels) {
     jsmlParse(jsml, select);
   };
 
-  var open = () => container.className = "modalWindow";
+  var open = function () {
+    return container.className = "modalWindow";
+  };
 
   return {
     jsml: modalJsml,

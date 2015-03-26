@@ -9,7 +9,9 @@ module.exports = function (channels) {
   var jsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -18,7 +20,9 @@ module.exports = function (channels) {
       {
         tag: "input",
         placeholder: "Paste preset data here",
-        callback: (element) => input = element
+        callback: function (element) {
+          input = element;
+        }
       },
       {
         tag: "div",
@@ -26,13 +30,15 @@ module.exports = function (channels) {
         children: {
           tag: "output",
           value: defaultMessage,
-          callback: (element) => message = element
+          callback: function (element) {
+            message = element;
+          }
         }
       },
       {
         tag: "button",
         text: "Import",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             var response = channels.importPreset(input.value);
 
@@ -43,21 +49,25 @@ module.exports = function (channels) {
             container.className = "hidden";
             message.value = defaultMessage;
             input.value = '';
-          }
+          };
+        }
       },
       {
         tag: "button",
         text: "Cancel",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             container.className = "hidden";
             message.value = defaultMessage;
-          }
+          };
+        }
       }
     ]
   };
 
-  var open = () => container.className = "modalWindow";
+  var open = function () {
+    container.className = "modalWindow";
+  };
 
   return {
     jsml,

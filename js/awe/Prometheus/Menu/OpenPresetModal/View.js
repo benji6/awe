@@ -7,7 +7,9 @@ module.exports = function (model, channels) {
   var modalJsml = {
     tag: "div",
     className: "hidden",
-    callback: (element) => container = element,
+    callback: function (element) {
+      container = element;
+    },
     children: [
       {
         tag: "h3",
@@ -15,32 +17,37 @@ module.exports = function (model, channels) {
       },
       {
         tag: "select",
-        callback: (element) => select = element
+        callback: function (element) {
+          select = element;
+        }
       },
       {
         tag: "button",
         text: "Open",
-        callback: (element) =>
+        callback: function (element) {
           element.onclick = function () {
             channels.openPreset(select.value);
             container.className = "hidden";
-          }
+          };
+        }
       },
       {
         tag: "button",
         text: "Cancel",
-        callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
+        callback: function (element) {
+          element.onclick = function () {
+            container.className = "hidden";
+          };
+        }
       }
     ]
   };
 
-  var populatePresets = (presets) => {
+  var populatePresets = function (presets) {
     var jsml = null;
 
     if (presets && presets.length) {
-      jsml = presets.map((preset) => {
+      jsml = presets.map(function (preset) {
         return {
           tag: "option",
           value: preset,
@@ -64,7 +71,9 @@ module.exports = function (model, channels) {
     jsmlParse(jsml, select);
   };
 
-  var open = () => container.className = "modalWindow";
+  var open = function () {
+    container.className = "modalWindow";
+  };
 
   return {
     jsml: modalJsml,
