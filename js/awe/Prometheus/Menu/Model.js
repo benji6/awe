@@ -1,6 +1,6 @@
 var defaultPresets = require('./defaultPresets/model.js');
 
-module.exports = (pluginName) => {
+module.exports = function (pluginName) {
   var getPresets = function () {
     if (!localStorage[pluginName]) {
       return;
@@ -10,14 +10,14 @@ module.exports = (pluginName) => {
     });
   };
 
-  var getPreset = (key) => {
+  var getPreset = function (key) {
     if (!localStorage[pluginName]) {
       return;
     }
     return JSON.parse(localStorage.getItem(pluginName))[key];
   };
 
-  var hasPresetKey = (key) => {
+  var hasPresetKey = function (key) {
     if (!localStorage[pluginName]) {
       return false;
     }
@@ -35,7 +35,7 @@ module.exports = (pluginName) => {
     localStorage.setItem(pluginName, JSON.stringify(storedData));
   };
 
-  var deletePreset = (key) => {
+  var deletePreset = function (key) {
     if (!localStorage[pluginName]) {
       return;
     }
@@ -45,7 +45,7 @@ module.exports = (pluginName) => {
     localStorage.setItem(pluginName, JSON.stringify(storedData));
   };
 
-  Object.keys(defaultPresets).forEach((key) => {
+  Object.keys(defaultPresets).forEach(function (key) {
     savePreset(key, defaultPresets[key]);
   });
 

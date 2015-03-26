@@ -1,4 +1,4 @@
-module.exports = (type) => {
+module.exports = function (type) {
   var createDefaultModel = function () {
     return {
       name: type,
@@ -10,13 +10,19 @@ module.exports = (type) => {
   };
 
   var model;
-  var init = () => model = createDefaultModel();
+  var init = function () {
+    return model = createDefaultModel();
+  };
 
   init();
 
   return {
-    getModel: () => model,
+    getModel: function () {
+      return model;
+    },
     init,
-    setModel: (newModel) => model = newModel
+    setModel: function (newModel) {
+      return model = newModel;
+    }
   };
 };

@@ -16,6 +16,7 @@ module.exports = function () {
   audioGraphModel.model.forEach(function (modelNode, index, array) {
     var modelNodeEventListeners = modelNode.eventListeners;
     var connections = modelNode.connections;
+    var inputs = modelNode.inputs;
 
     if (modelNodeEventListeners) {
       modelNodeEventListeners.forEach(function (event) {
@@ -32,6 +33,13 @@ module.exports = function () {
       Object.keys(connections).forEach(function (connectionKey) {
         var connectionValue = connections[connectionKey];
         nodes[index].connect(nodes[connectionKey].destinations[connectionValue]);
+      });
+    }
+
+    if (inputs) {
+      Object.keys(inputs).forEach(function (key) {
+        var value = inputs[key];
+        nodes[index].inputs[key](nodes[value]);
       });
     }
   });

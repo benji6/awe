@@ -31,38 +31,44 @@ module.exports = function (model, channels) {
               {
                 tag: "li",
                 text: "Open Preset",
-                callback: (element) =>
-                  element.onclick = openPresetModal.open
+                callback: function (element) {
+                  element.onclick = openPresetModal.open;
+                }
               },
               {
                 tag: "li",
                 text: "Save Preset As",
-                callback: (element) =>
-                  element.onclick = savePresetAsModal.open
+                callback: function (element) {
+                  element.onclick = savePresetAsModal.open;
+                }
               },
               {
                 tag: "li",
                 text: "Import Settings",
-                callback: (element) =>
-                  element.onclick = importPresetModal.open
+                callback: function (element) {
+                  element.onclick = importPresetModal.open;
+                }
               },
               {
                 tag: "li",
                 text: "Export Settings",
-                callback: (element) =>
-                  element.onclick = exportPresetModal.open
+                callback: function (element) {
+                  element.onclick = exportPresetModal.open;
+                }
               },
               {
                 tag: "li",
                 text: "Delete Preset",
-                callback: (element) =>
-                  element.onclick = deletePresetModal.open
+                callback: function (element) {
+                  element.onclick = deletePresetModal.open;
+                }
               },
               {
                 tag: "li",
                 text: "Initialize Settings",
-                callback: (element) =>
-                  element.onclick = initializeSettingsModal.open
+                callback: function (element) {
+                  element.onclick = initializeSettingsModal.open;
+                }
               },
             ]
           }
@@ -84,7 +90,7 @@ module.exports = function (model, channels) {
     deletePresetModal.populatePresets(presets);
   };
 
-  var connectTo = (parentDomElement) => {
+  var connectTo = function (parentDomElement) {
     jsmlParse(menuJsml, parentDomElement);
     populatePresets();
   };

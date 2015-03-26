@@ -2,13 +2,17 @@ var jsmlParse = require('jsml-parse');
 var createRangeControl = require('../../Components/createRangeControl.js');
 var extend = require('../../utils/extend.js');
 
-var capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-var formatOutput = (output) => (+output).toFixed(2);
+var capitalizeFirst = function (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+var formatOutput = function (output) {
+  return Number(output).toFixed(2);
+};
 
-module.exports = (model, channels, type) => {
+module.exports = function (model, channels, type) {
   var components = [];
 
-  var connect = (parentDomEl) => {
+  var connect = function (parentDomEl) {
     var tables = [];
 
     var table = document.createElement("table");
@@ -56,13 +60,17 @@ module.exports = (model, channels, type) => {
 
     tables.push(table);
 
-    tables.forEach((table) => {
+    tables.forEach(function (table) {
       parentDomEl.appendChild(table);
     });
   };
 
   return {
     connect,
-    render: () => components.forEach((component) => component.render())
+    render: function () {
+      return components.forEach(function (component) {
+        return component.render();
+      });
+    }
   };
 };

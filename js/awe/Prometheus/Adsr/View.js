@@ -9,7 +9,7 @@ var formatOutput = function (output) {
 module.exports = function (model, channels) {
   var components = null;
 
-  var connectTo = function (parentDomEl) {
+  var connect = function (parentDomEl) {
     var table = document.createElement("table");
 
     jsmlParse({
@@ -54,7 +54,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connectTo,
+    connect,
     render: function () {
       components.forEach(function (component) {
         component.render();

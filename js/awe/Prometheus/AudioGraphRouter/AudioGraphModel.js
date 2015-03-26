@@ -64,9 +64,9 @@ var createDefaultModel = function () {
       params: "square",
       type: "oscillator"
     },
-    // {
-    //   type: "adsr"
-    // }
+    {
+      type: "adsr"
+    }
   ];
 };
 
