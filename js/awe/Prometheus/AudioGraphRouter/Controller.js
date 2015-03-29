@@ -82,9 +82,9 @@ module.exports = function () {
   }());
 
   return {
-    connect,
-    connectView,
-    noteStart,
-    noteStop
+    connect: connect,
+    connectView: connectView,
+    noteStart: noteStart,
+    noteStop: noteStop
   };
 };

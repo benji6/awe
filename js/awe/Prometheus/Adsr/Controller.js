@@ -69,7 +69,7 @@ module.exports = function () {
   };
 
   return {
-    connect,
-    view
+    connect: connect,
+    view: view
   };
 };

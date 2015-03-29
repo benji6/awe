@@ -20,7 +20,7 @@ module.exports = function (type) {
     getModel: function () {
       return model;
     },
-    init,
+    init: init,
     setModel: function (newModel) {
       return model = newModel;
     }

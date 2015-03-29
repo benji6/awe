@@ -94,7 +94,7 @@ module.exports = function (params) {
   jsmlParse(jsml, params.parent);
 
   return {
-    render,
-    rootNode
+    render: render,
+    rootNode: rootNode
   };
 };

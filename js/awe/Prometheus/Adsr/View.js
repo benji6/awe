@@ -30,7 +30,7 @@ module.exports = function (model, channels) {
       min: 0,
       max: 1,
       observer: channels,
-      model
+      model: model
     };
 
     components = [
@@ -54,7 +54,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connect,
+    connect: connect,
     render: function () {
       components.forEach(function (component) {
         component.render();

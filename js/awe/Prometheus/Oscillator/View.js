@@ -35,7 +35,7 @@ module.exports = function (model, channels, type) {
       observer: channels,
       max: 1,
       min: 0,
-      model
+      model: model
     };
 
     components = components.concat([

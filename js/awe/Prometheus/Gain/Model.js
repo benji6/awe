@@ -21,8 +21,8 @@ module.exports = function (controllerChannel) {
   };
 
   return {
-    getModel,
-    init,
-    setModel
+    getModel: getModel,
+    init: init,
+    setModel: setModel
   };
 };

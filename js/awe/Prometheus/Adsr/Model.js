@@ -21,7 +21,7 @@ module.exports = function () {
     getModel: function () {
       return model;
     },
-    init,
+    init: init,
     setModel: function (newModel) {
       return model = newModel;
     }

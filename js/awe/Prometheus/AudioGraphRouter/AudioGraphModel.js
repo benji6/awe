@@ -24,7 +24,7 @@ var createDefaultModel = function () {
       connections: {
         2: "input"
       },
-      eventListeners,
+      eventListeners: eventListeners,
       inputs: {
         gain: 7
       },
@@ -35,7 +35,7 @@ var createDefaultModel = function () {
       connections: {
         2: "input"
       },
-      eventListeners,
+      eventListeners: eventListeners,
       inputs: {
         gain: 7
       },
@@ -46,7 +46,7 @@ var createDefaultModel = function () {
       connections: {
         2: "input"
       },
-      eventListeners,
+      eventListeners: eventListeners,
       inputs: {
         gain: 7
       },
@@ -57,7 +57,7 @@ var createDefaultModel = function () {
       connections: {
         2: "input"
       },
-      eventListeners,
+      eventListeners: eventListeners,
       inputs: {
         gain: 7
       },
@@ -82,8 +82,8 @@ module.exports = function (controller) {
   };
 
   return {
-    init,
-    model,
-    setModel
+    init: init,
+    model: model,
+    setModel: setModel
   };
 };

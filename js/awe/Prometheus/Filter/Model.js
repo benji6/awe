@@ -27,7 +27,7 @@ module.exports = function (channels) {
     getModel: function () {
       return model;
     },
-    init,
-    setModel
+    init: init,
+    setModel: setModel
   };
 };
