@@ -1,4 +1,4 @@
-var audioContext = require('../../audioContext');
+var audioContext = require('../../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 

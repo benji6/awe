@@ -1,7 +1,7 @@
 const createElement = require('virtual-dom/create-element');
 const h = require('virtual-dom/h');
 const R = require('ramda');
-const createRangeControl = require('../../Components/createRangeControl.js');
+const createRangeControl = require('../../../Components/createRangeControl.js');
 
 module.exports = function (model, channels) {
   const components = [];

@@ -1,4 +1,4 @@
-var audioContext = require('../../audioContext');
+var audioContext = require('../../../audioContext');
 var View = require('./View.js');
 var Adsr = require('../Adsr/Controller.js');
 

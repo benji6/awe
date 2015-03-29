@@ -1,6 +1,6 @@
 var jsmlParse = require('jsml-parse');
-var createRangeControl = require('../../Components/createRangeControl.js');
-var extend = require('../../utils/extend.js');
+var createRangeControl = require('../../../Components/createRangeControl.js');
+var extend = require('../../../utils/extend.js');
 
 var formatOutput = function (output) {
   return (+output).toFixed(2);

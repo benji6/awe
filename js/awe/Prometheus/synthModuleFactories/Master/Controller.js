@@ -1,4 +1,4 @@
-const audioContext = require('../../audioContext');
+const audioContext = require('../../../audioContext');
 const View = require('./View.js');
 
 const GainNode = function (volume) {

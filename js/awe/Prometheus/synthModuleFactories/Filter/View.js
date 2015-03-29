@@ -1,7 +1,7 @@
 var jsmlParse = require('jsml-parse');
-var extend = require('../../utils/extend.js');
-var createRangeControl = require('../../Components/createRangeControl.js');
-var createSelectControl = require('../../Components/createSelectControl.js');
+var extend = require('../../../utils/extend.js');
+var createRangeControl = require('../../../Components/createRangeControl.js');
+var createSelectControl = require('../../../Components/createSelectControl.js');
 
 var capitalizeFirst = function (str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

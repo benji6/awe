@@ -1,6 +1,6 @@
 module.exports = {
-  adsr: require('./Adsr/Controller.js'),
-  filter: require('./Filter/Controller.js'),
-  master: require('./Master/Controller.js'),
-  oscillator: require('./Oscillator/Controller.js')
+  adsr: require('./synthModuleFactories/Adsr/Controller.js'),
+  filter: require('./synthModuleFactories/Filter/Controller.js'),
+  master: require('./synthModuleFactories/Master/Controller.js'),
+  oscillator: require('./synthModuleFactories/Oscillator/Controller.js')
 };
