@@ -1,8 +1,11 @@
 const view = require('./view.js');
 const prometheus = require('./prometheus.js');
 const model = require('./defaultModels/basic.js');
+const Menu = require('./Menu/Controller.js');
 
 module.exports = function () {
+  //const menu = Menu();
+  //console.log(menu);
   const synth = prometheus(model);
 
   return {

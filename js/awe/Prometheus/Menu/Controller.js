@@ -1,14 +1,12 @@
 var View = require('./View.js');
-var Model = require('./Model.js');
 
 module.exports = function (pluginName, controllers) {
   var channels = {};
-  var model = Model(pluginName);
   var view = View(model, channels);
 
   var savePresetWithName = function (name) {
     var presetData = controllers.map(function (controller) {
-      return controller.model.getModel();
+      return controller.model;
     });
 
     model.savePreset(name, presetData);
@@ -18,7 +16,7 @@ module.exports = function (pluginName, controllers) {
   var loadPresetFromData = function (presetData) {
     presetData.forEach(function (presetObj) {
       var controller = controllers.filter(function (controller) {
-        return controller.model.getModel().name === presetObj.name;
+        return controller.model.name === presetObj.name;
       })[0];
       controller.model.setModel(presetObj);
       controller.view.render();
@@ -58,7 +56,7 @@ module.exports = function (pluginName, controllers) {
 
   channels.exportPreset = function () {
     return JSON.stringify(controllers.map(function (controller) {
-      return controller.model.getModel();
+      return controller.model;
     }));
   };
 
