@@ -70,13 +70,6 @@ module.exports = function (pluginName, controllers) {
     view.populatePresets();
   };
 
-  channels.initialize = function () {
-    controllers.forEach(function (controller) {
-      controller.model.init();
-      controller.view.render();
-    });
-  };
-
   return {
     view: view
   };

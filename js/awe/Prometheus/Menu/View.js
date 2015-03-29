@@ -5,7 +5,6 @@ var SavePresetAsModal = require('./SavePresetAsModal/View.js');
 var ImportPresetModal = require('./ImportPresetModal/View.js');
 var ExportPresetModal = require('./ExportPresetModal/View.js');
 var DeletePresetModal = require('./DeletePresetModal/View.js');
-var InitializeSettingsModal = require('./InitializeSettingsModal/View.js');
 
 module.exports = function (model, channels) {
   var openPresetModal = OpenPresetModal(model, channels);
@@ -13,7 +12,6 @@ module.exports = function (model, channels) {
   var importPresetModal = ImportPresetModal(channels);
   var exportPresetModal = ExportPresetModal(model, channels);
   var deletePresetModal = DeletePresetModal(model, channels);
-  var initializeSettingsModal = InitializeSettingsModal(channels);
 
   var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
 
@@ -62,14 +60,7 @@ module.exports = function (model, channels) {
                 callback: function (element) {
                   element.onclick = deletePresetModal.open;
                 }
-              },
-              {
-                tag: "li",
-                text: "Initialize Settings",
-                callback: function (element) {
-                  element.onclick = initializeSettingsModal.open;
-                }
-              },
+              }
             ]
           }
         }
@@ -79,8 +70,7 @@ module.exports = function (model, channels) {
     savePresetAsModal.jsml,
     importPresetModal.jsml,
     exportPresetModal.jsml,
-    deletePresetModal.jsml,
-    initializeSettingsModal.jsml
+    deletePresetModal.jsml
   ];
 
   var populatePresets = function () {

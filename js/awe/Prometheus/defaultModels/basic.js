@@ -38,7 +38,40 @@ module.exports = [
   //   }
   // },
   {
-    id: 4,
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    model: {
+      type: "saw",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
+  },
+  {
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    model: {
+      type: "sine",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
+  },
+  {
     type: "oscillator",
     connections: [
       {id: 1, destination: "destination"}
@@ -49,6 +82,23 @@ module.exports = [
     ],
     model: {
       type: "square",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
+  },
+  {
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    model: {
+      type: "triangle",
       detune: 0,
       panning: 0,
       tune: 0,
