@@ -1,5 +1,4 @@
 var audioContext = require('../../audioContext');
-var Model = require('./Model.js');
 var View = require('./View.js');
 var Adsr = require('../Adsr/Controller.js');
 
@@ -39,47 +38,46 @@ const oscillatorParams = [
   "panning"
 ];
 
-module.exports = function (params) {
-  const type = params.type;
-  var model = Model(type);
+module.exports = function (model) {
+  const type = model.type;
   var channels = {};
   var view = View(model, channels, type);
   var activeNotes = {};
 
   oscillatorParams.forEach(function (oscillatorParam) {
     channels[oscillatorParam] = function (value) {
-      model.getModel()[oscillatorParam] = +value;
+      model[oscillatorParam] = +value;
     };
   });
 
   var createOscillator = function () {
     var oscillator = Oscillator(type);
-    var masterGain = Gain(model.getModel().volume);
-    var panner = Panner(model.getModel().panning);
+    var masterGain = Gain(model.volume);
+    var panner = Panner(model.panning);
 
-    oscillator.detune.value = 100 * model.getModel().tune + model.getModel().detune;
+    oscillator.detune.value = 100 * model.tune + model.detune;
     oscillator.connect(panner);
     adsr.connect(masterGain.gain);
     panner.connect(masterGain);
 
     channels.volume = function (volume) {
-      masterGain.gain.value = model.getModel().volume = +volume;
+      masterGain.gain.value = model.volume = +volume;
     };
 
     channels.tune = function (value) {
-      model.getModel().tune = +value;
-      oscillator.detune.value = 100 * model.getModel().tune +
-      model.getModel().detune;
+      model.tune = +value;
+      oscillator.detune.value = 100 * model.tune +
+      model.detune;
     };
 
     channels.detune = function (cents) {
-      model.getModel().detune = +cents;
-      oscillator.detune.value = 100 * model.getModel().tune +
-      model.getModel().detune;
+      model.detune = +cents;
+      oscillator.detune.value = 100 * model.tune +
+      model.detune;
     };
 
     channels.panning = function (value) {
-      model.getModel().panning = +value;
+      model.panning = +value;
       setPannerPosition(panner, value);
     };
 
@@ -126,7 +124,7 @@ module.exports = function (params) {
   return {
     connect: connect,
     inputs: inputs,
-    id: params.id,
+    id: model.id,
     model: model,
     noteStop: noteStop,
     noteStart: noteStart,

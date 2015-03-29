@@ -37,10 +37,10 @@ module.exports = function (params) {
   var max = maybeLog(params.max);
   var min = maybeLog(params.min);
 
-  var modelValue = maybeLog(params.model.getModel()[params.name]);
+  var modelValue = maybeLog(params.model[params.name]);
 
   var render = function () {
-    var modelValue = params.model.getModel()[params.name];
+    var modelValue = params.model[params.name];
     input.value = maybeLog(modelValue);
     output.value = formatOutput(modelValue);
   };

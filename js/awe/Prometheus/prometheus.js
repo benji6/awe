@@ -7,13 +7,13 @@ module.exports = function (model) {
     noteStop: []
   };
 
-  const paramsWithIds = R.zipWith(function (id, params) {
-    return R.assoc("id", id, params);
-  }, R.pluck("id", model), R.pluck("params", model));
+  const nodeModelsWithIds = R.zipWith(function (id, nodeModel) {
+    return R.assoc("id", id, nodeModel);
+  }, R.pluck("id", model), R.pluck("model", model));
 
-  const nodes = R.zipWith(function (type, params) {
-    return typeToNodeFactoryMap[type](params);
-  }, R.pluck("type", model), paramsWithIds);
+  const nodes = R.zipWith(function (type, nodeModel) {
+    return typeToNodeFactoryMap[type](nodeModel);
+  }, R.pluck("type", model), nodeModelsWithIds);
 
   R.zipWith(function (node, connections) {
     R.forEach(function (connection) {
@@ -40,10 +40,9 @@ module.exports = function (model) {
 
   var noteStart = (function () {
     var listeners = eventListeners.noteStop;
-    var i;
 
     return function (freq) {
-      for (i = 0; i < listeners.length; i++) {
+      for (var i = 0; i < listeners.length; i++) {
         listeners[i].noteStart(freq);
       }
     };
@@ -51,10 +50,9 @@ module.exports = function (model) {
 
   var noteStop = (function () {
     var listeners = eventListeners.noteStop;
-    var i;
 
     return function (freq) {
-      for (i = 0; i < listeners.length; i++) {
+      for (var i = 0; i < listeners.length; i++) {
         listeners[i].noteStop(freq);
       }
     };

@@ -44,8 +44,12 @@ module.exports = [
       "noteStart",
       "noteStop"
     ],
-    params: {
-      type: "square"
+    model: {
+      type: "square",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.02
     }
   }
 ];
