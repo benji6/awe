@@ -1,4 +1,5 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
 var createRangeControl = require('../../Components/createRangeControl.js');
 var extend = require('../../utils/extend.js');
 
@@ -14,18 +15,12 @@ module.exports = function (model, channels, type) {
 
   var connect = function (parentDomEl) {
     const table = document.createElement("table");
-
-    jsmlParse({
-      tag: "thead",
-      children: {
-        tag: "tr",
-        children: {
-          tag: "th",
-          text: capitalizeFirst(type),
-          colspan: 2
-        }
-      }
-    }, table);
+    
+    table.appendChild(createElement(h("thead", [
+      h("tr", [
+        h("th", {attributes: {colspan: "2"}}, capitalizeFirst(type))
+      ])
+    ])));
 
     var componentParams = {
       parent: table,

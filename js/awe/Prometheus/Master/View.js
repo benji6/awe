@@ -12,7 +12,7 @@ module.exports = function (model, channels) {
 
     table.appendChild(createElement(h("thead", [
       h("tr", [
-        h("th", /*{colspan: 2}, */"Master")
+        h("th", {attributes: {colspan: "2"}}, "Master")
       ])
     ])));
 
