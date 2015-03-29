@@ -1,6 +1,6 @@
-var jsmlParse = require('jsml-parse');
+const jsmlParse = require('jsml-parse');
+const R = require('ramda');
 var createRangeControl = require('../../../Components/createRangeControl.js');
-var extend = require('../../../utils/extend.js');
 
 var formatOutput = function (output) {
   return (+output).toFixed(2);
@@ -35,15 +35,15 @@ module.exports = function (model, channels) {
 
     components = [
       createRangeControl(componentParams),
-      createRangeControl(extend({
+      createRangeControl(R.merge(componentParams, {
         name: "d"
-      }, componentParams)),
-      createRangeControl(extend({
+      })),
+      createRangeControl(R.merge(componentParams, {
         name: "s"
-      }, componentParams)),
-      createRangeControl(extend({
+      })),
+      createRangeControl(R.merge(componentParams, {
         name: "r"
-      }, componentParams))
+      }))
     ];
 
     var container = document.createElement("div");

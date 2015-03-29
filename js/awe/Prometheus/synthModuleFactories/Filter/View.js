@@ -1,5 +1,4 @@
 var jsmlParse = require('jsml-parse');
-var extend = require('../../../utils/extend.js');
 var createRangeControl = require('../../../Components/createRangeControl.js');
 var createSelectControl = require('../../../Components/createSelectControl.js');
 
@@ -56,17 +55,17 @@ module.exports = function (model, channels) {
         ]
       }),
       createRangeControl(componentParams),
-      createRangeControl(extend({
+      createRangeControl(R.merge(componentParams, {
         max: 100,
         min: 0.0001,
         name: "q"
-      }, componentParams)),
-      createRangeControl(extend({
+      })),
+      createRangeControl(R.merge(componentParams, {
         logarithmic: false,
         max: 36,
         min: -36,
         name: "gain"
-      }, componentParams))
+      }))
     ];
 
     components[2].rootNode.style.display = controlDisplays.lowpass.q;

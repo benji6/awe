@@ -1,7 +1,7 @@
 const createElement = require('virtual-dom/create-element');
 const h = require('virtual-dom/h');
+const R = require('ramda');
 var createRangeControl = require('../../../Components/createRangeControl.js');
-var extend = require('../../../utils/extend.js');
 
 var capitalizeFirst = function (str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,22 +33,22 @@ module.exports = function (model, channels, type) {
 
     components = components.concat([
       createRangeControl(componentParams),
-      createRangeControl(extend({
+      createRangeControl(R.merge(componentParams, {
         max: 1,
         min: -1,
         name: "panning"
-      }, componentParams)),
-      createRangeControl(extend({
+      })),
+      createRangeControl(R.merge(componentParams, {
         max: 36,
         min: -36,
         name: "tune",
         step: 1
-      }, componentParams)),
-      createRangeControl(extend({
+      })),
+      createRangeControl(R.merge(componentParams, {
         max: 100,
         min: -100,
         name: "detune"
-      }, componentParams))
+      }))
     ]);
 
     parentDomEl.appendChild(table);
