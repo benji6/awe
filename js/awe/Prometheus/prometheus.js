@@ -26,30 +26,25 @@ module.exports = function (model) {
     }, connections);
   }, nodes, R.pluck("connections", model));
 
-  // R.zipWith(function (node, connections) {
-  //   R.forEach(function (connection) {
-  //     R.either(R.eq(undefined), function (connectionId) {
-  //       node.connect(R.find(R.propEq("id", connectionId), nodes).destinations[connection.destination]);
-  //     })(connection.id);
-  //   }, connections);
-  // }, nodes, R.pluck("connections", model));
+  R.zipWith(function (node, modelEventListener) {
+      R.either(R.eq(undefined), R.forEach(R.cond(
+          [R.eq("noteStart"), function () {
+            eventListeners.noteStart.push(node);
+          }],
+          [R.eq("noteStop"), function () {
+            eventListeners.noteStop.push(node);
+          }]
+        )))(modelEventListener);
+  }, nodes, R.pluck("eventListeners", model));
 
-  //event listeners
+  console.log(eventListeners);
+
 
 
   console.log(nodes);
 
   R.forEachIndexed(function (modelNode, index, array) {
     const inputs = modelNode.inputs;
-
-    R.both(R.identity, R.forEach(function (event) {
-      switch (event) {
-        case "noteStart":
-          eventListeners.noteStart.push(nodes[index]);
-        case "noteStop":
-          eventListeners.noteStop.push(nodes[index]);
-        }
-    }))(modelNode.eventListeners);
 
     const inputsKeys = R.both(
       R.identity,

@@ -28,7 +28,7 @@ module.exports = [
     ],
     eventListeners: [
       "noteStart",
-      "noteFinish"
+      "noteStop"
     ],
     params: {
       type: "square"
