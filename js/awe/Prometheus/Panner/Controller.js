@@ -31,7 +31,7 @@ module.exports = function (params) {
   };
 
   var destinations = {
-    input: panner
+    destination: panner
   };
 
   return {

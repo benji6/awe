@@ -18,19 +18,26 @@ module.exports = function (model) {
     return typeToNodeFactoryMap[type](params);
   }, R.pluck("type", model), paramsWithIds);
 
-  console.log(nodes);
-
   R.zipWith(function (node, connections) {
     R.forEach(function (connection) {
       R.either(R.eq(undefined), function (connectionId) {
-        // console.log(nodes[R.indexOf(R.find(R.propEq('id', connectionId), model), model)]);
-        node.connect(nodes[R.indexOf(R.find(R.propEq('id', connectionId), model), model)]);
+        node.connect(R.find(R.propEq("id", connectionId), nodes).destinations[connection.destination]);
       })(connection.id);
     }, connections);
   }, nodes, R.pluck("connections", model));
 
+  // R.zipWith(function (node, connections) {
+  //   R.forEach(function (connection) {
+  //     R.either(R.eq(undefined), function (connectionId) {
+  //       node.connect(R.find(R.propEq("id", connectionId), nodes).destinations[connection.destination]);
+  //     })(connection.id);
+  //   }, connections);
+  // }, nodes, R.pluck("connections", model));
 
-  // console.log(nodes);
+  //event listeners
+
+
+  console.log(nodes);
 
   R.forEachIndexed(function (modelNode, index, array) {
     const inputs = modelNode.inputs;
@@ -43,17 +50,6 @@ module.exports = function (model) {
           eventListeners.noteStop.push(nodes[index]);
         }
     }))(modelNode.eventListeners);
-
-    const connectionsKeys = R.both(
-      R.identity,
-      function (connections) {
-        return Object.keys(connections);
-      }
-    )(modelNode.connections);
-
-    R.both(R.identity, R.forEach(function (connectionKey) {
-      nodes[index].connect(nodes[connectionKey].destinations[modelNode.connections[connectionKey]]);
-    }))(connectionsKeys);
 
     const inputsKeys = R.both(
       R.identity,

@@ -23,7 +23,7 @@ module.exports = function (params) {
   };
 
   var destinations = {
-    input: gain
+    destination: gain
   };
 
   return {

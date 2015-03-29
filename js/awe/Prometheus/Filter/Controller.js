@@ -32,7 +32,7 @@ module.exports = function (params) {
   filter.gain.value = currentModelState.gain;
 
   var destinations = {
-    input: filter,
+    destination: filter,
   };
 
   return {
