@@ -1,10 +1,9 @@
 var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
+var Adsr = require('../Adsr/Controller.js');
 
-var adsr = {
-  connect: function () {}
-};
+var adsr = Adsr();
 
 var Oscillator = function (type) {
   var oscillator = audioContext.createOscillator();
