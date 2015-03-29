@@ -1,5 +1,4 @@
 var audioContext = require('../../audioContext');
-var Model = require('./Model.js');
 var View = require('./View.js');
 
 var GainNode = function (volume) {
@@ -8,14 +7,13 @@ var GainNode = function (volume) {
   return gain;
 };
 
-module.exports = function (params) {
+module.exports = function (model) {
   var controllerChannel = {};
-  var model = Model(controllerChannel);
   var view = View(model, controllerChannel);
-  var gain = GainNode(model.getModel().gain);
+  var gain = GainNode(model.gain);
 
   controllerChannel.gain = function (value) {
-    gain.gain.value = model.getModel().gain = +value;
+    gain.gain.value = model.gain = +value;
   };
 
   var connect = function (node) {
@@ -29,7 +27,7 @@ module.exports = function (params) {
   return {
     connect: connect,
     destinations: destinations,
-    id: params.id,
+    id: model.id,
     model: model,
     view: view
   };

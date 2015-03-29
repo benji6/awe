@@ -1,11 +1,14 @@
 module.exports = [
-  // {
-  //   id: 0,
-  //   type: "gain",
-  //   connections: [
-  //     {destination: "destination"}
-  //   ]
-  // },
+  {
+    id: 0,
+    type: "master",
+    connections: [
+      {destination: "destination"}
+    ],
+    model: {
+      gain: 0.2
+    }
+  },
   // {
   //   id: 1,
   //   type: "stereoPanner",
@@ -38,7 +41,7 @@ module.exports = [
     id: 4,
     type: "oscillator",
     connections: [
-      {destination: "destination"}
+      {id: 0, destination: "destination"}
     ],
     eventListeners: [
       "noteStart",
