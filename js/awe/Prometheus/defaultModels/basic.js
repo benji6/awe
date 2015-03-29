@@ -31,7 +31,21 @@ module.exports = [
       "noteStop"
     ],
     params: {
-      type: "sine"
+      type: "saw"
+    }
+  },
+  {
+    id: 4,
+    type: "oscillator",
+    connections: [
+      {id: 2, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    params: {
+      type: "square"
     }
   }
 ];
