@@ -6,11 +6,11 @@ const capitalizeFirst = function (str) {
 };
 
 module.exports = function (params) {
-  var modelType = params.model.getModel().type;
+  var modelType = params.model.type;
   var select;
 
   var render = function () {
-    var modelParam = params.model.getModel()[params.name];
+    var modelParam = params.model[params.name];
     var options = select.children;
 
     for (var i = 0; i < options.length; i++) {

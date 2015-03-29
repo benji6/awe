@@ -15,7 +15,13 @@ module.exports = [
     type: "filter",
     connections: [
       {id: 0, destination: "destination"}
-    ]
+    ],
+    model: {
+      frequency: 8000,
+      gain: 0,
+      q: 0,
+      type: "lowpass"
+    }
   },
   // {
   //   id: 3,

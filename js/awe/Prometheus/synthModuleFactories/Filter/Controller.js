@@ -1,31 +1,29 @@
 var audioContext = require('../../../audioContext');
-var Model = require('./Model.js');
 var View = require('./View.js');
 
-module.exports = function (params) {
+module.exports = function (model) {
   var channels = {};
-  var model = Model(channels);
   var view = View(model, channels);
   var filter = audioContext.createBiquadFilter();
 
   channels.frequency = function (value) {
-    filter.frequency.value = model.getModel().frequency = +value;
+    filter.frequency.value = model.frequency = +value;
   };
 
   channels.q = function (value) {
-    filter.Q.value = model.getModel().q = +value;
+    filter.Q.value = model.q = +value;
   };
 
   channels.type = function (value) {
-    filter.type = model.getModel().type = value;
+    filter.type = model.type = value;
     view.render(value);
   };
 
   channels.gain = function (value) {
-    filter.gain.value = model.getModel().gain = +value;
+    filter.gain.value = model.gain = +value;
   };
 
-  var currentModelState = model.getModel();
+  var currentModelState = model;
   filter.type = currentModelState.type;
   filter.frequency.value = currentModelState.frequency;
   filter.Q.value = currentModelState.q;
@@ -40,7 +38,7 @@ module.exports = function (params) {
       filter.connect(node);
     },
     destinations: destinations,
-    id: params.id,
+    id: model.id,
     model: model,
     view: view
   };
