@@ -1,4 +1,4 @@
-const View = require('./View.js');
+const view = require('./view.js');
 const prometheus = require('./prometheus.js');
 const model = require('./defaultModels/basic.js');
 
@@ -16,7 +16,7 @@ module.exports = function () {
       synth.connect(node);
     },
     connectView: function (parentDomElement) {
-      synth.view.connect(View("Prometheus").connect(parentDomElement));
+      synth.view.connect(view("Prometheus").connect(parentDomElement));
     }
   };
 };

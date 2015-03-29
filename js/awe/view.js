@@ -19,5 +19,5 @@ document.body.appendChild(container);
 jsmlParse(jsml, aweView);
 
 module.exports = {
-  destinationView: document.body
+  destinationView: aweView
 };
