@@ -39,7 +39,8 @@ const oscillatorParams = [
   "panning"
 ];
 
-module.exports = function (type) {
+module.exports = function (params) {
+  const type = params.type;
   var model = Model(type);
   var channels = {};
   var view = View(model, channels, type);
@@ -125,6 +126,7 @@ module.exports = function (type) {
   return {
     connect: connect,
     inputs: inputs,
+    id: params.id,
     model: model,
     noteStop: noteStop,
     noteStart: noteStart,

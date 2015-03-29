@@ -8,7 +8,7 @@ var GainNode = function (volume) {
   return gain;
 };
 
-module.exports = function () {
+module.exports = function (params) {
   var controllerChannel = {};
   var model = Model(controllerChannel);
   var view = View(model, controllerChannel);
@@ -29,6 +29,7 @@ module.exports = function () {
   return {
     connect: connect,
     destinations: destinations,
+    id: params.id,
     model: model,
     view: view
   };

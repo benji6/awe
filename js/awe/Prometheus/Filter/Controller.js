@@ -2,7 +2,7 @@ var audioContext = require('../../audioContext');
 var Model = require('./Model.js');
 var View = require('./View.js');
 
-module.exports = function () {
+module.exports = function (params) {
   var channels = {};
   var model = Model(channels);
   var view = View(model, channels);
@@ -40,6 +40,7 @@ module.exports = function () {
       filter.connect(node);
     },
     destinations: destinations,
+    id: params.id,
     model: model,
     view: view
   };

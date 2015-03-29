@@ -1,28 +1,28 @@
 module.exports = [
   {
     id: 0,
-    name: "gain",
+    type: "gain",
     connections: [
       {destination: "destination"}
     ]
   },
   {
     id: 1,
-    name: "stereoPanner",
+    type: "stereoPanner",
     connections: [
       {id: 0, destination: "destination"}
     ]
   },
   {
     id: 2,
-    name: "filter",
+    type: "filter",
     connections: [
       {id: 1, destination: "destination"}
     ]
   },
   {
     id: 3,
-    name: "oscillator",
+    type: "oscillator",
     connections: [
       {id: 2, destination: "destination"}
     ],

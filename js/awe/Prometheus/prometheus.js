@@ -2,15 +2,35 @@ const R = require('ramda');
 const typeToNodeFactoryMap = require('./typeToNodeFactoryMap.js');
 
 module.exports = function (model) {
-  console.log(model);
   const eventListeners = {
     noteStart: [],
     noteStop: []
   };
 
-  const nodes = model.map(function (modelNode) {
-    return typeToNodeFactoryMap[modelNode.type](modelNode.params);
-  });
+  const params = R.pluck("params");
+  const ids = R.pluck("id");
+
+  const paramsWithIds = R.zipWith(function (id, params) {
+    return R.assoc("id", id, params);
+  }, R.pluck("id", model), R.pluck("params", model));
+
+  const nodes = R.zipWith(function (type, params) {
+    return typeToNodeFactoryMap[type](params);
+  }, R.pluck("type", model), paramsWithIds);
+
+  console.log(nodes);
+
+  R.zipWith(function (node, connections) {
+    R.forEach(function (connection) {
+      R.either(R.eq(undefined), function (connectionId) {
+        // console.log(nodes[R.indexOf(R.find(R.propEq('id', connectionId), model), model)]);
+        node.connect(nodes[R.indexOf(R.find(R.propEq('id', connectionId), model), model)]);
+      })(connection.id);
+    }, connections);
+  }, nodes, R.pluck("connections", model));
+
+
+  // console.log(nodes);
 
   R.forEachIndexed(function (modelNode, index, array) {
     const inputs = modelNode.inputs;

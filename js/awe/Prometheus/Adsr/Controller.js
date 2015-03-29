@@ -13,7 +13,7 @@ var bufferSource = (function () {
   return bufferSource;
 }());
 
-module.exports = function () {
+module.exports = function (params) {
   var model = Model();
   var channels = {};
   var view = View(model, channels);
@@ -70,6 +70,7 @@ module.exports = function () {
 
   return {
     connect: connect,
+    // id: params.id,
     view: view
   };
 };
