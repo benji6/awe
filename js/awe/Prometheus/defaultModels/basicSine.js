@@ -31,7 +31,7 @@ module.exports = [
       "noteStop"
     ],
     params: {
-      type: "square"
+      type: "sine"
     }
   }
 ];

@@ -7,9 +7,6 @@ module.exports = function (model) {
     noteStop: []
   };
 
-  const params = R.pluck("params");
-  const ids = R.pluck("id");
-
   const paramsWithIds = R.zipWith(function (id, params) {
     return R.assoc("id", id, params);
   }, R.pluck("id", model), R.pluck("params", model));
@@ -28,44 +25,17 @@ module.exports = function (model) {
 
   R.zipWith(function (node, modelEventListener) {
       R.either(R.eq(undefined), R.forEach(R.cond(
-          [R.eq("noteStart"), function () {
-            eventListeners.noteStart.push(node);
-          }],
-          [R.eq("noteStop"), function () {
-            eventListeners.noteStop.push(node);
-          }]
-        )))(modelEventListener);
+        [R.eq("noteStart"), function () {
+          eventListeners.noteStart.push(node);
+        }],
+        [R.eq("noteStop"), function () {
+          eventListeners.noteStop.push(node);
+        }]
+      )))(modelEventListener);
   }, nodes, R.pluck("eventListeners", model));
 
-  console.log(eventListeners);
-
-
-
-  console.log(nodes);
-
-  R.forEachIndexed(function (modelNode, index, array) {
-    const inputs = modelNode.inputs;
-
-    const inputsKeys = R.both(
-      R.identity,
-      function (connections) {
-        return Object.keys(connections);
-      }
-    )(modelNode.inputs);
-
-    R.both(R.identity, R.forEach(function (key) {
-      nodes[index].inputs[key](nodes[inputs[key]]);
-    }))(inputsKeys);
-  }, model);
-
-  var connect = function (destination) {
+  const connect = function (destination) {
     nodes[0].connect(destination);
-  };
-
-  var connectView = function (parentView) {
-    nodes.forEach(function (node) {
-      node.view.connect(parentView);
-    });
   };
 
   var noteStart = (function () {
@@ -92,7 +62,13 @@ module.exports = function (model) {
 
   return {
     connect: connect,
-    connectView: connectView,
+    view: {
+      connect: function (parentView) {
+        nodes.forEach(function (node) {
+          node.view.connect(parentView);
+        });
+      }
+    },
     noteStart: noteStart,
     noteStop: noteStop
   };
