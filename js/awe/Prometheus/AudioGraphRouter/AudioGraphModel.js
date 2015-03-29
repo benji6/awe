@@ -11,7 +11,6 @@ var createDefaultModel = function () {
       type: "gain"
     },
     {
-
       type: "stereoPanner",
       connections: {
         0: "input"

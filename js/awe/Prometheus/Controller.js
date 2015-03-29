@@ -1,27 +1,22 @@
-const AudioGraphRouter = require('./AudioGraphRouter/Controller.js');
 const View = require('./View.js');
+const prometheus = require('./prometheus.js');
+const model = require('./defaultModels/basicSine.js');
 
 module.exports = function () {
-  const view = View("Prometheus");
-
-  const audioGraphRouter = AudioGraphRouter();
-
-  const connectView = function (parentDomElement) {
-    audioGraphRouter.connectView(view.connect(parentDomElement));
-  };
-
-  const connect = function (node) {
-    audioGraphRouter.connect(node);
-  };
+  const synth = prometheus(model);
 
   return {
     channelStart: function (freq) {
-      audioGraphRouter.noteStart(freq);
+      synth.noteStart(freq);
     },
     channelStop: function (freq) {
-      audioGraphRouter.noteStop(freq);
+      synth.noteStop(freq);
     },
-    connect: connect,
-    connectView: connectView
+    connect: function (node) {
+      synth.connect(node);
+    },
+    connectView: function (parentDomElement) {
+      synth.view.connect(View("Prometheus").connect(parentDomElement));
+    }
   };
 };
