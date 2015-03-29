@@ -3,9 +3,10 @@ const h = require('virtual-dom/h');
 const R = require('ramda');
 var createRangeControl = require('../../../Components/createRangeControl.js');
 
-var capitalizeFirst = function (str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+const capitalizeFirst = function (str) {
+  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 };
+
 var formatOutput = function (output) {
   return Number(output).toFixed(2);
 };

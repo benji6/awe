@@ -1,10 +1,13 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
+const R = require('ramda');
 var createRangeControl = require('../../../Components/createRangeControl.js');
 var createSelectControl = require('../../../Components/createSelectControl.js');
 
-var capitalizeFirst = function (str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+const capitalizeFirst = function (str) {
+  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 };
+
 var formatOutput = function (output) {
   (+output).toFixed(2);
 };
@@ -25,17 +28,11 @@ module.exports = function (model, channels) {
       parent: table
     };
 
-    jsmlParse({
-      tag: "thead",
-      children: {
-        tag: "tr",
-        children: {
-          tag: "th",
-          text: "Filter",
-          colspan: 2
-        }
-      }
-    }, table);
+    table.appendChild(createElement(h("thead", [
+      h("tr", [
+        h("th", {attributes: {colspan: "2"}}, "Filter")
+      ])
+    ])));
 
     components = [
       createSelectControl({

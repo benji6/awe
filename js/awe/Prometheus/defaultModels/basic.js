@@ -10,20 +10,13 @@ module.exports = [
       panning: 0
     }
   },
-  // {
-  //   id: 1,
-  //   type: "stereoPanner",
-  //   connections: [
-  //     {id: 0, destination: "destination"}
-  //   ]
-  // },
-  // {
-  //   id: 2,
-  //   type: "filter",
-  //   connections: [
-  //     {id: 1, destination: "destination"}
-  //   ]
-  // },
+  {
+    id: 1,
+    type: "filter",
+    connections: [
+      {id: 0, destination: "destination"}
+    ]
+  },
   // {
   //   id: 3,
   //   type: "oscillator",
@@ -42,7 +35,7 @@ module.exports = [
     id: 4,
     type: "oscillator",
     connections: [
-      {id: 0, destination: "destination"}
+      {id: 1, destination: "destination"}
     ],
     eventListeners: [
       "noteStart",

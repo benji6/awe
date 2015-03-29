@@ -1,8 +1,10 @@
 var jsmlParse = require('jsml-parse');
+const R = require('ramda');
+
 const PRECISION = 12;
 
-var capitalizeFirst = function (str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+const capitalizeFirst = function (str) {
+  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 };
 
 var formatOutput = function (output) {
