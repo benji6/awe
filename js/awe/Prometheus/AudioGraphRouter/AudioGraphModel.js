@@ -1,14 +1,17 @@
+const R = require('ramda');
+
 var createDefaultModel = function () {
   var eventListeners = [
     "noteStart",
     "noteFinish"
   ];
 
-  return [
+  var model = [
     {
       type: "gain"
     },
     {
+
       type: "stereoPanner",
       connections: {
         0: "input"
@@ -68,6 +71,11 @@ var createDefaultModel = function () {
       type: "adsr"
     }
   ];
+
+  return R.mapIndexed(function (obj, index) {
+    obj.id = index;
+    return obj;
+  }, model);
 };
 
 module.exports = function (controller) {

@@ -1,25 +1,16 @@
-var AudioGraphRouter = require('./AudioGraphRouter/Controller.js');
-var Menu = require('./Menu/Controller.js');
-var View = require('./View.js');
-
-var pluginName = "Prometheus";
-var view = View(pluginName);
+const AudioGraphRouter = require('./AudioGraphRouter/Controller.js');
+const View = require('./View.js');
 
 module.exports = function () {
-  var menu = Menu(pluginName, []);
+  const view = View("Prometheus");
 
-  var audioGraphRouter = AudioGraphRouter();
+  const audioGraphRouter = AudioGraphRouter();
 
-  var connectViewTo = function (master) {
-    return function (parentDomElement) {
-      var synthParentView = view.connectViewTo(parentDomElement);
-
-      menu.view.connectTo(synthParentView);
-      audioGraphRouter.connectView(synthParentView);
-    };
+  const connectView = function (parentDomElement) {
+    audioGraphRouter.connectView(view.connect(parentDomElement));
   };
 
-  var connect = function (node) {
+  const connect = function (node) {
     audioGraphRouter.connect(node);
   };
 
@@ -31,6 +22,6 @@ module.exports = function () {
       audioGraphRouter.noteStop(freq);
     },
     connect: connect,
-    connectViewTo: connectViewTo(document.body)
+    connectView: connectView
   };
 };
