@@ -102,7 +102,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    jsml,
-    open
+    jsml: jsml,
+    open: open
   };
 };

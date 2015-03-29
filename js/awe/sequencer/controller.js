@@ -17,5 +17,5 @@ var noteFinish = function noteFinish () {
 
 module.exports = {
   play: noteStart,
-  stop
+  stop: stop
 };

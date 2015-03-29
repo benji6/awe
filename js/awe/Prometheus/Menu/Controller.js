@@ -78,6 +78,6 @@ module.exports = function (pluginName, controllers) {
   };
 
   return {
-    view
+    view: view
   };
 };

@@ -50,10 +50,10 @@ module.exports = function (pluginName) {
   });
 
   return {
-    getPresets,
-    getPreset,
-    deletePreset,
-    hasPresetKey,
-    savePreset
+    getPresets: getPresets,
+    getPreset: getPreset,
+    deletePreset: deletePreset,
+    hasPresetKey: hasPresetKey,
+    savePreset: savePreset
   };
 };

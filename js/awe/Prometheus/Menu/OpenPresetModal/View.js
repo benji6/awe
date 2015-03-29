@@ -77,7 +77,7 @@ module.exports = function (model, channels) {
 
   return {
     jsml: modalJsml,
-    open,
-    populatePresets
+    open: open,
+    populatePresets: populatePresets
   };
 };

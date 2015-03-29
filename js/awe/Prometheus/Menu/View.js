@@ -96,7 +96,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connectTo,
-    populatePresets
+    connectTo: connectTo,
+    populatePresets: populatePresets
   };
 };

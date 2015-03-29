@@ -11,7 +11,8 @@ var Oscillator = function (type) {
   return oscillator;
 };
 
-var Gain = function (volume = 1) {
+var Gain = function (volume) {
+  volume = volume === undefined ? 1 : volume;
   var gain = audioContext.createGain();
   gain.gain.value = volume;
   return gain;
@@ -82,8 +83,8 @@ module.exports = function (type) {
     };
 
     return {
-      masterGain,
-      oscillator
+      masterGain: masterGain,
+      oscillator: oscillator
     };
   };
   var newNote = function () {};
@@ -122,11 +123,11 @@ module.exports = function (type) {
   };
 
   return {
-    connect,
-    inputs,
-    model,
-    noteStop,
-    noteStart,
-    view
+    connect: connect,
+    inputs: inputs,
+    model: model,
+    noteStop: noteStop,
+    noteStart: noteStart,
+    view: view
   };
 };

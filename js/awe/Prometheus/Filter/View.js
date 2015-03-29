@@ -20,7 +20,7 @@ module.exports = function (model, channels) {
       logarithmic: true,
       max: 18000,
       min: 20,
-      model,
+      model: model,
       name: "frequency",
       observer: channels,
       parent: table
@@ -41,7 +41,7 @@ module.exports = function (model, channels) {
     components = [
       createSelectControl({
         parent: table,
-        model,
+        model: model,
         name: "type",
         observer: channels,
         options: [
@@ -113,7 +113,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connect,
+    connect: connect,
     render: function (type) {
       components.forEach(function (component) {
         component.render();

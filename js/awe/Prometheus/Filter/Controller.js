@@ -39,8 +39,8 @@ module.exports = function () {
     connect: function (node) {
       filter.connect(node);
     },
-    destinations,
-    model,
-    view
+    destinations: destinations,
+    model: model,
+    view: view
   };
 };

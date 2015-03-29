@@ -10,7 +10,7 @@ module.exports = function (model, channels) {
       min: 0,
       max: 1,
       observer: channels,
-      model
+      model: model
     });
   };
 
@@ -19,7 +19,7 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connect,
-    render
+    connect: connect,
+    render: render
   };
 };

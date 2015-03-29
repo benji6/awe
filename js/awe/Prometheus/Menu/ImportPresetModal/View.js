@@ -70,7 +70,7 @@ module.exports = function (channels) {
   };
 
   return {
-    jsml,
-    open
+    jsml: jsml,
+    open: open
   };
 };

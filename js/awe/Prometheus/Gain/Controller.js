@@ -27,9 +27,9 @@ module.exports = function () {
   };
 
   return {
-    connect,
-    destinations,
-    model,
-    view
+    connect: connect,
+    destinations: destinations,
+    model: model,
+    view: view
   };
 };

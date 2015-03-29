@@ -13,7 +13,7 @@ module.exports = function () {
   var connectViewTo = function (master) {
     return function (parentDomElement) {
       var synthParentView = view.connectViewTo(parentDomElement);
-      
+
       menu.view.connectTo(synthParentView);
       audioGraphRouter.connectView(synthParentView);
     };
@@ -30,7 +30,7 @@ module.exports = function () {
     channelStop: function (freq) {
       audioGraphRouter.noteStop(freq);
     },
-    connect,
+    connect: connect,
     connectViewTo: connectViewTo(document.body)
   };
 };
