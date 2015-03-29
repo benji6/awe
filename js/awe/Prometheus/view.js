@@ -8,7 +8,7 @@ module.exports = function (pluginName) {
       const center = createElement(h("div.center"), [
         h('h2', pluginName)
       ]);
-      const synthContainer = createElement(h("div." + pluginName));
+      const synthContainer = createElement(h(`div.${pluginName}`));
       center.appendChild(synthContainer);
       parentDomEl.appendChild(center);
       return synthContainer;

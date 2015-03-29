@@ -6,7 +6,8 @@ module.exports = [
       {destination: "destination"}
     ],
     model: {
-      gain: 0.2
+      gain: 0.2,
+      panning: 0
     }
   },
   // {
@@ -52,7 +53,7 @@ module.exports = [
       detune: 0,
       panning: 0,
       tune: 0,
-      volume: 0.02
+      volume: 0.2
     }
   }
 ];

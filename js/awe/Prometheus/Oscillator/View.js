@@ -13,9 +13,7 @@ module.exports = function (model, channels, type) {
   var components = [];
 
   var connect = function (parentDomEl) {
-    var tables = [];
-
-    var table = document.createElement("table");
+    const table = document.createElement("table");
 
     jsmlParse({
       tag: "thead",
@@ -58,11 +56,7 @@ module.exports = function (model, channels, type) {
       }, componentParams))
     ]);
 
-    tables.push(table);
-
-    tables.forEach(function (table) {
-      parentDomEl.appendChild(table);
-    });
+    parentDomEl.appendChild(table);
   };
 
   return {
