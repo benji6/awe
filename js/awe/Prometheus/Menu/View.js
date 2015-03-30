@@ -74,19 +74,17 @@ module.exports = function (model, channels) {
   ];
 
   var populatePresets = function () {
-    var presets = model.getPresets();
+    var presets = model;
 
     openPresetModal.populatePresets(presets);
     deletePresetModal.populatePresets(presets);
   };
 
-  var connectTo = function (parentDomElement) {
-    jsmlParse(menuJsml, parentDomElement);
-    populatePresets();
-  };
-
   return {
-    connectTo: connectTo,
+    connect: function (parentDomElement) {
+      jsmlParse(menuJsml, parentDomElement);
+      populatePresets();
+    },
     populatePresets: populatePresets
   };
 };

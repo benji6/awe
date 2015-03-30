@@ -4,22 +4,14 @@ const model = require('./defaultModels/basic.js');
 const Menu = require('./Menu/Controller.js');
 
 module.exports = function () {
-  //const menu = Menu();
-  //console.log(menu);
+  const menu = Menu(model);
   const synth = prometheus(model);
 
-  return {
-    channelStart: function (freq) {
-      synth.noteStart(freq);
-    },
-    channelStop: function (freq) {
-      synth.noteStop(freq);
-    },
-    connect: function (node) {
-      synth.connect(node);
-    },
-    connectView: function (parentDomElement) {
-      synth.view.connect(view("Prometheus").connect(parentDomElement));
-    }
+  synth.connectView = function (parentDomElement) {
+    const container = view("Prometheus").connect(parentDomElement);
+    menu.view.connect(container);
+    synth.view.connect(container);
   };
+
+  return synth;
 };

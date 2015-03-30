@@ -8,5 +8,5 @@ var prometheus = Prometheus();
 
 prometheus.connectView(view.destinationView);
 prometheus.connect(audioContext.destination);
-keyboard.addStartChannel(prometheus.channelStart);
-keyboard.addStopChannel(prometheus.channelStop);
+keyboard.addStartChannel(prometheus.noteStart);
+keyboard.addStopChannel(prometheus.noteStop);

@@ -1,27 +1,8 @@
 var View = require('./View.js');
 
-module.exports = function (pluginName, controllers) {
+module.exports = function (model) {
   var channels = {};
   var view = View(model, channels);
-
-  var savePresetWithName = function (name) {
-    var presetData = controllers.map(function (controller) {
-      return controller.model;
-    });
-
-    model.savePreset(name, presetData);
-    view.populatePresets();
-  };
-
-  var loadPresetFromData = function (presetData) {
-    presetData.forEach(function (presetObj) {
-      var controller = controllers.filter(function (controller) {
-        return controller.model.name === presetObj.name;
-      })[0];
-      controller.model.setModel(presetObj);
-      controller.view.render();
-    });
-  };
 
   channels.openPreset = function (value) {
     if (!value) {
@@ -55,9 +36,7 @@ module.exports = function (pluginName, controllers) {
   };
 
   channels.exportPreset = function () {
-    return JSON.stringify(controllers.map(function (controller) {
-      return controller.model;
-    }));
+    return JSON.stringify(model);
   };
 
   channels.deletePreset = function (value) {
