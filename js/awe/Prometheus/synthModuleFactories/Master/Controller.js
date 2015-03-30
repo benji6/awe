@@ -46,7 +46,6 @@ module.exports = function (model) {
     connect: connect,
     destinations: destinations,
     id: model.id,
-    model: model,
     view: view
   };
 };

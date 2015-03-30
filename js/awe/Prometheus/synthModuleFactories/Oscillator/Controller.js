@@ -88,7 +88,7 @@ module.exports = function (model) {
   };
   var newNote = function () {};
   var connect = function (output) {
-    return newNote = function (freq) {
+    newNote = function (freq) {
       var oscillator = createOscillator(type);
 
       oscillator.masterGain.connect(output);
@@ -125,7 +125,6 @@ module.exports = function (model) {
     connect: connect,
     inputs: inputs,
     id: model.id,
-    model: model,
     noteStop: noteStop,
     noteStart: noteStart,
     view: view

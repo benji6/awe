@@ -23,23 +23,19 @@ module.exports = function (model) {
     filter.gain.value = model.gain = +value;
   };
 
-  var currentModelState = model;
-  filter.type = currentModelState.type;
-  filter.frequency.value = currentModelState.frequency;
-  filter.Q.value = currentModelState.q;
-  filter.gain.value = currentModelState.gain;
-
-  var destinations = {
-    destination: filter,
-  };
+  filter.type = model.type;
+  filter.frequency.value = model.frequency;
+  filter.Q.value = model.q;
+  filter.gain.value = model.gain;
 
   return {
     connect: function (node) {
       filter.connect(node);
     },
-    destinations: destinations,
+    destinations: {
+      destination: filter,
+    },
     id: model.id,
-    model: model,
     view: view
   };
 };
