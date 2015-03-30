@@ -1,22 +1,13 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
 
-var jsml = {
-  tag: "div",
-  className: "center",
-  children: {
-    tag: "h1",
-    text: "Awe"
-  }
-};
+const aweView = createElement(h("div.awe", [
+  h("div.center", [
+    h("h1", "Awe")
+  ])
+]));
 
-var aweView = document.createElement("div");
-var container = document.createElement("div");
-
-container.className = "center";
-aweView.className = "Awe";
-container.appendChild(aweView);
-document.body.appendChild(container);
-jsmlParse(jsml, aweView);
+document.body.appendChild(createElement(h("div.center"))).appendChild(aweView);
 
 module.exports = {
   destinationView: aweView
