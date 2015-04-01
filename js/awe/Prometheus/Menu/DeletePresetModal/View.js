@@ -1,98 +1,57 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
 
 module.exports = function (model, channels) {
-  var container = null;
-  var select = null;
-  var message = null;
-  var defaultMessage = "Permanently delete preset";
-  var deleteButton;
-  var confirmButton;
+  const defaultMessage = "Permanently delete preset";
 
-  var enterConfirmationState = function () {
+  const enterConfirmationState = function () {
     select.disabled = true;
     message.value = `Are you sure you want to permanently delete preset "${select.value}"?`;
     deleteButton.className = "hidden";
     confirmButton.className = "";
   };
 
-  var enterDeleteState = function () {
+  const enterDeleteState = function () {
     select.disabled = false;
     message.value = defaultMessage;
     deleteButton.className = "";
     confirmButton.className = "hidden";
   };
 
-  var modalJsml = {
-    tag: "div",
-    className: "hidden",
-    callback: function (element) {
-      container = element;
-    },
-    children: [
-      {
-        tag: "h3",
-        text: "Delete Preset"
-      },
-      {
-        tag: "select",
-        callback: function (element) {
-          select = element;
-        }
-      },
-      {
-        tag: "div",
-        className: "margin",
-        children: {
-          tag: "output",
-          value: defaultMessage,
-          callback: function (element) {
-            message = element;
-          }
-        }
-      },
-      {
-        tag: "button",
-        text: "Delete",
-        callback: function (element) {
-          deleteButton = element;
-          element.onclick = function () {
-            if (select.value === '') {
-              return;
-            }
-            enterConfirmationState();
-          };
-        }
-      },
-      {
-        tag: "button",
-        text: "Confirm Delete",
-        className: "hidden",
-        callback: function (element) {
-          confirmButton = element;
-          element.onclick = function () {
-            channels.deletePreset(select.value);
-            container.className = "hidden";
-            enterDeleteState();
-          };
-        }
+  const container = createElement(h("div.hidden"));
+  const select = createElement(h("select"));
+  const message = createElement(h("output", defaultMessage));
 
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: function (element) {
-          element.onclick = function () {
-            container.className = "hidden";
-            enterDeleteState();
-          };
-        }
+  const deleteButton = createElement(h("button", "Delete", {
+    onclick: function () {
+      if (select.value === '') {
+        return;
       }
-    ]
-  };
+      enterConfirmationState();
+    }
+  }));
 
-  var populatePresets = function (presets) {
-    var jsml = null;
+  const confirmButton = createElement(h("button", "Confirm Delete", {
+    onclick: function () {
+      channels.deletePreset(select.value);
+      container.className = "hidden";
+      enterDeleteState();
+    }
+  }));
 
+  container.appendChild(createElement(h("h3", "Delete Preset")));
+  container.appendChild(select);
+  container.appendChild(createElement(h("div.margin"))).appendChild(message);
+  container.appendChild(deleteButton);
+  container.appendChild(confirmButton);
+  container.appendChild(createElement(h("button", "Cancel", {
+    onclick: function () {
+      container.className = "hidden";
+      enterDeleteState();
+    }
+  })));
+
+  const populatePresets = function (presets) {
     if (presets && presets.length) {
       jsml = presets.map(function (preset) {
         return {
@@ -119,11 +78,11 @@ module.exports = function (model, channels) {
   };
 
   var open = function () {
-    return container.className = "modalWindow";
+    container.className = "modalWindow";
   };
 
   return {
-    jsml: modalJsml,
+    container: container,
     open: open,
     populatePresets: populatePresets
   };

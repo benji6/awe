@@ -1,10 +1,10 @@
-var audioContext = require('./audioContext.js');
-var view = require('./view.js');
-var keyboard = require('./keyboard/controller.js');
-var sequencer = require('./sequencer/controller.js');
-var Prometheus = require('./Prometheus/Controller.js');
+const audioContext = require('./audioContext.js');
+const view = require('./view.js');
+const keyboard = require('./keyboard/controller.js');
+const sequencer = require('./sequencer/controller.js');
+const Prometheus = require('./Prometheus/Controller.js');
 
-var prometheus = Prometheus();
+const prometheus = Prometheus();
 
 prometheus.connectView(view.destinationView);
 prometheus.connect(audioContext.destination);

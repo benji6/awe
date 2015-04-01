@@ -1,90 +1,46 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
 
-var OpenPresetModal = require('./OpenPresetModal/View.js');
-var SavePresetAsModal = require('./SavePresetAsModal/View.js');
-var ImportPresetModal = require('./ImportPresetModal/View.js');
-var ExportPresetModal = require('./ExportPresetModal/View.js');
-var DeletePresetModal = require('./DeletePresetModal/View.js');
+// const OpenPresetModal = require('./OpenPresetModal/View.js');
+// const SavePresetAsModal = require('./SavePresetAsModal/View.js');
+// const ImportPresetModal = require('./ImportPresetModal/View.js');
+// const ExportPresetModal = require('./ExportPresetModal/View.js');
+// const DeletePresetModal = require('./DeletePresetModal/View.js');
 
 module.exports = function (model, channels) {
-  var openPresetModal = OpenPresetModal(model, channels);
-  var savePresetAsModal = SavePresetAsModal(model, channels);
-  var importPresetModal = ImportPresetModal(channels);
-  var exportPresetModal = ExportPresetModal(model, channels);
-  var deletePresetModal = DeletePresetModal(model, channels);
+  // const openPresetModal = OpenPresetModal(model, channels);
+  // const savePresetAsModal = SavePresetAsModal(model, channels);
+  // const importPresetModal = ImportPresetModal(channels);
+  // const exportPresetModal = ExportPresetModal(model, channels);
+  // const deletePresetModal = DeletePresetModal(model, channels);
 
-  var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
+  const menuView = createElement(h("nav", [
+    h("ul", [
+      h("li", [
+        "Menu",
+        h("ul", [
+          h("li", "Open Preset"),
+          h("li", "Save Preset As"),
+          h("li", "Import Settings"),
+          h("li", "Export Settings"),
+          h("li", "Delete Preset"),
+        ])
+      ])
+    ])
+  ]));
 
-  var menuJsml = [
-    {
-      tag: "nav",
-      children: {
-        tag: "ul",
-        children: {
-          tag: "li",
-          text: "Menu",
-          children: {
-            tag: "ul",
-            children: [
-              {
-                tag: "li",
-                text: "Open Preset",
-                callback: function (element) {
-                  element.onclick = openPresetModal.open;
-                }
-              },
-              {
-                tag: "li",
-                text: "Save Preset As",
-                callback: function (element) {
-                  element.onclick = savePresetAsModal.open;
-                }
-              },
-              {
-                tag: "li",
-                text: "Import Settings",
-                callback: function (element) {
-                  element.onclick = importPresetModal.open;
-                }
-              },
-              {
-                tag: "li",
-                text: "Export Settings",
-                callback: function (element) {
-                  element.onclick = exportPresetModal.open;
-                }
-              },
-              {
-                tag: "li",
-                text: "Delete Preset",
-                callback: function (element) {
-                  element.onclick = deletePresetModal.open;
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    openPresetModal.jsml,
-    savePresetAsModal.jsml,
-    importPresetModal.jsml,
-    exportPresetModal.jsml,
-    deletePresetModal.jsml
-  ];
-
-  var populatePresets = function () {
-    var presets = model;
-
-    openPresetModal.populatePresets(presets);
-    deletePresetModal.populatePresets(presets);
-  };
+  // var populatePresets = function () {
+  //   var presets = model;
+  //
+  //   openPresetModal.populatePresets(presets);
+  //   deletePresetModal.populatePresets(presets);
+  // };
 
   return {
     connect: function (parentDomElement) {
-      jsmlParse(menuJsml, parentDomElement);
-      populatePresets();
+      parentDomElement.appendChild(menuView);
+      // populatePresets();
     },
-    populatePresets: populatePresets
+    //populatePresets: populatePresets
   };
 };
