@@ -1,4 +1,3 @@
-const jsmlParse = require('jsml-parse');
 const R = require('ramda');
 var createRangeControl = require('../../../Components/createRangeControl.js');
 
