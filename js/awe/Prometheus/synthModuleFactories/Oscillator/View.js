@@ -19,7 +19,7 @@ module.exports = function (model, channels, type) {
 
     table.appendChild(createElement(h("thead", [
       h("tr", [
-        h("th", {attributes: {colspan: "2"}}, capitalizeFirst(type))
+        h("th", {attributes: {colspan: 2}}, capitalizeFirst(type))
       ])
     ])));
 

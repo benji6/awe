@@ -1,8 +1,9 @@
 const audioContext = require('../../../audioContext');
 const View = require('./View.js');
+const R = require('ramda');
 
 const Oscillator = function (type) {
-  var oscillator = audioContext.createOscillator();
+  const oscillator = audioContext.createOscillator();
   oscillator.type = type;
   return oscillator;
 };
@@ -15,9 +16,7 @@ const Gain = function (volume) {
 };
 
 const setPannerPosition = function (panner, panning) {
-  const x = panning;
-  const z = 1 - Math.abs(x);
-  panner.setPosition(x, 0, z);
+  panner.setPosition(panning, 0, 1 - Math.abs(panning));
   return panner;
 };
 
@@ -40,11 +39,11 @@ module.exports = function (model) {
   const view = View(model, channels, type);
   const activeNotes = {};
 
-  oscillatorParams.forEach(function (oscillatorParam) {
+  R.forEach(function (oscillatorParam) {
     channels[oscillatorParam] = function (value) {
-      model[oscillatorParam] = +value;
+      model[oscillatorParam] = Number(value);
     };
-  });
+  }, oscillatorParams);
 
   const createOscillator = function () {
     const oscillator = Oscillator(type);
@@ -57,23 +56,21 @@ module.exports = function (model) {
     panner.connect(masterGain);
 
     channels.volume = function (volume) {
-      masterGain.gain.value = model.volume = +volume;
+      masterGain.gain.value = model.volume = Number(volume);
     };
 
     channels.tune = function (value) {
-      model.tune = +value;
-      oscillator.detune.value = 100 * model.tune +
-      model.detune;
+      model.tune = Number(value);
+      oscillator.detune.value = R.add(R.multiply(100, model.tune),model.detune);
     };
 
     channels.detune = function (cents) {
-      model.detune = +cents;
-      oscillator.detune.value = 100 * model.tune +
-      model.detune;
+      model.detune = Number(cents);
+      oscillator.detune.value = R.add(R.multiply(100, model.tune), model.detune);
     };
 
     channels.panning = function (value) {
-      model.panning = +value;
+      model.panning = Number(value);
       setPannerPosition(panner, value);
     };
 
@@ -109,10 +106,7 @@ module.exports = function (model) {
   };
 
   const noteStart = function (freq) {
-    if (activeNotes[freq]) {
-      return;
-    }
-    newNote(freq);
+    activeNotes[freq] || newNote(freq);
   };
 
   const inputs = {

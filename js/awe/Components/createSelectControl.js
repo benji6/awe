@@ -35,7 +35,7 @@ module.exports = function (params) {
 
   params.parent.appendChild(createElement(h("tr", [
     h("td", capitalizeFirst(params.name)),
-    select
+    h("td", select)
   ])));
 
   return {

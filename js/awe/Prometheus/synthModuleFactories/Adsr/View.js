@@ -14,7 +14,7 @@ module.exports = function (model, channels) {
     const table = createElement(h("table"));
     table.appendChild(createElement(h("thead", [
       h("tr", [
-        h("th", {attributtes: {colspan: 2}}, "ADSR")
+        h("th", {attributes: {colspan: 2}}, "ADSR")
       ])
     ])));
 
