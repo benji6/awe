@@ -22,7 +22,7 @@ module.exports = function (params) {
     }, options);
   };
 
-  const select = h("select", onchange = function () {
+  const select = createElement(h("select", onchange = function () {
     params.observer[params.name](select.value);
   }, R.map(function (option) {
     if (params.name === modelType) {
@@ -31,12 +31,13 @@ module.exports = function (params) {
       }, option);
     }
     return h("option", option);
-  } ,params.options));
+  } ,params.options)));
 
-  params.parent.appendChild(createElement(h("tr", [
+  const tr = createElement(h("tr", [
     h("td", capitalizeFirst(params.name)),
-    h("td", select)
-  ])));
+  ]));
+
+  params.parent.appendChild(tr).appendChild(createElement(h("td"))).appendChild(select);
 
   return {
     render: render

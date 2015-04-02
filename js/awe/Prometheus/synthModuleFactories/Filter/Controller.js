@@ -7,11 +7,11 @@ module.exports = function (model) {
   var filter = audioContext.createBiquadFilter();
 
   channels.frequency = function (value) {
-    filter.frequency.value = model.frequency = +value;
+    filter.frequency.value = model.frequency = Number(value);
   };
 
   channels.q = function (value) {
-    filter.Q.value = model.q = +value;
+    filter.Q.value = model.q = Number(value);
   };
 
   channels.type = function (value) {
@@ -20,7 +20,7 @@ module.exports = function (model) {
   };
 
   channels.gain = function (value) {
-    filter.gain.value = model.gain = +value;
+    filter.gain.value = model.gain = Number(value);
   };
 
   filter.type = model.type;

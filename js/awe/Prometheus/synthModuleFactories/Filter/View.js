@@ -1,24 +1,24 @@
 const createElement = require('virtual-dom/create-element');
 const h = require('virtual-dom/h');
 const R = require('ramda');
-var createRangeControl = require('../../../Components/createRangeControl.js');
-var createSelectControl = require('../../../Components/createSelectControl.js');
+const createRangeControl = require('../../../Components/createRangeControl.js');
+const createSelectControl = require('../../../Components/createSelectControl.js');
 
 const capitalizeFirst = function (str) {
   return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 };
 
-var formatOutput = function (output) {
-  (+output).toFixed(2);
+const formatOutput = function (output) {
+  Number(output).toFixed(2);
 };
 
 module.exports = function (model, channels) {
   var components = null;
 
-  var connect = function (parentDomEl) {
-    var container = document.createElement("div");
-    var table = document.createElement("table");
-    var componentParams = {
+  const connect = function (parentDomEl) {
+    const container = createElement(h("div.center"));
+    const table = createElement(h("table"));
+    const componentParams = {
       logarithmic: true,
       max: 18000,
       min: 20,
@@ -68,12 +68,10 @@ module.exports = function (model, channels) {
     components[2].rootNode.style.display = controlDisplays.lowpass.q;
     components[3].rootNode.style.display = controlDisplays.lowpass.gain;
 
-    container.className = "center";
-    container.appendChild(table);
-    parentDomEl.appendChild(container);
+    parentDomEl.appendChild(container).appendChild(table);
   };
 
-  var controlDisplays = {
+  const controlDisplays = {
     lowpass: {
       q: "",
       gain: "none"
