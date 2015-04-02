@@ -52,56 +52,65 @@ module.exports = [
       tune: 0,
       volume: 0.2
     }
+  },
+  {
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    inputs: [
+      {id: 2, destination: "gain"}
+    ],
+    model: {
+      type: "sine",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
+  },
+  {
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    inputs: [
+      {id: 2, destination: "gain"}
+    ],
+    model: {
+      type: "square",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
+  },
+  {
+    type: "oscillator",
+    connections: [
+      {id: 1, destination: "destination"}
+    ],
+    eventListeners: [
+      "noteStart",
+      "noteStop"
+    ],
+    inputs: [
+      {id: 2, destination: "gain"}
+    ],
+    model: {
+      type: "triangle",
+      detune: 0,
+      panning: 0,
+      tune: 0,
+      volume: 0.2
+    }
   }
-  // {
-  //   type: "oscillator",
-  //   connections: [
-  //     {id: 1, destination: "destination"}
-  //   ],
-  //   eventListeners: [
-  //     "noteStart",
-  //     "noteStop"
-  //   ],
-  //   model: {
-  //     type: "sine",
-  //     detune: 0,
-  //     panning: 0,
-  //     tune: 0,
-  //     volume: 0.2
-  //   }
-  // },
-  // {
-  //   type: "oscillator",
-  //   connections: [
-  //     {id: 1, destination: "destination"}
-  //   ],
-  //   eventListeners: [
-  //     "noteStart",
-  //     "noteStop"
-  //   ],
-  //   model: {
-  //     type: "square",
-  //     detune: 0,
-  //     panning: 0,
-  //     tune: 0,
-  //     volume: 0.2
-  //   }
-  // },
-  // {
-  //   type: "oscillator",
-  //   connections: [
-  //     {id: 1, destination: "destination"}
-  //   ],
-  //   eventListeners: [
-  //     "noteStart",
-  //     "noteStop"
-  //   ],
-  //   model: {
-  //     type: "triangle",
-  //     detune: 0,
-  //     panning: 0,
-  //     tune: 0,
-  //     volume: 0.2
-  //   }
-  // }
 ];

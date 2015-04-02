@@ -45,67 +45,70 @@ module.exports = function (model) {
     };
   }, oscillatorParams);
 
-  var noteStop = function () {};
   var newNote = function () {};
   var adsr;
 
   const connect = function (output) {
     newNote = function (freq) {
-      const oscillator = (function () {
-        const oscillator = Oscillator(type);
-        const masterGain = Gain(model.volume);
-        const panner = Panner(model.panning);
+      const oscillator = Oscillator(type);
+      const masterGain = Gain(model.volume);
+      const panner = Panner(model.panning);
+      var adsrRelease;
 
-        oscillator.detune.value = 100 * model.tune + model.detune;
-        oscillator.connect(panner);
+      oscillator.detune.value = 100 * model.tune + model.detune;
+      oscillator.connect(panner);
 
-        const adsrRelease = adsr.connect(masterGain.gain);
+      if (adsr) {
+        const adsrGain = Gain(0);
+        adsrRelease = adsr.connect(adsrGain.gain);
+        panner.connect(adsrGain);
+        adsrGain.connect(masterGain);
+      } else {
         panner.connect(masterGain);
+      }
 
-        channels.volume = function (volume) {
-          masterGain.gain.value = model.volume = Number(volume);
-        };
-
-        channels.tune = function (value) {
-          model.tune = Number(value);
-          oscillator.detune.value = R.add(R.multiply(100, model.tune),model.detune);
-        };
-
-        channels.detune = function (cents) {
-          model.detune = Number(cents);
-          oscillator.detune.value = R.add(R.multiply(100, model.tune), model.detune);
-        };
-
-        channels.panning = function (value) {
-          model.panning = Number(value);
-          setPannerPosition(panner, value);
-        };
-
-        return {
-          adsrRelease: adsrRelease,
-          masterGain: masterGain,
-          oscillator: oscillator
-        };
-      })(type);
-
-      ret.noteStop = function (freq) {
-        oscillator.adsrRelease().then(function () {
-          const oscillator = activeNotes[freq];
-          oscillator && oscillator.oscillator.stop();
-          activeNotes[freq] = null;
-        });
+      channels.volume = function (volume) {
+        masterGain.gain.value = model.volume = Number(volume);
+      };
+      channels.tune = function (value) {
+        model.tune = Number(value);
+        oscillator.detune.value = R.add(R.multiply(100, model.tune),model.detune);
+      };
+      channels.detune = function (cents) {
+        model.detune = Number(cents);
+        oscillator.detune.value = R.add(R.multiply(100, model.tune), model.detune);
+      };
+      channels.panning = function (value) {
+        model.panning = Number(value);
+        setPannerPosition(panner, value);
       };
 
-      oscillator.masterGain.connect(output);
-      oscillator.oscillator.frequency.value = freq;
-      oscillator.oscillator.start();
+      masterGain.connect(output);
+      oscillator.frequency.value = freq;
+      oscillator.start();
 
-      activeNotes[freq] = oscillator;
+      activeNotes[freq] = {
+        oscillator: oscillator,
+        adsrRelease: adsrRelease
+      };
     };
   };
 
   const noteStart = function (freq) {
     activeNotes[freq] || newNote(freq);
+  };
+
+  const noteStop = function (freq) {
+    const oscillator = activeNotes[freq].oscillator;
+    const adsrRelease = activeNotes[freq].adsrRelease;
+    if (adsrRelease) {
+      adsrRelease().then(function () {
+        oscillator.stop();
+      });
+    } else {
+      oscillator.stop();
+    }
+    activeNotes[freq] = null;
   };
 
   const inputs = {
@@ -114,7 +117,7 @@ module.exports = function (model) {
     }
   };
 
-  const ret = {
+  return {
     connect: connect,
     inputs: inputs,
     id: model.id,
@@ -122,6 +125,4 @@ module.exports = function (model) {
     noteStart: noteStart,
     view: view
   };
-
-  return ret;
 };
