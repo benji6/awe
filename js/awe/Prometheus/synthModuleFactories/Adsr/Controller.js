@@ -1,5 +1,4 @@
 var audioContext = require('../../../audioContext');
-var Model = require('./Model.js');
 var View = require('./View.js');
 
 var bufferSource = (function () {
@@ -13,22 +12,21 @@ var bufferSource = (function () {
   return bufferSource;
 }());
 
-module.exports = function (params) {
-  var model = Model();
+module.exports = function (model) {
   var channels = {};
   var view = View(model, channels);
 
   channels.a = function (value) {
-    model.getModel().a = +value;
+    model.a = +value;
   };
   channels.d = function (value) {
-    model.getModel().d = +value;
+    model.d = +value;
   };
   channels.s = function (value) {
-    model.getModel().s = +value;
+    model.s = +value;
   };
   channels.r = function (value) {
-    model.getModel().r = +value;
+    model.r = +value;
   };
 
   var gain = audioContext.createGain();
@@ -40,16 +38,16 @@ module.exports = function (params) {
       const timeElapsed = audioContext.currentTime - startTime;
       var currentGain = 0;
 
-      if (timeElapsed < model.getModel().a) {
-        currentGain = timeElapsed / model.getModel().a;
-      } else if (timeElapsed < model.getModel().a + model.getModel().d) {
-        currentGain = 1 - (1 - model.getModel().s) *
-          (timeElapsed - model.getModel().a) / model.getModel().d;
+      if (timeElapsed < model.a) {
+        currentGain = timeElapsed / model.a;
+      } else if (timeElapsed < model.a + model.d) {
+        currentGain = 1 - (1 - model.s) *
+          (timeElapsed - model.a) / model.d;
       } else {
-        currentGain = model.getModel().s;
+        currentGain = model.s;
       }
 
-      const releaseTime = model.getModel().r * currentGain;
+      const releaseTime = model.r * currentGain;
       gain.gain.cancelScheduledValues(audioContext.currentTime);
       gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
       gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
@@ -61,9 +59,9 @@ module.exports = function (params) {
   };
 
   gain.gain.setValueAtTime(0, audioContext.currentTime);
-  gain.gain.linearRampToValueAtTime(1, audioContext.currentTime + model.getModel().a);
-  gain.gain.linearRampToValueAtTime(model.getModel().s,
-    audioContext.currentTime + model.getModel().a + model.getModel().d);
+  gain.gain.linearRampToValueAtTime(1, audioContext.currentTime + model.a);
+  gain.gain.linearRampToValueAtTime(model.s,
+    audioContext.currentTime + model.a + model.d);
 
   var connect = function (node) {
     gain.connect(node);
@@ -72,7 +70,7 @@ module.exports = function (params) {
   return {
     connect: connect,
     release: release,
-    // id: params.id,
+    id: model.id,
     view: view
   };
 };

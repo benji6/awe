@@ -16,12 +16,20 @@ module.exports = function (model) {
   }, R.pluck("type", model), nodeModelsWithIds);
 
   R.zipWith(function (node, connections) {
-    R.forEach(function (connection) {
+    R.both(R.identity, R.forEach(function (connection) {
       R.either(R.eq(undefined), function (connectionId) {
         node.connect(R.find(R.propEq("id", connectionId), nodes).destinations[connection.destination]);
       })(connection.id);
-    }, connections);
+    }))(connections);
   }, nodes, R.pluck("connections", model));
+
+  R.zipWith(function (node, inputs) {
+    R.both(R.identity, R.forEach(function (input) {
+      R.either(R.eq(undefined), function (inputId) {
+        node.inputs[input.destination](R.find(R.propEq("id", inputId), nodes));
+      })(input.id);
+    }))(inputs);
+  }, nodes, R.pluck("inputs", model));
 
   R.zipWith(function (node, modelEventListener) {
       R.either(R.eq(undefined), R.forEach(R.cond(
@@ -38,8 +46,8 @@ module.exports = function (model) {
     nodes[0].connect(destination);
   };
 
-  var noteStart = (function () {
-    var listeners = eventListeners.noteStop;
+  const noteStart = (function () {
+    const listeners = eventListeners.noteStop;
 
     return function (freq) {
       for (var i = 0; i < listeners.length; i++) {
@@ -48,8 +56,8 @@ module.exports = function (model) {
     };
   }());
 
-  var noteStop = (function () {
-    var listeners = eventListeners.noteStop;
+  const noteStop = (function () {
+    const listeners = eventListeners.noteStop;
 
     return function (freq) {
       for (var i = 0; i < listeners.length; i++) {

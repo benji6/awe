@@ -36,7 +36,9 @@ module.exports = function (params) {
   const maybeLog = maybe(log12)(params.logarithmic);
 
   const rootNode = createElement(h("tr"));
+
   const label = createElement(h("td", capitalizeFirst(params.name)));
+  
   const input = createElement(h("td", [
     h("input", {
       type: "range",
@@ -49,12 +51,13 @@ module.exports = function (params) {
       }
     })
   ]));
+
   const output = createElement(h("output", {
     value: formatOutput(maybeExp(maybeLog(params.model[params.name])))
   }));
 
   const render = function () {
-    var modelValue = params.model[params.name];
+    const modelValue = params.model[params.name];
     input.value = maybeLog(modelValue);
     output.value = formatOutput(modelValue);
   };
@@ -66,7 +69,9 @@ module.exports = function (params) {
 
   params.parent.appendChild(rootNode).appendChild(label);
   rootNode.appendChild(input);
-  rootNode.appendChild(createElement(h("tr")).appendChild(output));
+  rootNode.appendChild(createElement(h("tr"))
+    .appendChild(createElement(h("td"))))
+    .appendChild(output);
 
   return {
     render: render,

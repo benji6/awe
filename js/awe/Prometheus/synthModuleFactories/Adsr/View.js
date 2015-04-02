@@ -1,29 +1,24 @@
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
 const R = require('ramda');
-var createRangeControl = require('../../../Components/createRangeControl.js');
+const createRangeControl = require('../../../Components/createRangeControl.js');
 
-var formatOutput = function (output) {
-  return (+output).toFixed(2);
+const formatOutput = function (output) {
+  return Number(output).toFixed(2);
 };
 
 module.exports = function (model, channels) {
   var components = null;
 
-  var connect = function (parentDomEl) {
-    var table = document.createElement("table");
+  const connect = function (parentDomEl) {
+    const table = createElement(h("table"));
+    table.appendChild(createElement(h("thead", [
+      h("tr", [
+        h("th", {attributtes: {colspan: 2}}, "ADSR")
+      ])
+    ])));
 
-    jsmlParse({
-      tag: "thead",
-      children: {
-        tag: "tr",
-        children: {
-          tag: "th",
-          text: "ADSR",
-          colspan: 2
-        }
-      }
-    }, table);
-
-    var componentParams = {
+    const componentParams = {
       parent: table,
       name: "a",
       min: 0,
@@ -45,11 +40,7 @@ module.exports = function (model, channels) {
       }))
     ];
 
-    var container = document.createElement("div");
-
-    container.className = "center";
-    container.appendChild(table);
-    parentDomEl.appendChild(container);
+    parentDomEl.appendChild(createElement(h("div.center"))).appendChild(table);
   };
 
   return {

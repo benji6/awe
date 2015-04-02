@@ -23,20 +23,16 @@ module.exports = [
       type: "lowpass"
     }
   },
-  // {
-  //   id: 3,
-  //   type: "oscillator",
-  //   connections: [
-  //     {destination: "destination"}
-  //   ],
-  //   eventListeners: [
-  //     "noteStart",
-  //     "noteStop"
-  //   ],
-  //   params: {
-  //     type: "saw"
-  //   }
-  // },
+  {
+    id: 2,
+    type: "adsr",
+    model: {
+      a: 1,
+      d: 1,
+      s: 0.5,
+      r: 2
+    }
+  },
   {
     type: "oscillator",
     connections: [
@@ -45,6 +41,9 @@ module.exports = [
     eventListeners: [
       "noteStart",
       "noteStop"
+    ],
+    inputs: [
+      {id: 2, destination: "gain"}
     ],
     model: {
       type: "saw",
@@ -53,56 +52,56 @@ module.exports = [
       tune: 0,
       volume: 0.2
     }
-  },
-  {
-    type: "oscillator",
-    connections: [
-      {id: 1, destination: "destination"}
-    ],
-    eventListeners: [
-      "noteStart",
-      "noteStop"
-    ],
-    model: {
-      type: "sine",
-      detune: 0,
-      panning: 0,
-      tune: 0,
-      volume: 0.2
-    }
-  },
-  {
-    type: "oscillator",
-    connections: [
-      {id: 1, destination: "destination"}
-    ],
-    eventListeners: [
-      "noteStart",
-      "noteStop"
-    ],
-    model: {
-      type: "square",
-      detune: 0,
-      panning: 0,
-      tune: 0,
-      volume: 0.2
-    }
-  },
-  {
-    type: "oscillator",
-    connections: [
-      {id: 1, destination: "destination"}
-    ],
-    eventListeners: [
-      "noteStart",
-      "noteStop"
-    ],
-    model: {
-      type: "triangle",
-      detune: 0,
-      panning: 0,
-      tune: 0,
-      volume: 0.2
-    }
   }
+  // {
+  //   type: "oscillator",
+  //   connections: [
+  //     {id: 1, destination: "destination"}
+  //   ],
+  //   eventListeners: [
+  //     "noteStart",
+  //     "noteStop"
+  //   ],
+  //   model: {
+  //     type: "sine",
+  //     detune: 0,
+  //     panning: 0,
+  //     tune: 0,
+  //     volume: 0.2
+  //   }
+  // },
+  // {
+  //   type: "oscillator",
+  //   connections: [
+  //     {id: 1, destination: "destination"}
+  //   ],
+  //   eventListeners: [
+  //     "noteStart",
+  //     "noteStop"
+  //   ],
+  //   model: {
+  //     type: "square",
+  //     detune: 0,
+  //     panning: 0,
+  //     tune: 0,
+  //     volume: 0.2
+  //   }
+  // },
+  // {
+  //   type: "oscillator",
+  //   connections: [
+  //     {id: 1, destination: "destination"}
+  //   ],
+  //   eventListeners: [
+  //     "noteStart",
+  //     "noteStop"
+  //   ],
+  //   model: {
+  //     type: "triangle",
+  //     detune: 0,
+  //     panning: 0,
+  //     tune: 0,
+  //     volume: 0.2
+  //   }
+  // }
 ];

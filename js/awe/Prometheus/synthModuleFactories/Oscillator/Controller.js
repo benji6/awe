@@ -1,6 +1,5 @@
 const audioContext = require('../../../audioContext');
 const View = require('./View.js');
-const Adsr = require('../Adsr/Controller.js');
 
 const Oscillator = function (type) {
   var oscillator = audioContext.createOscillator();
@@ -48,7 +47,6 @@ module.exports = function (model) {
   });
 
   const createOscillator = function () {
-    const adsr = Adsr();
     const oscillator = Oscillator(type);
     const masterGain = Gain(model.volume);
     const panner = Panner(model.panning);
