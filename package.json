@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/benji6/awe",
   "jshintConfig": {
-    "esnext": "true"
+    "esnext": "true",
+    "expr": "true"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
