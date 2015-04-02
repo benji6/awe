@@ -20,7 +20,7 @@ module.exports = function (model, channels) {
 
     components.push(createRangeControl({
       parent: table,
-      name: "gain",
+      name: "volume",
       min: 0,
       max: 1,
       observer: channels,

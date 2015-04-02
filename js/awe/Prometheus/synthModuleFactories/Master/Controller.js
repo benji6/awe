@@ -21,11 +21,11 @@ const setPannerPosition = function (panner, panning) {
 module.exports = function (model) {
   const controllerChannel = {};
   const view = View(model, controllerChannel);
-  const gain = GainNode(model.gain);
+  const gain = GainNode(model.volume);
   const panner = Panner(model.panning);
 
-  controllerChannel.gain = function (value) {
-    gain.gain.value = model.gain = Number(value);
+  controllerChannel.volume = function (value) {
+    gain.gain.value = model.volume = Number(value);
   };
 
   controllerChannel.panning = function (value) {
