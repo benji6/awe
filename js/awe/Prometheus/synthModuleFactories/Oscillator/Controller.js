@@ -1,32 +1,29 @@
-var audioContext = require('../../../audioContext');
-var View = require('./View.js');
-var Adsr = require('../Adsr/Controller.js');
+const audioContext = require('../../../audioContext');
+const View = require('./View.js');
+const Adsr = require('../Adsr/Controller.js');
 
-var adsr = Adsr();
-
-var Oscillator = function (type) {
+const Oscillator = function (type) {
   var oscillator = audioContext.createOscillator();
   oscillator.type = type;
   return oscillator;
 };
 
-var Gain = function (volume) {
+const Gain = function (volume) {
   volume = volume === undefined ? 1 : volume;
-  var gain = audioContext.createGain();
+  const gain = audioContext.createGain();
   gain.gain.value = volume;
   return gain;
 };
 
-var setPannerPosition = function (panner, panning) {
-  var x = panning;
-  var z = 1 - Math.abs(x);
+const setPannerPosition = function (panner, panning) {
+  const x = panning;
+  const z = 1 - Math.abs(x);
   panner.setPosition(x, 0, z);
-
   return panner;
 };
 
-var Panner = function (panning) {
-  var panner = audioContext.createPanner();
+const Panner = function (panning) {
+  const panner = audioContext.createPanner();
   panner.panningModel = 'equalpower';
   return setPannerPosition(panner, panning);
 };
@@ -40,9 +37,9 @@ const oscillatorParams = [
 
 module.exports = function (model) {
   const type = model.type;
-  var channels = {};
-  var view = View(model, channels, type);
-  var activeNotes = {};
+  const channels = {};
+  const view = View(model, channels, type);
+  const activeNotes = {};
 
   oscillatorParams.forEach(function (oscillatorParam) {
     channels[oscillatorParam] = function (value) {
@@ -50,10 +47,11 @@ module.exports = function (model) {
     };
   });
 
-  var createOscillator = function () {
-    var oscillator = Oscillator(type);
-    var masterGain = Gain(model.volume);
-    var panner = Panner(model.panning);
+  const createOscillator = function () {
+    const adsr = Adsr();
+    const oscillator = Oscillator(type);
+    const masterGain = Gain(model.volume);
+    const panner = Panner(model.panning);
 
     oscillator.detune.value = 100 * model.tune + model.detune;
     oscillator.connect(panner);
@@ -82,14 +80,27 @@ module.exports = function (model) {
     };
 
     return {
+      adsr: adsr,
       masterGain: masterGain,
       oscillator: oscillator
     };
   };
+
+  var noteStop = function () {};
   var newNote = function () {};
-  var connect = function (output) {
+
+  const connect = function (output) {
     newNote = function (freq) {
-      var oscillator = createOscillator(type);
+      const oscillator = createOscillator(type);
+      const adsr = oscillator.adsr;
+
+      ret.noteStop = function (freq) {
+        adsr.release().then(function () {
+          const oscillator = activeNotes[freq];
+          oscillator && oscillator.oscillator.stop();
+          activeNotes[freq] = null;
+        });
+      };
 
       oscillator.masterGain.connect(output);
       oscillator.oscillator.frequency.value = freq;
@@ -99,29 +110,20 @@ module.exports = function (model) {
     };
   };
 
-  var noteStart = function (freq) {
+  const noteStart = function (freq) {
     if (activeNotes[freq]) {
       return;
     }
     newNote(freq);
   };
 
-  var noteStop = function (freq) {
-    var oscillator = activeNotes[freq];
-    if (!oscillator) {
-      return;
-    }
-    oscillator.oscillator.stop();
-    activeNotes[freq] = null;
-  };
-
-  var inputs = {
+  const inputs = {
     gain: function (arg) {
       adsr = arg;
     }
   };
 
-  return {
+  const ret = {
     connect: connect,
     inputs: inputs,
     id: model.id,
@@ -129,4 +131,6 @@ module.exports = function (model) {
     noteStart: noteStart,
     view: view
   };
+
+  return ret;
 };

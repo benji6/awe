@@ -35,28 +35,29 @@ module.exports = function (params) {
   bufferSource.connect(gain);
   var startTime = audioContext.currentTime;
 
-  var noteFinishThenStopOsc = function (oscillator) {
-    var timeElapsed = audioContext.currentTime - startTime;
-    var currentGain = 0;
-    var releaseTime;
+  const release = function (oscillator) {
+    return new Promise(function (resolve) {
+      const timeElapsed = audioContext.currentTime - startTime;
+      var currentGain = 0;
 
-    if (timeElapsed < model.getModel().a) {
-      currentGain = timeElapsed / model.getModel().a;
-    } else if (timeElapsed < model.getModel().a + model.getModel().d) {
-      currentGain = 1 - (1 - model.getModel().s) *
-        (timeElapsed - model.getModel().a) / model.getModel().d;
-    } else {
-      currentGain = model.getModel().s;
-    }
+      if (timeElapsed < model.getModel().a) {
+        currentGain = timeElapsed / model.getModel().a;
+      } else if (timeElapsed < model.getModel().a + model.getModel().d) {
+        currentGain = 1 - (1 - model.getModel().s) *
+          (timeElapsed - model.getModel().a) / model.getModel().d;
+      } else {
+        currentGain = model.getModel().s;
+      }
 
-    releaseTime = model.getModel().r * currentGain;
-    gain.gain.cancelScheduledValues(audioContext.currentTime);
-    gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
-    gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
+      const releaseTime = model.getModel().r * currentGain;
+      gain.gain.cancelScheduledValues(audioContext.currentTime);
+      gain.gain.setValueAtTime(currentGain, audioContext.currentTime);
+      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
 
-    window.setTimeout(function () {
-      oscillator.stop();
-    }, 1000 * releaseTime + 50);
+      window.setTimeout(function () {
+        resolve();
+      }, 1000 * releaseTime + 50);
+    });
   };
 
   gain.gain.setValueAtTime(0, audioContext.currentTime);
@@ -70,6 +71,7 @@ module.exports = function (params) {
 
   return {
     connect: connect,
+    release: release,
     // id: params.id,
     view: view
   };
