@@ -1,7 +1,8 @@
-var View = require('./View.js');
+const LZString = require('lz-string');
+const View = require('./View.js');
 
 module.exports = function (model) {
-  var channels = {
+  const channels = {
     openPreset: function (value) {
       if (!value) {
         return;
@@ -30,7 +31,7 @@ module.exports = function (model) {
       loadPresetFromData(newData);
     },
     exportSettings: function () {
-      return JSON.stringify(model);
+      return LZString.compressToEncodedURIComponent(JSON.stringify(model));
     },
     deletePreset: function (value) {
       if (!value) {

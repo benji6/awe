@@ -35,6 +35,7 @@
     "watchify": "^2.4.0"
   },
   "dependencies": {
+    "lz-string": "^1.4.1",
     "ramda": "^0.13.0",
     "virtual-dom": "^2.0.1"
   }
