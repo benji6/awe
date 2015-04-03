@@ -2,7 +2,15 @@ const R = require('ramda');
 const typeToNodeFactoryMap = require('./typeToNodeFactoryMap.js');
 
 module.exports = function (parentDestination, parentDomElement, addStartChannel, addStopChannel) {
+  const purgeOldState = function () {
+    while (parentDomElement.firstChild) {
+      parentDomElement.removeChild(parentDomElement.firstChild);
+    }
+  };
+
   return function (model) {
+    purgeOldState();
+
     const eventListeners = {
       noteStart: [],
       noteStop: []

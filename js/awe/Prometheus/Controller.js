@@ -4,9 +4,9 @@ const model = require('./defaultModels/default.js');
 const Menu = require('./Menu/Controller.js');
 
 module.exports = function (parentDestination, parentDomElement, addStartChannel, addStopChannel) {
-  const container = view("Prometheus", parentDomElement);
-  const prometheusBound = prometheusUnbound(parentDestination, container, addStartChannel, addStopChannel);
+  const containers = view("Prometheus", parentDomElement);
+  const prometheusBound = prometheusUnbound(parentDestination, containers.synth, addStartChannel, addStopChannel);
 
-  Menu(prometheusBound, model).view.connect(container);
   prometheusBound(model);
+  Menu(prometheusBound, model).view.connect(containers.menu);
 };
