@@ -16,8 +16,10 @@ module.exports = function (model, channels) {
   var components = null;
 
   const connect = function (parentDomEl) {
-    const container = createElement(h("div.center"));
-    const table = createElement(h("table"));
+    const table = parentDomEl
+      .appendChild(createElement(h("div.center")))
+      .appendChild(createElement(h("table")));
+    
     const componentParams = {
       logarithmic: true,
       max: 18000,
@@ -67,8 +69,6 @@ module.exports = function (model, channels) {
 
     components[2].rootNode.style.display = controlDisplays.lowpass.q;
     components[3].rootNode.style.display = controlDisplays.lowpass.gain;
-
-    parentDomEl.appendChild(container).appendChild(table);
   };
 
   const controlDisplays = {

@@ -37,9 +37,11 @@ module.exports = function (params) {
 
   const rootNode = createElement(h("tr"));
 
-  const label = createElement(h("td", capitalizeFirst(params.name)));
-  
-  const input = createElement(h("td", [
+  params.parent
+    .appendChild(rootNode)
+    .appendChild(createElement(h("td", capitalizeFirst(params.name))));
+
+  const input = rootNode.appendChild(createElement(h("td", [
     h("input", {
       type: "range",
       max: maybeLog(params.max),
@@ -50,11 +52,13 @@ module.exports = function (params) {
         oninputCallback(this.value);
       }
     })
-  ]));
+  ])));
 
-  const output = createElement(h("output", {
-    value: formatOutput(maybeExp(maybeLog(params.model[params.name])))
-  }));
+  const output = rootNode.appendChild(createElement(h("tr"))
+    .appendChild(createElement(h("td"))))
+    .appendChild(createElement(h("output", {
+      value: formatOutput(maybeExp(maybeLog(params.model[params.name])))
+    })));
 
   const render = function () {
     const modelValue = params.model[params.name];
@@ -66,12 +70,6 @@ module.exports = function (params) {
     params.observer[params.name](maybeExp(inputValue));
     output.value = formatOutput(maybeExp(inputValue));
   };
-
-  params.parent.appendChild(rootNode).appendChild(label);
-  rootNode.appendChild(input);
-  rootNode.appendChild(createElement(h("tr"))
-    .appendChild(createElement(h("td"))))
-    .appendChild(output);
 
   return {
     render: render,

@@ -7,16 +7,15 @@ module.exports = function (model, channels) {
   const components = [];
 
   const connect = function (parentDomEl) {
-    const table = createElement(h("table"));
-    const container = createElement(h("div"));
+    const table = parentDomEl
+      .appendChild(createElement(h("div")))
+      .appendChild(createElement(h("table")));
 
     table.appendChild(createElement(h("thead", [
       h("tr", [
         h("th", {attributes: {colspan: 2}}, "Master")
       ])
     ])));
-
-    container.appendChild(table);
 
     components.push(createRangeControl({
       parent: table,
@@ -35,8 +34,6 @@ module.exports = function (model, channels) {
       observer: channels,
       model: model
     }));
-
-    parentDomEl.appendChild(container);
   };
 
   const render = function () {

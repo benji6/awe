@@ -9,6 +9,19 @@ const capitalizeFirst = function (str) {
 module.exports = function (params) {
   const modelType = params.model.type;
 
+  const select = params.parent.appendChild(createElement(h("tr", [
+    h("td", capitalizeFirst(params.name)),
+  ]))).appendChild(createElement(h("td"))).appendChild(createElement(h("select", onchange = function () {
+    params.observer[params.name](select.value);
+  }, R.map(function (option) {
+    if (params.name === modelType) {
+      return h("option", {
+        selected: true
+      }, option);
+    }
+    return h("option", option);
+  } ,params.options))));
+
   const render = function () {
     const modelParam = params.model[params.name];
     const options = select.children;
@@ -21,23 +34,6 @@ module.exports = function (params) {
       }
     }, options);
   };
-
-  const select = createElement(h("select", onchange = function () {
-    params.observer[params.name](select.value);
-  }, R.map(function (option) {
-    if (params.name === modelType) {
-      return h("option", {
-        selected: true
-      }, option);
-    }
-    return h("option", option);
-  } ,params.options)));
-
-  const tr = createElement(h("tr", [
-    h("td", capitalizeFirst(params.name)),
-  ]));
-
-  params.parent.appendChild(tr).appendChild(createElement(h("td"))).appendChild(select);
 
   return {
     render: render

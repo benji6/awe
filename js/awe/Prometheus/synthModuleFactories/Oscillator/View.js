@@ -15,7 +15,7 @@ module.exports = function (model, channels, type) {
   var components = [];
 
   var connect = function (parentDomEl) {
-    const table = document.createElement("table");
+    const table = parentDomEl.appendChild(document.createElement("table"));
 
     table.appendChild(createElement(h("thead", [
       h("tr", [
@@ -51,8 +51,6 @@ module.exports = function (model, channels, type) {
         name: "detune"
       }))
     ]);
-
-    parentDomEl.appendChild(table);
   };
 
   return {

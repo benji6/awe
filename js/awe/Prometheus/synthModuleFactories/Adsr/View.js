@@ -11,12 +11,15 @@ module.exports = function (model, channels) {
   var components = null;
 
   const connect = function (parentDomEl) {
-    const table = createElement(h("table"));
-    table.appendChild(createElement(h("thead", [
-      h("tr", [
-        h("th", {attributes: {colspan: 2}}, "ADSR")
-      ])
-    ])));
+    const table = parentDomEl
+      .appendChild(createElement(h("div.center")))
+      .appendChild(createElement(h("table", [
+        h("thead", [
+          h("tr", [
+            h("th", {attributes: {colspan: 2}}, "ADSR")
+          ])
+        ])
+      ])));
 
     const componentParams = {
       parent: table,
@@ -39,8 +42,6 @@ module.exports = function (model, channels) {
         name: "r"
       }))
     ];
-
-    parentDomEl.appendChild(createElement(h("div.center"))).appendChild(table);
   };
 
   return {
