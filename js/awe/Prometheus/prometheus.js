@@ -8,7 +8,8 @@ module.exports = function (model) {
   };
 
   const nodeModelsWithIds = R.zipWith(function (id, nodeModel) {
-    return R.assoc("id", id, nodeModel);
+    nodeModel.id = id;
+    return nodeModel;
   }, R.pluck("id", model), R.pluck("model", model));
 
   const nodes = R.zipWith(function (type, nodeModel) {
