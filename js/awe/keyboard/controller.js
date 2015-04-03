@@ -11,7 +11,9 @@ document.body.onkeydown = function (e) {
   for (var i = 0; i < stopChannels.length; i++) {
     startChannels[i](freq);
   }
-  e.preventDefault();
+  if (e.keyCode === 191) {
+    e.preventDefault();
+  }
 };
 
 document.body.onkeyup = function (e) {
