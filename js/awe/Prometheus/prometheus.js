@@ -1,7 +1,7 @@
 const R = require('ramda');
 const typeToNodeFactoryMap = require('./typeToNodeFactoryMap.js');
 
-module.exports = function (model) {
+module.exports = function (model, parentDestination, parentDomElement, addStartChannel, addStopChannel) {
   const eventListeners = {
     noteStart: [],
     noteStop: []
@@ -43,40 +43,27 @@ module.exports = function (model) {
       )))(modelEventListener);
   }, nodes, R.pluck("eventListeners", model));
 
-  const connect = function (destination) {
-    nodes[0].connect(destination);
-  };
+  nodes[0].connect(parentDestination);
 
-  const noteStart = (function () {
+  addStartChannel((function () {
     const listeners = eventListeners.noteStop;
-
     return function (freq) {
       for (var i = 0; i < listeners.length; i++) {
         listeners[i].noteStart(freq);
       }
     };
-  }());
+  }()));
 
-  const noteStop = (function () {
+  addStopChannel((function () {
     const listeners = eventListeners.noteStop;
-
     return function (freq) {
       for (var i = 0; i < listeners.length; i++) {
         listeners[i].noteStop(freq);
       }
     };
-  }());
+  }()));
 
-  return {
-    connect: connect,
-    view: {
-      connect: function (parentView) {
-        nodes.forEach(function (node) {
-          node.view.connect(parentView);
-        });
-      }
-    },
-    noteStart: noteStart,
-    noteStop: noteStop
-  };
+  R.forEach(function (node) {
+    node.view.connect(parentDomElement);
+  }, nodes);
 };

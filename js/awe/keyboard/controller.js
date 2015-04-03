@@ -8,7 +8,7 @@ document.body.onkeydown = function (e) {
   if (!freq) {
     return;
   }
-  for (var i = 0; i < stopChannels.length; i++) {
+  for (var i = 0; i < startChannels.length; i++) {
     startChannels[i](freq);
   }
   if (e.keyCode === 191) {
