@@ -1,56 +1,17 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
 
-module.exports = function (model, channels) {
-  var container = null;
-  var input = null;
-  var presetDataView = null;
+module.exports = function (model, channels, parentDomEl) {
+  const modalView = createElement(h("div.modalWindow", [
+    h("h3", "Current Settings"),
+    h("p", "Copy and send to a friend!"),
+    h("hr"),
+    h("output.tinyText", model),
+    h("hr"),
+    h("button", {onclick: function () {
+      modalView.parentNode.removeChild(modalView);
+    }}, "OK")
+  ]));
 
-  var jsml = {
-    tag: "div",
-    className: "hidden",
-    callback: function (element) {
-      container = element;
-    },
-    children: [
-      {
-        tag: "h3",
-        text: "Current Settings"
-      },
-      {
-        tag: "p",
-        text: "Copy and send to a friend!"
-      },
-      {
-        tag: "hr"
-      },
-      {
-        tag: "output",
-        callback: function (element) {
-          presetDataView = element;
-        }
-      },
-      {
-        tag: "hr"
-      },
-      {
-        tag: "button",
-        text: "OK",
-        callback: function (element) {
-          element.onclick = function () {
-            container.className = "hidden";
-          };
-        }
-      }
-    ]
-  };
-
-  var open = function () {
-    presetDataView.value = channels.exportPreset();
-    container.className = "modalWindow";
-  };
-
-  return {
-    jsml: jsml,
-    open: open
-  };
+  parentDomEl.appendChild(modalView);
 };

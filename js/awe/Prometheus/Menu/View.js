@@ -4,30 +4,16 @@ const createElement = require('virtual-dom/create-element');
 // const OpenPresetModal = require('./OpenPresetModal/View.js');
 // const SavePresetAsModal = require('./SavePresetAsModal/View.js');
 // const ImportPresetModal = require('./ImportPresetModal/View.js');
-// const ExportPresetModal = require('./ExportPresetModal/View.js');
+const exportPresetModal = require('./ExportPresetModal/View.js');
 // const DeletePresetModal = require('./DeletePresetModal/View.js');
 
 module.exports = function (model, channels) {
   // const openPresetModal = OpenPresetModal(model, channels);
   // const savePresetAsModal = SavePresetAsModal(model, channels);
   // const importPresetModal = ImportPresetModal(channels);
-  // const exportPresetModal = ExportPresetModal(model, channels);
   // const deletePresetModal = DeletePresetModal(model, channels);
 
-  const menuView = createElement(h("nav", [
-    h("ul", [
-      h("li", [
-        "Menu",
-        h("ul", [
-          h("li", "Open Preset"),
-          h("li", "Save Preset As"),
-          h("li", "Import Settings"),
-          h("li", "Export Settings"),
-          h("li", "Delete Preset"),
-        ])
-      ])
-    ])
-  ]));
+
 
   // var populatePresets = function () {
   //   var presets = model;
@@ -38,7 +24,22 @@ module.exports = function (model, channels) {
 
   return {
     connect: function (parentDomElement) {
-      parentDomElement.appendChild(menuView);
+      parentDomElement.appendChild(createElement(h("nav", [
+        h("ul", [
+          h("li", [
+            "Menu",
+            h("ul", [
+              h("li", "Open Preset"),
+              h("li", "Save Preset As"),
+              h("li", "Import Settings"),
+              h("li", {onclick: function () {
+                exportPresetModal(channels.exportSettings(), channels, parentDomElement);
+              }}, "Export Settings"),
+              h("li", "Delete Preset"),
+            ])
+          ])
+        ])
+      ])));
       // populatePresets();
     },
     //populatePresets: populatePresets
