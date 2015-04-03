@@ -1,4 +1,5 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
 
 module.exports = function (model, channels) {
   var container = null;

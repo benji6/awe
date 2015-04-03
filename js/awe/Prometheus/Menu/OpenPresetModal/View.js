@@ -1,83 +1,25 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
+const R = require('ramda');
 
-module.exports = function (model, channels) {
-  var container = null;
-  var select = null;
+module.exports = function (presets, channels, parentDomEl) {
+  var selectedValue = presets[0];
 
-  var modalJsml = {
-    tag: "div",
-    className: "hidden",
-    callback: function (element) {
-      container = element;
-    },
-    children: [
-      {
-        tag: "h3",
-        text: "Open Preset"
-      },
-      {
-        tag: "select",
-        callback: function (element) {
-          select = element;
-        }
-      },
-      {
-        tag: "button",
-        text: "Open",
-        callback: function (element) {
-          element.onclick = function () {
-            channels.openPreset(select.value);
-            container.className = "hidden";
-          };
-        }
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: function (element) {
-          element.onclick = function () {
-            container.className = "hidden";
-          };
-        }
-      }
-    ]
-  };
+  const modalView = createElement(h("div.modalWindow", [
+    h("h3", "Open Preset"),
+    h("select", {onchange: function () {
+      selectedValue = this.value;
+    }}, R.map(function (preset) {
+      return h("option", preset);
+    }, presets)),
+    h("button", {onclick: function () {
+      channels.openPreset(selectedValue);
+      modalView.parentNode.removeChild(modalView);
+    }}, "Open"),
+    h("button", {onclick: function () {
+      modalView.parentNode.removeChild(modalView);
+    }}, "Cancel")
+  ]));
 
-  var populatePresets = function (presets) {
-    var jsml = null;
-
-    if (presets && presets.length) {
-      jsml = presets.map(function (preset) {
-        return {
-          tag: "option",
-          value: preset,
-          text: preset
-        };
-      });
-    } else {
-      jsml = {
-        disabled: "disabled",
-        selected: "selected",
-        tag: "option",
-        text: "No Saved Presets",
-        value: ""
-      };
-    }
-
-    while (select.firstChild) {
-      select.removeChild(select.firstChild);
-    }
-
-    jsmlParse(jsml, select);
-  };
-
-  var open = function () {
-    container.className = "modalWindow";
-  };
-
-  return {
-    jsml: modalJsml,
-    open: open,
-    populatePresets: populatePresets
-  };
+  parentDomEl.appendChild(modalView);
 };

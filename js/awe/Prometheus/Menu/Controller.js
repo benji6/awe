@@ -1,13 +1,14 @@
 const LZString = require('lz-string');
+const R = require('ramda');
+const defaultModels = require('./Model.js');
 const View = require('./View.js');
 
-module.exports = function (model) {
+module.exports = function (prometheus, model) {
   const channels = {
     openPreset: function (value) {
-      if (!value) {
-        return;
-      }
-      loadPresetFromData(model.getPreset(value));
+      prometheus(R.filter(function (model) {
+        return R.eq(model.name, value);
+      }, defaultModels)[0].model);
     },
     savePresetAs: function (value) {
       if (model.hasPresetKey(value)) {
@@ -42,7 +43,7 @@ module.exports = function (model) {
     }
   };
 
-  const view = View(model, channels);
+  const view = View(model, R.pluck("name", defaultModels), channels);
 
   return {
     view: view
