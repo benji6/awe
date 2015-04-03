@@ -17,20 +17,20 @@ module.exports = [
       {id: 0, destination: "destination"}
     ],
     model: {
-      frequency: 8000,
+      frequency: 300,
       gain: 0,
-      q: 0,
-      type: "lowpass"
+      q: 18,
+      type: "highpass"
     }
   },
   {
     id: 2,
     type: "adsr",
     model: {
-      a: 0.8,
+      a: 0.3,
       d: 1,
-      s: 0.5,
-      r: 1
+      s: 0.7,
+      r: 2
     }
   },
   {
@@ -47,10 +47,10 @@ module.exports = [
     ],
     model: {
       type: "saw",
-      detune: 0,
-      panning: 0,
+      detune: -4,
+      panning: -0.12,
       tune: 0,
-      volume: 0.2
+      volume: 0.25
     }
   },
   {
@@ -66,51 +66,11 @@ module.exports = [
       {id: 2, destination: "gain"}
     ],
     model: {
-      type: "sine",
-      detune: 0,
-      panning: 0,
-      tune: 0,
+      type: "saw",
+      detune: 4,
+      panning: 0.12,
+      tune: 7,
       volume: 0.2
     }
   },
-  {
-    type: "oscillator",
-    connections: [
-      {id: 1, destination: "destination"}
-    ],
-    eventListeners: [
-      "noteStart",
-      "noteStop"
-    ],
-    inputs: [
-      {id: 2, destination: "gain"}
-    ],
-    model: {
-      type: "square",
-      detune: 0,
-      panning: 0,
-      tune: 0,
-      volume: 0.2
-    }
-  },
-  {
-    type: "oscillator",
-    connections: [
-      {id: 1, destination: "destination"}
-    ],
-    eventListeners: [
-      "noteStart",
-      "noteStop"
-    ],
-    inputs: [
-      {id: 2, destination: "gain"}
-    ],
-    model: {
-      type: "triangle",
-      detune: 0,
-      panning: 0,
-      tune: 0,
-      volume: 0.2
-    }
-  }
 ];

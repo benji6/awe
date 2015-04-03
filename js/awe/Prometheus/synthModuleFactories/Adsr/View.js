@@ -25,7 +25,7 @@ module.exports = function (model, channels) {
       parent: table,
       name: "a",
       min: 0,
-      max: 1,
+      max: 2,
       observer: channels,
       model: model
     };
@@ -36,6 +36,7 @@ module.exports = function (model, channels) {
         name: "d"
       })),
       createRangeControl(R.merge(componentParams, {
+        max: 1,
         name: "s"
       })),
       createRangeControl(R.merge(componentParams, {

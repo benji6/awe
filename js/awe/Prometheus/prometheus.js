@@ -1,7 +1,9 @@
 const R = require('ramda');
 const typeToNodeFactoryMap = require('./typeToNodeFactoryMap.js');
 
-module.exports = function (parentDestination, parentDomElement, addStartChannel, addStopChannel) {
+module.exports = function (parentDestination, parentDomElement, startChannel, stopChannel) {
+  const oldState = {};
+
   const purgeOldState = function () {
     while (parentDomElement.firstChild) {
       parentDomElement.removeChild(parentDomElement.firstChild);
@@ -11,10 +13,10 @@ module.exports = function (parentDestination, parentDomElement, addStartChannel,
   return function (model) {
     purgeOldState();
 
-    const eventListeners = {
-      noteStart: [],
-      noteStop: []
-    };
+    const noteStartListeners = [];
+    const noteStopListeners = [];
+
+    window.n = noteStartListeners;
 
     const nodeModelsWithIds = R.zipWith(function (id, nodeModel) {
       nodeModel.id = id;
@@ -44,33 +46,36 @@ module.exports = function (parentDestination, parentDomElement, addStartChannel,
     R.zipWith(function (node, modelEventListener) {
         R.either(R.eq(undefined), R.forEach(R.cond(
           [R.eq("noteStart"), function () {
-            eventListeners.noteStart.push(node);
+            noteStartListeners.push(node);
           }],
           [R.eq("noteStop"), function () {
-            eventListeners.noteStop.push(node);
+            noteStopListeners.push(node);
           }]
         )))(modelEventListener);
     }, nodes, R.pluck("eventListeners", model));
 
     nodes[0].connect(parentDestination);
 
-    addStartChannel((function () {
-      const listeners = eventListeners.noteStop;
-      return function (freq) {
-        for (var i = 0; i < listeners.length; i++) {
-          listeners[i].noteStart(freq);
-        }
-      };
-    }()));
+    const onStart = function (freq) {
+      for (var i = 0; i < noteStartListeners.length; i++) {
+        noteStartListeners[i].noteStart(freq);
+      }
+    };
 
-    addStopChannel((function () {
-      const listeners = eventListeners.noteStop;
-      return function (freq) {
-        for (var i = 0; i < listeners.length; i++) {
-          listeners[i].noteStop(freq);
-        }
-      };
-    }()));
+    const onStop = function (freq) {
+      for (var i = 0; i < noteStopListeners.length; i++) {
+        noteStopListeners[i].noteStop(freq);
+      }
+    };
+
+    startChannel.remove(oldState.onStart);
+    stopChannel.remove(oldState.onStop);
+
+    oldState.onStart = onStart;
+    oldState.onStop = onStop;
+
+    startChannel.add(onStart);
+    stopChannel.add(onStop);
 
     R.forEach(function (node) {
       node.view.connect(parentDomElement);

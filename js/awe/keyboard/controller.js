@@ -1,7 +1,8 @@
-var keyCodesToNotes = require('./model/keyCodesToNotes.js');
-var notesToFrequencies = require('./model/notesToFrequencies.js');
-var startChannels = require('./model/startChannels.js');
-var stopChannels = require('./model/stopChannels.js');
+const R = require('ramda');
+const keyCodesToNotes = require('./model/keyCodesToNotes.js');
+const notesToFrequencies = require('./model/notesToFrequencies.js');
+const startChannels = require('./model/startChannels.js');
+const stopChannels = require('./model/stopChannels.js');
 
 document.body.onkeydown = function (e) {
   const freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
@@ -17,7 +18,7 @@ document.body.onkeydown = function (e) {
 };
 
 document.body.onkeyup = function (e) {
-  var freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
+  const freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
   if (!freq) {
     return;
   }
@@ -27,10 +28,24 @@ document.body.onkeyup = function (e) {
 };
 
 module.exports = {
-  addStartChannel: function (channel) {
-    startChannels.push(channel);
+  startChannel: {
+    add: function (channel) {
+      startChannels.push(channel);
+    },
+    remove: function (channel) {
+      R.either(R.eq(R.negate(1)), function (index) {
+        startChannels.splice(index, 1);
+      })(R.indexOf(channel, startChannels));
+    }
   },
-  addStopChannel: function (channel) {
-    stopChannels.push(channel);
+  stopChannel: {
+    add: function (channel) {
+      stopChannels.push(channel);
+    },
+    remove: function (channel) {
+      R.either(R.eq(R.negate(1)), function (index) {
+        stopChannels.splice(index, 1);
+      })(R.indexOf(channel, stopChannels));
+    }
   }
 };
