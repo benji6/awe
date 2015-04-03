@@ -2,4 +2,4 @@
 ###### Make Music In Your Browser!
 Live demo here: http://benji6.github.io/awe/
 
-**(NB Currently only works in the latest version of Firefox!)**
+**(NB You need an up-to-date version of either Firefox, Chrome or Opera to use this!)**
