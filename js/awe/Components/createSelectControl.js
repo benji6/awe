@@ -11,9 +11,9 @@ module.exports = function (params) {
 
   const select = params.parent.appendChild(createElement(h("tr", [
     h("td", capitalizeFirst(params.name)),
-  ]))).appendChild(createElement(h("td"))).appendChild(createElement(h("select", onchange = function () {
+  ]))).appendChild(createElement(h("td"))).appendChild(createElement(h("select", { onchange: function () {
     params.observer[params.name](select.value);
-  }, R.map(function (option) {
+  } }, R.map(function (option) {
     if (params.name === modelType) {
       return h("option", {
         selected: true
