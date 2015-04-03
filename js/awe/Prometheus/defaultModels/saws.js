@@ -27,7 +27,7 @@ module.exports = [
     id: 2,
     type: "adsr",
     model: {
-      a: 0.3,
+      a: 0.2,
       d: 1,
       s: 0.7,
       r: 2
@@ -48,7 +48,7 @@ module.exports = [
     model: {
       type: "saw",
       detune: -4,
-      panning: -0.12,
+      panning: -0.36,
       tune: 0,
       volume: 0.25
     }
@@ -68,7 +68,7 @@ module.exports = [
     model: {
       type: "saw",
       detune: 4,
-      panning: 0.12,
+      panning: 0.36,
       tune: 7,
       volume: 0.2
     }

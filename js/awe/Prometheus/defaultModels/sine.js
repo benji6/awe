@@ -6,44 +6,31 @@ module.exports = [
       {destination: "destination"}
     ],
     model: {
-      volume: 0.2,
+      volume: 0.25,
       panning: 0
     }
   },
   {
     id: 1,
-    type: "filter",
-    connections: [
-      {id: 0, destination: "destination"}
-    ],
-    model: {
-      frequency: 8000,
-      gain: 0,
-      q: 0,
-      type: "lowpass"
-    }
-  },
-  {
-    id: 2,
     type: "adsr",
     model: {
-      a: 1,
+      a: 0,
       d: 1,
-      s: 0.5,
-      r: 2
+      s: 0.75,
+      r: 1.75
     }
   },
   {
     type: "oscillator",
     connections: [
-      {id: 1, destination: "destination"}
+      {id: 0, destination: "destination"}
     ],
     eventListeners: [
       "noteStart",
       "noteStop"
     ],
     inputs: [
-      {id: 2, destination: "gain"}
+      {id: 1, destination: "gain"}
     ],
     model: {
       type: "sine",
