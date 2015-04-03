@@ -21,21 +21,4 @@ module.exports = function (params) {
     }
     return h("option", option);
   } ,params.options))));
-
-  const render = function () {
-    const modelParam = params.model[params.name];
-    const options = select.children;
-
-    R.forEach(function (option) {
-      if (option.value === modelParam) {
-        option.selected = true;
-      } else {
-        option.selected = false;
-      }
-    }, options);
-  };
-
-  return {
-    render: render
-  };
 };

@@ -54,11 +54,6 @@ module.exports = function (model, channels, type) {
   };
 
   return {
-    connect: connect,
-    render: function () {
-      return components.forEach(function (component) {
-        return component.render();
-      });
-    }
+    connect: connect
   };
 };

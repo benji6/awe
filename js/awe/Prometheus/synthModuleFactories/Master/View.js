@@ -36,14 +36,7 @@ module.exports = function (model, channels) {
     }));
   };
 
-  const render = function () {
-    R.forEach(function (component) {
-      component.render();
-    }, components);
-  };
-
   return {
-    connect: connect,
-    render: render
+    connect: connect
   };
 };

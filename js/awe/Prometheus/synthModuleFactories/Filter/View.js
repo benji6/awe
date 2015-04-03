@@ -19,7 +19,7 @@ module.exports = function (model, channels) {
     const table = parentDomEl
       .appendChild(createElement(h("div.center")))
       .appendChild(createElement(h("table")));
-    
+
     const componentParams = {
       logarithmic: true,
       max: 18000,
@@ -110,7 +110,7 @@ module.exports = function (model, channels) {
     connect: connect,
     render: function (type) {
       components.forEach(function (component) {
-        component.render();
+        component && component.render && component.render();
       });
       if (!type) {
         return;
