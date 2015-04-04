@@ -16,8 +16,6 @@ module.exports = function (parentDestination, parentDomElement, startChannel, st
     const noteStartListeners = [];
     const noteStopListeners = [];
 
-    window.n = noteStartListeners;
-
     const nodeModelsWithIds = R.zipWith(function (id, nodeModel) {
       nodeModel.id = id;
       return nodeModel;
@@ -54,6 +52,10 @@ module.exports = function (parentDestination, parentDomElement, startChannel, st
         )))(modelEventListener);
     }, nodes, R.pluck("eventListeners", model));
 
+    console.log(oldState.rootAudioNode);
+    oldState.rootAudioNode && oldState.rootAudioNode.disconnect();
+    console.log(oldState.rootAudioNode);
+    oldState.rootAudioNode = nodes[0].destinations.destination;
     nodes[0].connect(parentDestination);
 
     const onStart = function (freq) {
