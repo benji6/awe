@@ -4,7 +4,7 @@ const openPresetModal = require('./OpenPresetModal/View.js');
 const savePresetAsModal = require('./SavePresetAsModal/View.js');
 const importPresetModal = require('./ImportPresetModal/View.js');
 const exportPresetModal = require('./ExportPresetModal/View.js');
-// const DeletePresetModal = require('./DeletePresetModal/View.js');
+const deletePresetModal = require('./DeletePresetModal/View.js');
 
 module.exports = function (localStorageController, channels) {
   return {
@@ -26,7 +26,9 @@ module.exports = function (localStorageController, channels) {
               h("li", {onclick: function () {
                 exportPresetModal(channels.exportSettings(), parentDomElement);
               }}, "Export Settings"),
-              h("li", "Delete Preset"),
+              h("li", {onclick: function () {
+                deletePresetModal(channels, parentDomElement, localStorageController.getPresets());
+              }}, "Delete Preset"),
             ])
           ])
         ])

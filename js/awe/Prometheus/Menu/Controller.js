@@ -45,11 +45,7 @@ module.exports = function (prometheus, model, pluginName) {
       return localStorageController.compress(JSON.stringify(model));
     },
     deletePreset: function (value) {
-      if (!value) {
-        return;
-      }
-      model.deletePreset(value);
-      view.populatePresets();
+      localStorageController.deletePreset(value);
     }
   };
 

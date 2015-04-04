@@ -2,6 +2,10 @@ const LZString = require('lz-string');
 const R = require('ramda');
 const defaultPresets = require('./defaultPresets.js');
 
+const isNotUndefined = function (x) {
+  return R.not(R.eq(undefined, x));
+};
+
 const compress = function (str) {
   return LZString.compressToEncodedURIComponent(str);
 };
@@ -10,7 +14,7 @@ const decompress = function (str) {
   return LZString.decompressFromEncodedURIComponent(str);
 };
 
-window.decompressAndParse = R.compose(JSON.parse, decompress);
+const decompressAndParse = R.compose(JSON.parse, decompress);
 
 const getItem = function (key) {
   return localStorage.getItem(key);
@@ -40,12 +44,12 @@ module.exports = function (pluginName) {
     return getDecompressAndParse()[key];
   };
 
-  const hasPresetKey = (key) => {
-    return getDecompressAndParse()[key] !== undefined;
+  const hasPresetKey = function (key) {
+    return R.both(isNotUndefined, R.identity)(getDecompressAndParse()[key]);
   };
 
   const deletePreset = function (key) {
-    stringifyCompressAndSet(dissoc(key, getDecompressAndParse()));
+    stringifyCompressAndSet(R.dissoc(key, getDecompressAndParse()));
   };
 
   R.either(R.identity, function () {
@@ -53,7 +57,7 @@ module.exports = function (pluginName) {
   })(localStorage[pluginName]);
 
   R.forEach(function (defaultPreset) {
-    R.either(hasPresetKey, R.curry(savePreset)(defaultPreset.model))(defaultPreset.name);
+    R.either(hasPresetKey, R.curry(R.flip(savePreset))(defaultPreset.model))(defaultPreset.name);
   }, defaultPresets);
 
   return {

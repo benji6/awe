@@ -1,14 +1,7 @@
 const createElement = require('virtual-dom/create-element');
-const diff = require('virtual-dom/diff');
 const h = require('virtual-dom/h');
-const patch = require('virtual-dom/patch');
-const R = require('ramda');
 
 module.exports = function (channels, parentDomElement) {
-  const closeModal = function () {
-    domRoot.parentNode.removeChild(domRoot);
-  };
-
   const getInputValue = function () {
     return domRoot.querySelector('input').value;
   };
@@ -29,7 +22,7 @@ module.exports = function (channels, parentDomElement) {
         }
       }}, "Import"),
       h("button", {onclick: function (element) {
-        closeModal();
+        domRoot.parentNode.removeChild(domRoot);
       }}, "Cancel")
     ]);
   };
