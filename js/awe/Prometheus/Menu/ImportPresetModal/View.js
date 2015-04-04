@@ -1,66 +1,32 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
 
-module.exports = function (channels) {
-  var container = null;
-  var input = null;
-  var message = null;
-  var defaultMessage = "Warning: any unsaved settings will be lost";
+module.exports = function (channels, parentDomElement) {
+  const getInputValue = function () {
+    return domRoot.querySelector('input').value;
+  };
 
-  var jsml = {
-    tag: "div",
-    className: "hidden",
-    callback: (element) => container = element,
-    children: [
-      {
-        tag: "h3",
-        text: "Import Settings"
-      },
-      {
-        tag: "input",
-        placeholder: "Paste preset data here",
-        callback: (element) => input = element
-      },
-      {
-        tag: "div",
-        className: "margin",
-        children: {
-          tag: "output",
-          value: defaultMessage,
-          callback: (element) => message = element
+  const createVirtualRoot = function (message) {
+    return h("div.modalWindow", [
+      h("h3", "Import Settings"),
+      h("input", {placeholder: "Paste preset data here"}),
+      h("div.margin", [
+        h("output", message)
+      ]),
+      h("button", {onclick: function () {
+        const response = channels.importPreset(getInputValue());
+
+        if (response) {
+          domRoot.querySelector('output').value = response;
+          return;
         }
-      },
-      {
-        tag: "button",
-        text: "Import",
-        callback: (element) =>
-          element.onclick = () => {
-            var response = channels.importPreset(input.value);
-
-            if (response) {
-              message.value = response;
-              return;
-            }
-            container.className = "hidden";
-            message.value = defaultMessage;
-            input.value = '';
-          }
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: (element) =>
-          element.onclick = () => {
-            container.className = "hidden";
-            message.value = defaultMessage;
-          }
-      }
-    ]
+      }}, "Import"),
+      h("button", {onclick: function (element) {
+        domRoot.parentNode.removeChild(domRoot);
+      }}, "Cancel")
+    ]);
   };
 
-  var open = () => container.className = "modalWindow";
-
-  return {
-    jsml,
-    open
-  };
+  var virtualRoot = createVirtualRoot("Warning: any unsaved settings will be lost");
+  var domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 };

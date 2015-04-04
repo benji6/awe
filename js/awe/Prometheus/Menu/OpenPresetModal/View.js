@@ -1,74 +1,23 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
+const R = require('ramda');
 
-module.exports = function (model, channels) {
-  var container = null;
-  var select = null;
+module.exports = function (presets, channels, parentDomEl) {
+  var selectedValue = presets[0];
 
-  var modalJsml = {
-    tag: "div",
-    className: "hidden",
-    callback: (element) => container = element,
-    children: [
-      {
-        tag: "h3",
-        text: "Open Preset"
-      },
-      {
-        tag: "select",
-        callback: (element) => select = element
-      },
-      {
-        tag: "button",
-        text: "Open",
-        callback: (element) =>
-          element.onclick = () => {
-            channels.openPreset(select.value);
-            container.className = "hidden";
-          }
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: (element) =>
-          element.onclick = () =>
-            container.className = "hidden"
-      }
-    ]
-  };
-
-  var populatePresets = (presets) => {
-    var jsml = null;
-
-    if (presets && presets.length) {
-      jsml = presets.map((preset) => {
-        return {
-          tag: "option",
-          value: preset,
-          text: preset
-        };
-      });
-    } else {
-      jsml = {
-        disabled: "disabled",
-        selected: "selected",
-        tag: "option",
-        text: "No Saved Presets",
-        value: ""
-      };
-    }
-
-    while (select.firstChild) {
-      select.removeChild(select.firstChild);
-    }
-
-    jsmlParse(jsml, select);
-  };
-
-  var open = () => container.className = "modalWindow";
-
-  return {
-    jsml: modalJsml,
-    open,
-    populatePresets
-  };
+  const modalView = parentDomEl.appendChild(createElement(h("div.modalWindow", [
+    h("h3", "Open Preset"),
+    h("select", {onchange: function () {
+      selectedValue = this.value;
+    }}, R.map(function (preset) {
+      return h("option", preset);
+    }, presets)),
+    h("button", {onclick: function () {
+      modalView.parentNode.removeChild(modalView);
+      channels.openPreset(selectedValue);
+    }}, "Open"),
+    h("button", {onclick: function () {
+      modalView.parentNode.removeChild(modalView);
+    }}, "Cancel")
+  ])));
 };

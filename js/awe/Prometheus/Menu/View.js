@@ -1,96 +1,38 @@
-var jsmlParse = require('jsml-parse');
+const h = require('virtual-dom/h');
+const createElement = require('virtual-dom/create-element');
+const openPresetModal = require('./OpenPresetModal/View.js');
+const savePresetAsModal = require('./SavePresetAsModal/View.js');
+const importPresetModal = require('./ImportPresetModal/View.js');
+const exportPresetModal = require('./ExportPresetModal/View.js');
+const deletePresetModal = require('./DeletePresetModal/View.js');
 
-var OpenPresetModal = require('./OpenPresetModal/View.js');
-var SavePresetAsModal = require('./SavePresetAsModal/View.js');
-var ImportPresetModal = require('./ImportPresetModal/View.js');
-var ExportPresetModal = require('./ExportPresetModal/View.js');
-var DeletePresetModal = require('./DeletePresetModal/View.js');
-var InitializeSettingsModal = require('./InitializeSettingsModal/View.js');
-
-module.exports = function (model, channels) {
-  var openPresetModal = OpenPresetModal(model, channels);
-  var savePresetAsModal = SavePresetAsModal(model, channels);
-  var importPresetModal = ImportPresetModal(channels);
-  var exportPresetModal = ExportPresetModal(model, channels);
-  var deletePresetModal = DeletePresetModal(model, channels);
-  var initializeSettingsModal = InitializeSettingsModal(channels);
-
-  var buttonLabels = ["Save", "Load", "Reset", "Export", "Import"];
-
-  var menuJsml = [
-    {
-      tag: "nav",
-      children: {
-        tag: "ul",
-        children: {
-          tag: "li",
-          text: "Menu",
-          children: {
-            tag: "ul",
-            children: [
-              {
-                tag: "li",
-                text: "Open Preset",
-                callback: (element) =>
-                  element.onclick = openPresetModal.open
-              },
-              {
-                tag: "li",
-                text: "Save Preset As",
-                callback: (element) =>
-                  element.onclick = savePresetAsModal.open
-              },
-              {
-                tag: "li",
-                text: "Import Settings",
-                callback: (element) =>
-                  element.onclick = importPresetModal.open
-              },
-              {
-                tag: "li",
-                text: "Export Settings",
-                callback: (element) =>
-                  element.onclick = exportPresetModal.open
-              },
-              {
-                tag: "li",
-                text: "Delete Preset",
-                callback: (element) =>
-                  element.onclick = deletePresetModal.open
-              },
-              {
-                tag: "li",
-                text: "Initialize Settings",
-                callback: (element) =>
-                  element.onclick = initializeSettingsModal.open
-              },
-            ]
-          }
-        }
-      }
-    },
-    openPresetModal.jsml,
-    savePresetAsModal.jsml,
-    importPresetModal.jsml,
-    exportPresetModal.jsml,
-    deletePresetModal.jsml,
-    initializeSettingsModal.jsml
-  ];
-
-  var populatePresets = () => {
-    var presets = model.getPresets();
-
-    openPresetModal.populatePresets(presets);
-    deletePresetModal.populatePresets(presets);
-  };
-
-  var connectTo = (parentDomElement) => {
-    jsmlParse(menuJsml, parentDomElement);
-    populatePresets();
-  };
-
+module.exports = function (localStorageController, channels) {
   return {
-    connectTo,
-    populatePresets
+    connect: function (parentDomElement) {
+      parentDomElement.appendChild(createElement(h("nav", [
+        h("ul", [
+          h("li", [
+            "Menu",
+            h("ul", [
+              h("li", {onclick: function () {
+                openPresetModal(localStorageController.getPresets(), channels, parentDomElement);
+              }}, "Open Preset"),
+              h("li", {onclick: function () {
+                savePresetAsModal(channels, parentDomElement);
+              }}, "Save Preset As"),
+              h("li", {onclick: function () {
+                importPresetModal(channels, parentDomElement);
+              }}, "Import Settings"),
+              h("li", {onclick: function () {
+                exportPresetModal(channels.exportSettings(), parentDomElement);
+              }}, "Export Settings"),
+              h("li", {onclick: function () {
+                deletePresetModal(channels, parentDomElement, localStorageController.getPresets());
+              }}, "Delete Preset"),
+            ])
+          ])
+        ])
+      ])));
+    },
   };
 };

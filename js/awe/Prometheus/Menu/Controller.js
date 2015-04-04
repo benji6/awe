@@ -1,80 +1,57 @@
-var View = require('./View.js');
-var Model = require('./Model.js');
+const R = require('ramda');
+const LocalStorageController = require('./LocalStorageController.js');
+const View = require('./View.js');
 
-module.exports = function (pluginName, controllers) {
-  var channels = {};
-  var model = Model(pluginName);
-  var view = View(model, channels);
+module.exports = function (prometheus, model, pluginName) {
+  //can not overwrite defaults!
 
-  var savePresetWithName = (name) => {
-    var presetData = controllers.map((controller) => {
-      return controller.model.getModel();
-    });
+  const localStorageController = LocalStorageController(pluginName);
 
-    model.savePreset(name, presetData);
-    view.populatePresets();
+  const savePresetWithName = function (name) {
+    localStorageController.savePreset(name, model);
+    prometheus(model);
   };
 
-  var loadPresetFromData = (presetData) => {
-    presetData.forEach((presetObj) => {
-      var controller = controllers.filter((controller) => {
-        return controller.model.getModel().name === presetObj.name;
-      })[0];
-      controller.model.setModel(presetObj);
-      controller.view.render();
-    });
-  };
-
-  channels.openPreset = (value) => {
-    if (!value) {
-      return;
+  const channels = {
+    openPreset: function (value) {
+      prometheus(localStorageController.openPreset(value));
+    },
+    savePresetAs: function (value) {
+      const presetNameExists = localStorageController.hasPresetKey(value);
+      if (presetNameExists) {
+        return "A preset already exists with this name, overwrite?";
+      }
+      savePresetWithName(value);
+    },
+    overwritePreset: function (value) {
+      savePresetWithName(value);
+    },
+    importPreset: function (value) {
+      if (!value) {
+        return "No import data, please paste in field";
+      }
+      try {
+        newData = localStorageController.decompressAndParse(value);
+      }
+      catch (e) {
+        return `Error: ${e}`;
+      }
+      if (!newData) {
+        return "Error: data not recognised!";
+      }
+      prometheus(newData);
+    },
+    exportSettings: function () {
+      return localStorageController.compress(JSON.stringify(model));
+    },
+    deletePreset: function (value) {
+      localStorageController.deletePreset(value);
     }
-    loadPresetFromData(model.getPreset(value));
   };
 
-  channels.savePresetAs = (value) => {
-    if (model.hasPresetKey(value)) {
-      return "A preset already exists with this name, overwrite?";
-    }
-    savePresetWithName(value);
-  };
-
-  channels.overwritePreset = (value) => {
-    savePresetWithName(value);
-  };
-
-  channels.importPreset = (value) => {
-    if (!value) {
-      return "No import data, please paste in field";
-    }
-    try {
-      newData = JSON.parse(value);
-    }
-    catch (e) {
-      return `error importing preset data: ${e}`;
-    }
-    loadPresetFromData(newData);
-  };
-
-  channels.exportPreset = () => JSON.stringify(controllers.map((controller) =>
-    controller.model.getModel()));
-
-  channels.deletePreset = (value) => {
-    if (!value) {
-      return;
-    }
-    model.deletePreset(value);
-    view.populatePresets();
-  };
-
-  channels.initialize = () => {
-    controllers.forEach((controller) => {
-      controller.model.init();
-      controller.view.render();
-    });
-  };
+  const view = View(localStorageController, channels);
 
   return {
-    view
+    view: view
   };
 };

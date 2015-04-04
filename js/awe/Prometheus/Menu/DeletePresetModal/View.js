@@ -1,121 +1,43 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const diff = require('virtual-dom/diff');
+const h = require('virtual-dom/h');
+const patch = require('virtual-dom/patch');
+const R = require('ramda');
 
-module.exports = function (model, channels) {
-  var container = null;
-  var select = null;
-  var message = null;
-  var defaultMessage = "Permanently delete preset";
-  var deleteButton;
-  var confirmButton;
-
-  var enterConfirmationState = () => {
-    select.disabled = true;
-    message.value = `Are you sure you want to permanently delete preset "${select.value}"?`;
-    deleteButton.className = "hidden";
-    confirmButton.className = "";
+module.exports = function (channels, parentDomElement, presets) {
+  const getSelectValue = function () {
+    return domRoot.querySelector("select").value;
   };
 
-  var enterDeleteState = () => {
-    select.disabled = false;
-    message.value = defaultMessage;
-    deleteButton.className = "";
-    confirmButton.className = "hidden";
+  const createVirtualRoot = function (message, yesButton, selectIsDisabled) {
+    return h("div.modalWindow", [
+      h("h3", "Delete Preset"),
+      h("select", {disabled: (selectIsDisabled ? true : false)}, R.both(R.identity, R.map(function (preset) {
+        return h("option", preset);
+      }))(presets)),
+      h("div.margin", [
+        h("output", message)
+      ]),
+      yesButton,
+      h("button", {onclick: function () {
+        domRoot.parentNode.removeChild(domRoot);
+      }}, "Cancel")
+    ]);
   };
 
-  var modalJsml = {
-    tag: "div",
-    className: "hidden",
-    callback: (element) => container = element,
-    children: [
-      {
-        tag: "h3",
-        text: "Delete Preset"
-      },
-      {
-        tag: "select",
-        callback: (element) => select = element
-      },
-      {
-        tag: "div",
-        className: "margin",
-        children: {
-          tag: "output",
-          value: defaultMessage,
-          callback: (element) => message = element
-        }
-      },
-      {
-        tag: "button",
-        text: "Delete",
-        callback: (element) => {
-          deleteButton = element;
-          element.onclick = () => {
-            if (select.value === '') {
-              return;
-            }
-            enterConfirmationState();
-          };
-        }
-      },
-      {
-        tag: "button",
-        text: "Confirm Delete",
-        className: "hidden",
-        callback: (element) => {
-          confirmButton = element;
-          element.onclick = () => {
-            channels.deletePreset(select.value);
-            container.className = "hidden";
-            enterDeleteState();
-          };
-        }
+  const message = presets.length ? "Permanently delete preset" : "No saved presets, refresh to reload defaults";
 
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: (element) =>
-          element.onclick = () => {
-            container.className = "hidden";
-            enterDeleteState();
-          }
-      }
-    ]
-  };
+  var virtualRoot = createVirtualRoot(message, h("button", {onclick: function () {
+    renderDeleteState(`Are you sure you want to permanently delete preset "${getSelectValue()}"?`);
+  }}, "Delete"));
+  var domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 
-  var populatePresets = (presets) => {
-    var jsml = null;
-
-    if (presets && presets.length) {
-      jsml = presets.map((preset) => {
-        return {
-          tag: "option",
-          value: preset,
-          text: preset
-        };
-      });
-    } else {
-      jsml = {
-        disabled: "disabled",
-        selected: "selected",
-        tag: "option",
-        text: "No Saved Presets",
-        value: ""
-      };
-    }
-
-    while (select.firstChild) {
-      select.removeChild(select.firstChild);
-    }
-
-    jsmlParse(jsml, select);
-  };
-
-  var open = () => container.className = "modalWindow";
-
-  return {
-    jsml: modalJsml,
-    open,
-    populatePresets
+  const renderDeleteState = function (message) {
+    const newVirtualRoot = createVirtualRoot(message, h("button", {onclick: function () {
+      domRoot.parentNode.removeChild(domRoot);
+      channels.deletePreset(getSelectValue());
+    }}, "Confirm Delete"), true);
+    domRoot = patch(domRoot, diff(virtualRoot, newVirtualRoot));
+    virtualRoot = newVirtualRoot;
   };
 };

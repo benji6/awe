@@ -1,31 +1,51 @@
-var keyCodesToNotes = require('./model/keyCodesToNotes.js');
-var notesToFrequencies = require('./model/notesToFrequencies.js');
-var startChannels = require('./model/startChannels.js');
-var stopChannels = require('./model/stopChannels.js');
+const R = require('ramda');
+const keyCodesToNotes = require('./model/keyCodesToNotes.js');
+const notesToFrequencies = require('./model/notesToFrequencies.js');
+const startChannels = require('./model/startChannels.js');
+const stopChannels = require('./model/stopChannels.js');
 
-var getFreq = (e) => notesToFrequencies[keyCodesToNotes[e.keyCode]];
-
-document.body.onkeydown = (e) => {
-  var freq = getFreq(e);
-  if (freq) {
-    startChannels.forEach(function(channel) {
-      channel(freq);
-    });
+document.body.onkeydown = function (e) {
+  const freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
+  if (!freq) {
+    return;
+  }
+  for (var i = 0; i < startChannels.length; i++) {
+    startChannels[i](freq);
+  }
+  if (e.keyCode === 191) {
+    e.preventDefault();
   }
 };
 
-document.body.onkeyup = (e) => {
-  var freq = getFreq(e);
-  stopChannels.forEach(function(channel) {
-    channel(freq);
-  });
+document.body.onkeyup = function (e) {
+  const freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
+  if (!freq) {
+    return;
+  }
+  for (var i = 0; i < stopChannels.length; i++) {
+    stopChannels[i](freq);
+  }
 };
 
 module.exports = {
-  addStartChannel: function (channel) {
-    startChannels.push(channel);
+  startChannel: {
+    add: function (channel) {
+      startChannels.push(channel);
+    },
+    remove: function (channel) {
+      R.either(R.eq(R.negate(1)), function (index) {
+        startChannels.splice(index, 1);
+      })(R.indexOf(channel, startChannels));
+    }
   },
-  addStopChannel: function (channel) {
-    stopChannels.push(channel);
+  stopChannel: {
+    add: function (channel) {
+      stopChannels.push(channel);
+    },
+    remove: function (channel) {
+      R.either(R.eq(R.negate(1)), function (index) {
+        stopChannels.splice(index, 1);
+      })(R.indexOf(channel, stopChannels));
+    }
   }
 };

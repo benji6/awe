@@ -1,3 +1,4 @@
+var autoprefixer = require('gulp-autoprefixer');
 var browserify = require('browserify');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -18,6 +19,10 @@ gulp.task('js', function () {
 gulp.task('sass', function () {
   gulp.src('sass/style.scss')
     .pipe(sass())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(minifycss())
     .pipe(gulp.dest('css'));
 });
