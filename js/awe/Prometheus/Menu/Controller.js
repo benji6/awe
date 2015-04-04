@@ -1,24 +1,23 @@
-const LZString = require('lz-string');
 const R = require('ramda');
-const defaultModels = require('./Model.js');
+const LocalStorageController = require('./LocalStorageController.js');
 const View = require('./View.js');
 
-module.exports = function (prometheus, model) {
+module.exports = function (prometheus, model, pluginName) {
+  //can not overwrite defaults!
+
+  const localStorageController = LocalStorageController(pluginName);
+
   const savePresetWithName = function (name) {
-    console.log(name);
-    console.log(model);
+    localStorageController.savePreset(name, model);
+    prometheus(model);
   };
 
   const channels = {
     openPreset: function (value) {
-      prometheus(R.filter(function (model) {
-        return R.eq(model.name, value);
-      }, defaultModels)[0].model);
+      prometheus(localStorageController.openPreset(value));
     },
     savePresetAs: function (value) {
-      const presetNameExists = R.filter(function (name) {
-        return name === value;
-      }, R.pluck("name", defaultModels)).length;
+      const presetNameExists = localStorageController.hasPresetKey(value);
       if (presetNameExists) {
         return "A preset already exists with this name, overwrite?";
       }
@@ -40,7 +39,7 @@ module.exports = function (prometheus, model) {
       loadPresetFromData(newData);
     },
     exportSettings: function () {
-      return LZString.compressToEncodedURIComponent(JSON.stringify(model));
+      return localStorageController.compress(JSON.stringify(model));
     },
     deletePreset: function (value) {
       if (!value) {
@@ -51,7 +50,7 @@ module.exports = function (prometheus, model) {
     }
   };
 
-  const view = View(model, R.pluck("name", defaultModels), channels);
+  const view = View(localStorageController, channels);
 
   return {
     view: view

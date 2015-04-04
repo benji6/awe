@@ -52,8 +52,8 @@ module.exports = function (model, channels, parentDomElement) {
 
   const displayOverwriteState = function (message) {
     const newVirtualRoot = createVirtualRoot(message, true, h("button", {onclick: function () {
-      channels.overwritePreset(getInputValue());
       closeModal();
+      channels.overwritePreset(getInputValue());
     }}, "Overwrite"));
     domRoot = patch(domRoot, diff(virtualRoot, newVirtualRoot));
     virtualRoot = newVirtualRoot;

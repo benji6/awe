@@ -1,13 +1,12 @@
 const h = require('virtual-dom/h');
 const createElement = require('virtual-dom/create-element');
-
 const openPresetModal = require('./OpenPresetModal/View.js');
 const savePresetAsModal = require('./SavePresetAsModal/View.js');
 // const ImportPresetModal = require('./ImportPresetModal/View.js');
 const exportPresetModal = require('./ExportPresetModal/View.js');
 // const DeletePresetModal = require('./DeletePresetModal/View.js');
 
-module.exports = function (model, presetNames, channels) {
+module.exports = function (localStorageController, channels) {
   return {
     connect: function (parentDomElement) {
       parentDomElement.appendChild(createElement(h("nav", [
@@ -16,10 +15,10 @@ module.exports = function (model, presetNames, channels) {
             "Menu",
             h("ul", [
               h("li", {onclick: function () {
-                openPresetModal(presetNames, channels, parentDomElement);
+                openPresetModal(localStorageController.getPresets(), channels, parentDomElement);
               }}, "Open Preset"),
               h("li", {onclick: function () {
-                savePresetAsModal(presetNames, channels, parentDomElement);
+                savePresetAsModal(localStorageController.getPresets(), channels, parentDomElement);
               }}, "Save Preset As"),
               h("li", "Import Settings"),
               h("li", {onclick: function () {

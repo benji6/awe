@@ -1,12 +1,11 @@
 const view = require('./view.js');
 const prometheusUnbound = require('./prometheus.js');
-const model = require('./defaultModels/default.js');
-const Menu = require('./Menu/Controller.js');
+const defaultModels = require('./defaultModels/default.js');
+
+const pluginName = "Prometheus";
 
 module.exports = function (parentDestination, parentDomElement, startChannel, stopChannel) {
-  const containers = view("Prometheus", parentDomElement);
-  const prometheusBound = prometheusUnbound(parentDestination, containers.synth, startChannel, stopChannel);
+  const prometheusBound = prometheusUnbound(parentDestination, view(pluginName, parentDomElement), startChannel, stopChannel);
 
-  prometheusBound(model);
-  Menu(prometheusBound, model).view.connect(containers.menu);
+  prometheusBound(defaultModels);
 };
