@@ -54,7 +54,7 @@ module.exports = function (pluginName) {
 
   //clear out any data stored by previous versions
   try {
-    getDecompressAndParse();
+    R.either(getDecompressAndParse(), localStorage.clear());
   }
   catch (e) {
     localStorage.clear();
