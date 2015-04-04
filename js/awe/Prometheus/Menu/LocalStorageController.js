@@ -52,6 +52,14 @@ module.exports = function (pluginName) {
     stringifyCompressAndSet(R.dissoc(key, getDecompressAndParse()));
   };
 
+  //clear out any data stored by previous versions
+  try {
+    getDecompressAndParse();
+  }
+  catch (e) {
+    localStorage.clear();
+  }
+
   R.either(R.identity, function () {
     stringifyCompressAndSet({});
   })(localStorage[pluginName]);
