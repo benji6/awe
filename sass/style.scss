@@ -19,11 +19,6 @@ body {
       h1 {
         display: inline-block;
         text-align: center;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
 
         &:hover {
@@ -46,11 +41,6 @@ body {
     margin: 1em;
     padding: 1em;
     position: relative;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
 
     h2 {
@@ -178,11 +168,6 @@ body {
 
       output {
         cursor: text;
-        -webkit-touch-callout: text;
-        -webkit-user-select: text;
-        -khtml-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
         user-select: text;
       }
 
