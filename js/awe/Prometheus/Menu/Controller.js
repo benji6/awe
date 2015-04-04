@@ -4,6 +4,11 @@ const defaultModels = require('./Model.js');
 const View = require('./View.js');
 
 module.exports = function (prometheus, model) {
+  const savePresetWithName = function (name) {
+    console.log(name);
+    console.log(model);
+  };
+
   const channels = {
     openPreset: function (value) {
       prometheus(R.filter(function (model) {
@@ -11,7 +16,10 @@ module.exports = function (prometheus, model) {
       }, defaultModels)[0].model);
     },
     savePresetAs: function (value) {
-      if (model.hasPresetKey(value)) {
+      const presetNameExists = R.filter(function (name) {
+        return name === value;
+      }, R.pluck("name", defaultModels)).length;
+      if (presetNameExists) {
         return "A preset already exists with this name, overwrite?";
       }
       savePresetWithName(value);

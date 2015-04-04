@@ -1,59 +1,60 @@
-const h = require('virtual-dom/h');
 const createElement = require('virtual-dom/create-element');
+const diff = require('virtual-dom/diff');
+const h = require('virtual-dom/h');
+const patch = require('virtual-dom/patch');
 const R = require('ramda');
 
 module.exports = function (model, channels, parentDomElement) {
-  const modalView = parentDomElement.appendChild(createElement(h("div.modalWindow", [
-    h("h3", "Save Preset As"),
-    h("input", {placeholder: "Input Preset Name"}),
-    h("div.margin", [
-      h("output")
-    ]),
-    h("button", {onclick: function () {
-      if (input.value === "") {
-        message.value = "Please input a preset name";
-        return;
-      }
-
-      var response = channels.savePresetAs(input.value);
-
-      if (response) {
-        displayOverwriteState(response);
-        return;
-      }
-      container.className = "hidden";
-      displaySaveState();
-    }}, "Save"),
-    h("button", {onclick: function () {
-      modalView.parentNode.removeChild(modalView);
-    }}, "Cancel")
-  ])));
-
-  var displayOverwriteState = function (response) {
-    saveButton.className = "hidden";
-    overwriteButton.className = "";
-    input.disabled = true;
-    message.value = response;
+  const closeModal = function () {
+    domRoot.parentNode.removeChild(domRoot);
   };
 
-  var displaySaveState = function () {
-    saveButton.className = "";
-    overwriteButton.className = "hidden";
-    message.value = '';
-    input.disabled = false;
+  const createVirtualRoot = function (message, button) {
+    return h("div.modalWindow", [
+      h("h3", "Save Preset As"),
+      h("input", {placeholder: "Input Preset Name"}),
+      h("div.margin", [
+        h("output", message)
+      ]),
+      R.either(R.identity, function () {
+        return h("button", {onclick: function () {
+          const inputValue = getInputValue();
+          if (R.eq(inputValue, "")) {
+            displayMessage("Please input a preset name");
+            return;
+          }
+
+          const response = channels.savePresetAs(inputValue);
+          if (response) {
+            displayOverwriteState(response);
+            return;
+          }
+          closeModal();
+        }}, "Save");
+      })(button),
+      h("button", {onclick: closeModal}, "Cancel")
+    ]);
   };
 
-      // {
-      //   tag: "button",
-      //   text: "Overwrite",
-      //   className: "hidden",
-      //   callback: function (element) {
-      //     overwriteButton = element;
-      //     element.onclick = function () {
-      //       channels.overwritePreset(input.value);
-      //       displaySaveState();
-      //       container.className = "hidden";
-      //     };
-      //   }
-      // }
+  var virtualRoot = createVirtualRoot();
+  var domRoot = parentDomElement.appendChild(createElement(virtualRoot));
+
+  const getInputValue = function () {
+    return domRoot.querySelector('input').value;
+  };
+
+  const displayMessage = function (message) {
+    const newVirtualRoot = createVirtualRoot(message);
+    domRoot = patch(domRoot, diff(virtualRoot, newVirtualRoot));
+    virtualRoot = newVirtualRoot;
+  };
+
+  const displayOverwriteState = function (message) {
+    const newVirtualRoot = createVirtualRoot(message, h("button", {onclick: function () {
+      channels.overwritePreset(getInputValue());
+      closeModal();
+    }}, "Overwrite"));
+    domRoot = patch(domRoot, diff(virtualRoot, newVirtualRoot));
+    virtualRoot = newVirtualRoot;
+  };
 };
