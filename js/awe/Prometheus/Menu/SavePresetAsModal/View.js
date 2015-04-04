@@ -4,7 +4,7 @@ const h = require('virtual-dom/h');
 const patch = require('virtual-dom/patch');
 const R = require('ramda');
 
-module.exports = function (model, channels, parentDomElement) {
+module.exports = function (channels, parentDomElement) {
   const closeModal = function () {
     domRoot.parentNode.removeChild(domRoot);
   };
@@ -30,7 +30,6 @@ module.exports = function (model, channels, parentDomElement) {
             displayOverwriteState(response);
             return;
           }
-          closeModal();
         }}, "Save");
       })(button),
       h("button", {onclick: closeModal}, "Cancel")

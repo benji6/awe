@@ -10,6 +10,8 @@ const decompress = function (str) {
   return LZString.decompressFromEncodedURIComponent(str);
 };
 
+window.decompressAndParse = R.compose(JSON.parse, decompress);
+
 const getItem = function (key) {
   return localStorage.getItem(key);
 };
@@ -21,11 +23,11 @@ const setItem = function (key, data) {
 module.exports = function (pluginName) {
   const stringifyCompressAndSet = R.compose(R.curry(setItem)(pluginName), compress, JSON.stringify);
   const getDecompressAndParse = function () {
-    return R.compose(JSON.parse, decompress, getItem)(pluginName);
+    return R.compose(decompressAndParse, getItem)(pluginName);
   };
 
   const savePreset = function (key, data) {
-      stringifyCompressAndSet(R.assoc(key, data, getDecompressAndParse()));
+    stringifyCompressAndSet(R.assoc(key, data, getDecompressAndParse()));
   };
 
   const getPresets = function () {
@@ -51,11 +53,12 @@ module.exports = function (pluginName) {
   })(localStorage[pluginName]);
 
   R.forEach(function (defaultPreset) {
-    savePreset(defaultPreset.name, defaultPreset.model);
+    R.either(hasPresetKey, R.curry(savePreset)(defaultPreset.model))(defaultPreset.name);
   }, defaultPresets);
 
   return {
     compress: compress,
+    decompressAndParse: decompressAndParse,
     deletePreset: deletePreset,
     getPresets: getPresets,
     hasPresetKey: hasPresetKey,

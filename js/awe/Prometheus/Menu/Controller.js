@@ -31,12 +31,15 @@ module.exports = function (prometheus, model, pluginName) {
         return "No import data, please paste in field";
       }
       try {
-        newData = JSON.parse(value);
+        newData = localStorageController.decompressAndParse(value);
       }
       catch (e) {
-        return `error importing preset data: ${e}`;
+        return `Error: ${e}`;
       }
-      loadPresetFromData(newData);
+      if (!newData) {
+        return "Error: data not recognised!";
+      }
+      prometheus(newData);
     },
     exportSettings: function () {
       return localStorageController.compress(JSON.stringify(model));

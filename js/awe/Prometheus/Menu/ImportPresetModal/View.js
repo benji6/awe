@@ -1,76 +1,39 @@
-var jsmlParse = require('jsml-parse');
+const createElement = require('virtual-dom/create-element');
+const diff = require('virtual-dom/diff');
+const h = require('virtual-dom/h');
+const patch = require('virtual-dom/patch');
+const R = require('ramda');
 
-module.exports = function (channels) {
-  var container = null;
-  var input = null;
-  var message = null;
-  var defaultMessage = "Warning: any unsaved settings will be lost";
-
-  var jsml = {
-    tag: "div",
-    className: "hidden",
-    callback: function (element) {
-      container = element;
-    },
-    children: [
-      {
-        tag: "h3",
-        text: "Import Settings"
-      },
-      {
-        tag: "input",
-        placeholder: "Paste preset data here",
-        callback: function (element) {
-          input = element;
-        }
-      },
-      {
-        tag: "div",
-        className: "margin",
-        children: {
-          tag: "output",
-          value: defaultMessage,
-          callback: function (element) {
-            message = element;
-          }
-        }
-      },
-      {
-        tag: "button",
-        text: "Import",
-        callback: function (element) {
-          element.onclick = function () {
-            var response = channels.importPreset(input.value);
-
-            if (response) {
-              message.value = response;
-              return;
-            }
-            container.className = "hidden";
-            message.value = defaultMessage;
-            input.value = '';
-          };
-        }
-      },
-      {
-        tag: "button",
-        text: "Cancel",
-        callback: function (element) {
-          element.onclick = function () {
-            container.className = "hidden";
-            message.value = defaultMessage;
-          };
-        }
-      }
-    ]
+module.exports = function (channels, parentDomElement) {
+  const closeModal = function () {
+    domRoot.parentNode.removeChild(domRoot);
   };
 
-  var open = function () {
-    container.className = "modalWindow";
+  const getInputValue = function () {
+    return domRoot.querySelector('input').value;
   };
 
-  return {
-    jsml: jsml,
-    open: open
+  const createVirtualRoot = function (message) {
+    return h("div.modalWindow", [
+      h("h3", "Import Settings"),
+      h("input", {placeholder: "Paste preset data here"}),
+      h("div.margin", [
+        h("output", message)
+      ]),
+      h("button", {onclick: function () {
+        const response = channels.importPreset(getInputValue());
+
+        if (response) {
+          domRoot.querySelector('output').value = response;
+          return;
+        }
+      }}, "Import"),
+      h("button", {onclick: function (element) {
+        closeModal();
+      }}, "Cancel")
+    ]);
   };
+
+  var virtualRoot = createVirtualRoot("Warning: any unsaved settings will be lost");
+  var domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 };
