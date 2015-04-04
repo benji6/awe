@@ -9,10 +9,11 @@ module.exports = function (model, channels, parentDomElement) {
     domRoot.parentNode.removeChild(domRoot);
   };
 
-  const createVirtualRoot = function (message, button) {
+  const createVirtualRoot = function (message, inputIsDisabled, button) {
+    inputIsDisabled = inputIsDisabled === undefined ? false : inputIsDisabled;
     return h("div.modalWindow", [
       h("h3", "Save Preset As"),
-      h("input", {placeholder: "Input Preset Name"}),
+      h("input", {disabled: inputIsDisabled, placeholder: "Input Preset Name"}),
       h("div.margin", [
         h("output", message)
       ]),
@@ -50,7 +51,7 @@ module.exports = function (model, channels, parentDomElement) {
   };
 
   const displayOverwriteState = function (message) {
-    const newVirtualRoot = createVirtualRoot(message, h("button", {onclick: function () {
+    const newVirtualRoot = createVirtualRoot(message, true, h("button", {onclick: function () {
       channels.overwritePreset(getInputValue());
       closeModal();
     }}, "Overwrite"));

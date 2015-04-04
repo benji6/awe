@@ -13,8 +13,8 @@ module.exports = function (presets, channels, parentDomEl) {
       return h("option", preset);
     }, presets)),
     h("button", {onclick: function () {
-      channels.openPreset(selectedValue);
       modalView.parentNode.removeChild(modalView);
+      channels.openPreset(selectedValue);
     }}, "Open"),
     h("button", {onclick: function () {
       modalView.parentNode.removeChild(modalView);
