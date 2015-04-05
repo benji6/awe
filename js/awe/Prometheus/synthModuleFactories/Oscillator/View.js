@@ -1,20 +1,14 @@
 const createElement = require('virtual-dom/create-element');
 const h = require('virtual-dom/h');
 const R = require('ramda');
-var createRangeControl = require('../../../Components/createRangeControl.js');
+const createRangeControl = require('../../../Components/createRangeControl.js');
 
-const capitalizeFirst = function (str) {
-  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
-};
+const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 
-var formatOutput = function (output) {
-  return Number(output).toFixed(2);
-};
+module.exports = (model, channels, type) => {
+  const components = [];
 
-module.exports = function (model, channels, type) {
-  var components = [];
-
-  var connect = function (parentDomEl) {
+  const connect = (parentDomEl) => {
     const table = parentDomEl.appendChild(document.createElement("table"));
 
     table.appendChild(createElement(h("thead", [
@@ -23,7 +17,7 @@ module.exports = function (model, channels, type) {
       ])
     ])));
 
-    var componentParams = {
+    const componentParams = {
       parent: table,
       name: "volume",
       observer: channels,
@@ -54,6 +48,6 @@ module.exports = function (model, channels, type) {
   };
 
   return {
-    connect: connect
+    connect
   };
 };
