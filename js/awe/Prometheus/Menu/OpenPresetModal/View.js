@@ -5,6 +5,10 @@ const R = require('ramda');
 module.exports = function (presets, channels, parentDomEl) {
   var selectedValue = presets[0];
 
+  const closeModal = function () {
+    modalView.parentNode.removeChild(modalView);
+  };
+
   const modalView = parentDomEl.appendChild(createElement(h("div.modalWindow", [
     h("h3", "Open Preset"),
     h("select", {onchange: function () {
@@ -13,11 +17,11 @@ module.exports = function (presets, channels, parentDomEl) {
       return h("option", preset);
     }, presets)),
     h("button", {onclick: function () {
-      modalView.parentNode.removeChild(modalView);
+      closeModal();
       channels.openPreset(selectedValue);
     }}, "Open"),
-    h("button", {onclick: function () {
-      modalView.parentNode.removeChild(modalView);
-    }}, "Cancel")
+    h("button", {onclick: closeModal}, "Cancel")
   ])));
+
+
 };

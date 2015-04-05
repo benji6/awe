@@ -3,8 +3,6 @@ const LocalStorageController = require('./LocalStorageController.js');
 const View = require('./View.js');
 
 module.exports = function (prometheus, model, pluginName) {
-  //can not overwrite defaults!
-
   const localStorageController = LocalStorageController(pluginName);
 
   const savePresetWithName = function (name) {
@@ -17,8 +15,10 @@ module.exports = function (prometheus, model, pluginName) {
       prometheus(localStorageController.openPreset(value));
     },
     savePresetAs: function (value) {
-      const presetNameExists = localStorageController.hasPresetKey(value);
-      if (presetNameExists) {
+      if (R.eq(value, "")) {
+        return "Please input a preset name";
+      }
+      if (localStorageController.hasPresetKey(value)) {
         return "A preset already exists with this name, overwrite?";
       }
       savePresetWithName(value);

@@ -3,10 +3,14 @@ const keyCodesToNotes = require('./model/keyCodesToNotes.js');
 const notesToFrequencies = require('./model/notesToFrequencies.js');
 const startChannels = require('./model/startChannels.js');
 const stopChannels = require('./model/stopChannels.js');
+const keyListeners = require('./model/keyListeners.js');
 
 document.body.onkeydown = function (e) {
   const freq = notesToFrequencies[keyCodesToNotes[e.keyCode]];
   if (!freq) {
+    if (e.keyCode === 27) {
+      keyListeners.escape();
+    }
     return;
   }
   for (var i = 0; i < startChannels.length; i++) {
@@ -47,5 +51,8 @@ module.exports = {
         stopChannels.splice(index, 1);
       })(R.indexOf(channel, stopChannels));
     }
+  },
+  setEscapeListener: function (callback) {
+    keyListeners.escape = callback;
   }
 };

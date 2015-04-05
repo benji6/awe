@@ -19,14 +19,8 @@ module.exports = function (channels, parentDomElement) {
       ]),
       R.either(R.identity, function () {
         return h("button", {onclick: function () {
-          const inputValue = getInputValue();
-          if (R.eq(inputValue, "")) {
-            displayMessage("Please input a preset name");
-            return;
-          }
-
-          const response = channels.savePresetAs(inputValue);
-          if (response) {
+          const response = channels.savePresetAs(getInputValue());
+          if (typeof response === "string") {
             displayOverwriteState(response);
             return;
           }
