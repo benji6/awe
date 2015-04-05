@@ -1,11 +1,13 @@
 const R = require('ramda');
-const score = require('./score.js');
 const notesToFrequencies = require('../data/notesToFrequencies.js');
+const score = require('./score.js');
+const View = require('./View.js');
 
 const bpm = 180 * 3 / 2;
 const timeout = 60000 / bpm;
 
-module.exports = () => {
+module.exports = (parentDomElement) => {
+  View(parentDomElement);
   const startChannels = [];
   const stopChannels = [];
 

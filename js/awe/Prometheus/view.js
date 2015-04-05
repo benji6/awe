@@ -1,5 +1,5 @@
-const h = require('virtual-dom/h');
 const createElement = require('virtual-dom/create-element');
+const h = require('virtual-dom/h');
 const R = require('ramda');
 
 module.exports = (pluginName, parentDomElement) => {

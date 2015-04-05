@@ -29,6 +29,29 @@ body {
     }
   }
 
+  .Sequencer {
+    $colorTheme: #f5e5a0;
+
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    cursor: default;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    position: relative;
+    user-select: none;
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
+    }
+  }
+
   .prometheus {
     $colorTheme: #ace;
 
@@ -37,7 +60,6 @@ body {
     color: $colorTheme;
     cursor: default;
     display: inline-block;
-    font-family: sans-serif;
     margin: 1em;
     padding: 1em;
     position: relative;
