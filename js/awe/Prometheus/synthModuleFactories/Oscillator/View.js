@@ -6,7 +6,7 @@ const createRangeControl = require('../../../Components/createRangeControl.js');
 const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 
 module.exports = (model, channels, type) => {
-  const components = [];
+  var components = [];
 
   const connect = (parentDomEl) => {
     const table = parentDomEl.appendChild(document.createElement("table"));
