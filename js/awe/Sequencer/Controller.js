@@ -24,18 +24,15 @@ module.exports = () => {
   var i = 0;
   const scoreLength = R.length(score);
   const moveToNextScoreStep = () => ++i < scoreLength ? i : i = 0;
-  const getCurrentScoreValue = () => notesToFrequencies[score[i]];
+  const getCurrentScoreValue = () => R.both(R.identity, R.map((freq) => notesToFrequencies[freq]))(score[i]);
 
   window.setInterval(() => {
-    const prevFreq = getCurrentScoreValue();
+    const prevFreqs = getCurrentScoreValue();
     moveToNextScoreStep();
-    const currentFreq = getCurrentScoreValue();
-    if (prevFreq && prevFreq !== currentFreq) {
-      noteStop(prevFreq);
-    }
-    if (currentFreq) {
-      noteStart(currentFreq);
-    }
+    const currentFreqs = getCurrentScoreValue();
+    R.forEach((prevFreq) =>
+      R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
+    R.forEach(R.both(R.identity, noteStart), currentFreqs);
   }, timeout);
 
   return {
