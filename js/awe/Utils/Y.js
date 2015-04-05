@@ -1,11 +1,1 @@
-module.exports = function (f) {
-  return function (x) {
-    return f(function (v) {
-      return x(x)(v);
-    });
-  }(function (x) {
-    return f(function (v) {
-      return x(x)(v);
-    });
-  });
-};
+module.exports = f => (x => f(v => x(x)(v)))(x => f(v => x(x)(v)));

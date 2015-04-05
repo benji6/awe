@@ -1,19 +1,40 @@
 var autoprefixer = require('gulp-autoprefixer');
+var babel = require("gulp-babel");
 var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var minifycss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var source = require('vinyl-source-stream');
+var sourcemaps = require('gulp-sourcemaps');
+var uglify = require("gulp-uglify");
 var watchify = require('watchify');
 
-gulp.task('js', function () {
+gulp.task("jsDev", function () {
   var bundler = watchify(browserify('./js/main.js', watchify.args));
 
   bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./js'));
+    .pipe(source("bundle.js"))
+    .pipe(buffer())
+    // .pipe(sourcemaps.init())
+    // .pipe(babel())
+    // .pipe(uglify())
+    // .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task("jsDist", function () {
+  var bundler = watchify(browserify('./js/main.js', watchify.args));
+
+  bundler.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source("bundle.js"))
+    .pipe(buffer())
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('sass', function () {
@@ -24,15 +45,15 @@ gulp.task('sass', function () {
       cascade: false
     }))
     .pipe(minifycss())
-    .pipe(gulp.dest('css'));
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task("watch", function () {
-  gulp.start('sass', 'js');
+  gulp.start("sass", "jsDev");
   gulp.watch('sass/style.scss', ["sass"]);
-  gulp.watch('js/**/*.js', ["js"]);
+  gulp.watch('js/**/*.js', ["jsDev"]);
 });
 
-gulp.task("build", ["js", "sass"]);
+gulp.task("build", ["jsDist", "sass"]);
 
 gulp.task("default", ["watch"]);
