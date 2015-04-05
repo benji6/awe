@@ -3,14 +3,12 @@ const h = require('virtual-dom/h');
 const R = require('ramda');
 const createRangeControl = require('../../../Components/createRangeControl.js');
 
-const formatOutput = function (output) {
-  return Number(output).toFixed(2);
-};
+const formatOutput = (output) => Number(output).toFixed(2);
 
-module.exports = function (model, channels) {
+module.exports = (model, channels) => {
   var components = null;
 
-  const connect = function (parentDomEl) {
+  const connect = (parentDomEl) => {
     const table = parentDomEl
       .appendChild(createElement(h("div.center")))
       .appendChild(createElement(h("table", [
@@ -46,6 +44,6 @@ module.exports = function (model, channels) {
   };
 
   return {
-    connect: connect,
+    connect,
   };
 };

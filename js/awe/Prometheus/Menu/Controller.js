@@ -2,19 +2,17 @@ const R = require('ramda');
 const LocalStorageController = require('./LocalStorageController.js');
 const View = require('./View.js');
 
-module.exports = function (prometheus, model, pluginName) {
+module.exports = (prometheus, model, pluginName) => {
   const localStorageController = LocalStorageController(pluginName);
 
-  const savePresetWithName = function (name) {
+  const savePresetWithName = (name) => {
     localStorageController.savePreset(name, model);
     prometheus(model);
   };
 
   const channels = {
-    openPreset: function (value) {
-      prometheus(localStorageController.openPreset(value));
-    },
-    savePresetAs: function (value) {
+    openPreset: (value) => prometheus(localStorageController.openPreset(value)),
+    savePresetAs: (value) => {
       if (R.eq(value, "")) {
         return "Please input a preset name";
       }
@@ -23,10 +21,8 @@ module.exports = function (prometheus, model, pluginName) {
       }
       savePresetWithName(value);
     },
-    overwritePreset: function (value) {
-      savePresetWithName(value);
-    },
-    importPreset: function (value) {
+    overwritePreset: (value) => savePresetWithName(value),
+    importPreset: (value) => {
       if (!value) {
         return "No import data, please paste in field";
       }
@@ -41,12 +37,8 @@ module.exports = function (prometheus, model, pluginName) {
       }
       prometheus(newData);
     },
-    exportSettings: function () {
-      return localStorageController.compress(JSON.stringify(model));
-    },
-    deletePreset: function (value) {
-      localStorageController.deletePreset(value);
-    }
+    exportSettings: () => localStorageController.compress(JSON.stringify(model)),
+    deletePreset: (value) => localStorageController.deletePreset(value)
   };
 
   const view = View(localStorageController, channels);

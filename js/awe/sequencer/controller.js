@@ -5,12 +5,12 @@ var bpm = 180;
 
 var timeout = 60000 / bpm / 2;
 
-var noteStart = function noteStart () {
+var noteStart = () => {
   pubsub.pub('noteStart', frequency);
   window.setTimeout(noteFinish, timeout);
 };
 
-var noteFinish = function noteFinish () {
+var noteFinish = () => {
   pubsub.pub('noteFinish', frequency);
   window.setTimeout(noteStart, timeout);
 };

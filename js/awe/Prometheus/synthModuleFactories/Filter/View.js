@@ -4,18 +4,13 @@ const R = require('ramda');
 const createRangeControl = require('../../../Components/createRangeControl.js');
 const createSelectControl = require('../../../Components/createSelectControl.js');
 
-const capitalizeFirst = function (str) {
-  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
-};
+const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
+const formatOutput = (output) => Number(output).toFixed(2);
 
-const formatOutput = function (output) {
-  Number(output).toFixed(2);
-};
-
-module.exports = function (model, channels) {
+module.exports = (model, channels) => {
   var components = null;
 
-  const connect = function (parentDomEl) {
+  const connect = (parentDomEl) => {
     const table = parentDomEl
       .appendChild(createElement(h("div.center")))
       .appendChild(createElement(h("table")));
@@ -108,10 +103,8 @@ module.exports = function (model, channels) {
 
   return {
     connect: connect,
-    render: function (type) {
-      components.forEach(function (component) {
-        component && component.render && component.render();
-      });
+    render: (type) => {
+      components.forEach((component) => component && component.render && component.render());
       if (!type) {
         return;
       }
