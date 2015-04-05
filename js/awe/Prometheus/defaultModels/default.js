@@ -27,10 +27,10 @@ module.exports = [
     id: 2,
     type: "adsr",
     model: {
-      a: 1,
+      a: 0,
       d: 1,
       s: 0.5,
-      r: 1
+      r: 0
     }
   },
   {
