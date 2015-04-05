@@ -5,29 +5,18 @@ const R = require('ramda');
 const PRECISION = 12;
 
 const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
-
 const formatOutput = (output) => Number(output).toFixed(2);
+const log12 = (x) => Math.log(x) / Math.log(12);
+const exp12 = (x) => Math.pow(12, x);
 
-const log12 = function (x) {
-  return Math.log(x) / Math.log(12);
-};
-
-const exp12 = function (x) {
-  return Math.pow(12, x);
-};
-
-const maybe = function (callback) {
-  return function (boo) {
-    return function (x) {
-      if (boo) {
-        return +callback(x).toPrecision(PRECISION);
-      }
-      return x;
-    };
+const maybe = (callback) => (boo) => (x) => {
+    if (boo) {
+      return Number(callback(x)).toPrecision(PRECISION);
+    }
+    return x;
   };
-};
 
-module.exports = function (params) {
+module.exports = (params) => {
   const maybeExp = maybe(exp12)(params.logarithmic);
   const maybeLog = maybe(log12)(params.logarithmic);
 
@@ -44,9 +33,7 @@ module.exports = function (params) {
       min: maybeLog(params.min),
       step: (params.step || (maybeLog(params.max) - maybeLog(params.min)) / 100).toPrecision(PRECISION),
       value: maybeLog(params.model[params.name]),
-      oninput: function () {
-        oninputCallback(this.value);
-      }
+      oninput: () => oninputCallback(this.value)
     })
   ])));
 
@@ -56,19 +43,19 @@ module.exports = function (params) {
       value: formatOutput(maybeExp(maybeLog(params.model[params.name])))
     })));
 
-  const render = function () {
+  const render = () => {
     const modelValue = params.model[params.name];
     input.value = maybeLog(modelValue);
     output.value = formatOutput(modelValue);
   };
 
-  const oninputCallback = function (inputValue) {
+  const oninputCallback = (inputValue) => {
     params.observer[params.name](maybeExp(inputValue));
     output.value = formatOutput(maybeExp(inputValue));
   };
 
   return {
-    render: render,
-    rootNode: rootNode
+    render,
+    rootNode
   };
 };

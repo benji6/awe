@@ -2,7 +2,7 @@ const h = require('virtual-dom/h');
 const createElement = require('virtual-dom/create-element');
 const R = require('ramda');
 
-module.exports = function (pluginName, parentDomElement) {
+module.exports = (pluginName, parentDomElement) => {
   const prometheusContainer = parentDomElement.appendChild(createElement(h(`div.${R.toLower(pluginName)}`, [
     h("h2", pluginName)
   ])));

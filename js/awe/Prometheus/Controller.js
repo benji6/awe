@@ -4,7 +4,7 @@ const defaultModels = require('./defaultModels/default.js');
 
 const pluginName = "Prometheus";
 
-module.exports = function (parentDestination, parentDomElement, startChannel, stopChannel) {
+module.exports = (parentDestination, parentDomElement, startChannel, stopChannel) => {
   const prometheusBound = prometheusUnbound(parentDestination, view(pluginName, parentDomElement), startChannel, stopChannel);
 
   prometheusBound(defaultModels);
