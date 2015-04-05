@@ -1,8 +1,8 @@
 const R = require('ramda');
 const score = require('./score.js');
+const notesToFrequencies = require('../data/notesToFrequencies.js');
 
-var freq = 100;
-const bpm = 180;
+const bpm = 180 * 3 / 2;
 const timeout = 60000 / bpm;
 
 module.exports = () => {
@@ -21,16 +21,21 @@ module.exports = () => {
     }
   };
 
+  var i = 0;
   const scoreLength = R.length(score);
-  var idx = 0;
-  const getCurrentScoreValue = () => score[++idx < scoreLength ? idx : idx = 0];
+  const moveToNextScoreStep = () => ++i < scoreLength ? i : i = 0;
+  const getCurrentScoreValue = () => notesToFrequencies[score[i]];
 
   window.setInterval(() => {
-    const scoreValue = getCurrentScoreValue();
-    if (!scoreValue) {
-      return noteStop(freq);
+    const prevFreq = getCurrentScoreValue();
+    moveToNextScoreStep();
+    const currentFreq = getCurrentScoreValue();
+    if (prevFreq && prevFreq !== currentFreq) {
+      noteStop(prevFreq);
     }
-    noteStart(freq);
+    if (currentFreq) {
+      noteStart(currentFreq);
+    }
   }, timeout);
 
   return {
