@@ -31,48 +31,37 @@ module.exports = function (parentDestination, viewContainers, startChannel, stop
         return nodeModel;
       }, R.pluck("id", model), R.pluck("model", model));
 
-      const nodes = R.zipWith(function (type, nodeModel) {
-        return typeToNodeFactoryMap[type](nodeModel);
-      }, R.pluck("type", model), nodeModelsWithIds);
+      const nodes = R.zipWith((type, nodeModel) =>
+        typeToNodeFactoryMap[type](nodeModel), R.pluck("type", model), nodeModelsWithIds);
 
-      R.zipWith(function (node, connections) {
-        R.both(R.identity, R.forEach(function (connection) {
-          R.either(R.eq(undefined), function (connectionId) {
-            node.connect(R.find(R.propEq("id", connectionId), nodes).destinations[connection.destination]);
-          })(connection.id);
-        }))(connections);
-      }, nodes, R.pluck("connections", model));
+      R.zipWith((node, connections) =>
+        R.both(R.identity, R.forEach((connection) =>
+          R.either(R.eq(undefined), (connectionId) =>
+            node.connect(R.find(R.propEq("id", connectionId), nodes)
+              .destinations[connection.destination]))(connection.id)))(connections), nodes, R.pluck("connections", model));
 
-      R.zipWith(function (node, inputs) {
-        R.both(R.identity, R.forEach(function (input) {
-          R.either(R.eq(undefined), function (inputId) {
-            node.inputs[input.destination](R.find(R.propEq("id", inputId), nodes));
-          })(input.id);
-        }))(inputs);
-      }, nodes, R.pluck("inputs", model));
+      R.zipWith((node, inputs) =>
+        R.both(R.identity, R.forEach((input) =>
+          R.either(R.eq(undefined), (inputId) =>
+            node.inputs[input.destination](R.find(R.propEq("id", inputId), nodes)))(input.id)))(inputs), nodes, R.pluck("inputs", model));
 
-      R.zipWith(function (node, modelEventListener) {
+      R.zipWith((node, modelEventListener) =>
           R.either(R.eq(undefined), R.forEach(R.cond(
-            [R.eq("noteStart"), function () {
-              noteStartListeners.push(node);
-            }],
-            [R.eq("noteStop"), function () {
-              noteStopListeners.push(node);
-            }]
-          )))(modelEventListener);
-      }, nodes, R.pluck("eventListeners", model));
+            [R.eq("noteStart"), () => noteStartListeners.push(node)],
+            [R.eq("noteStop"), () => noteStopListeners.push(node)]
+          )))(modelEventListener), nodes, R.pluck("eventListeners", model));
 
       oldState.rootAudioNode && oldState.rootAudioNode.disconnect();
       oldState.rootAudioNode = nodes[0].destinations.destination;
       nodes[0].connect(parentDestination);
 
-      const onStart = function (freq) {
+      const onStart = (freq) => {
         for (var i = 0; i < noteStartListeners.length; i++) {
           noteStartListeners[i].noteStart(freq);
         }
       };
 
-      const onStop = function (freq) {
+      const onStop = (freq) => {
         for (var i = 0; i < noteStopListeners.length; i++) {
           noteStopListeners[i].noteStop(freq);
         }
@@ -89,9 +78,7 @@ module.exports = function (parentDestination, viewContainers, startChannel, stop
 
       Menu(recurse, model, pluginName).view.connect(viewContainers.menu);
 
-      R.forEach(function (node) {
-        node.view.connect(viewContainers.synth);
-      }, nodes);
+      R.forEach((node) => node.view.connect(viewContainers.synth), nodes);
     };
   });
 };
