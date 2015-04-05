@@ -1,5 +1,5 @@
 const R = require('ramda');
-const Y = require('../Utils/Y.js');
+const Y = require('../utils/Y.js');
 const Menu = require('./Menu/Controller.js');
 const typeToNodeFactoryMap = require('./typeToNodeFactoryMap.js');
 
