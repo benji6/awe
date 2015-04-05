@@ -4,13 +4,9 @@ const R = require('ramda');
 
 const PRECISION = 12;
 
-const capitalizeFirst = function (str) {
-  return R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
-};
+const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
 
-const formatOutput = function (output) {
-  return Number(output).toFixed(2);
-};
+const formatOutput = (output) => Number(output).toFixed(2);
 
 const log12 = function (x) {
   return Math.log(x) / Math.log(12);
