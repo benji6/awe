@@ -1,34 +1,37 @@
 const R = require('ramda');
+const score = require('./score.js');
 
-var currentFreq = 100;
+var freq = 100;
 const bpm = 180;
-const timeout = 60000 / bpm / 2;
-const coputeFreq = (freq) => {
-  if (freq < 1200) {
-    return freq * 1.5;
-  }
-  return 100;
-};
+const timeout = 60000 / bpm;
 
 module.exports = () => {
   const startChannels = [];
   const stopChannels = [];
 
-  const noteStart = () => {
+  const noteStart = (freq) => {
     for (var i = 0; i < startChannels.length; i++) {
-      startChannels[i](currentFreq);
+      startChannels[i](freq);
     }
   };
 
-  const noteStop = () => {
+  const noteStop = (freq) => {
     for (var i = 0; i < startChannels.length; i++) {
-      stopChannels[i](currentFreq);
-      currentFreq = coputeFreq(currentFreq);
+      stopChannels[i](freq);
     }
   };
 
-  window.setInterval((noteStart), timeout);
-  window.setTimeout(window.setInterval(noteStop, 500), timeout);
+  const scoreLength = R.length(score);
+  var idx = 0;
+  const getCurrentScoreValue = () => score[++idx < scoreLength ? idx : idx = 0];
+
+  window.setInterval(() => {
+    const scoreValue = getCurrentScoreValue();
+    if (!scoreValue) {
+      return noteStop(freq);
+    }
+    noteStart(freq);
+  }, timeout);
 
   return {
     startChannel: {
