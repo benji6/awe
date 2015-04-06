@@ -29,58 +29,6 @@ body {
     }
   }
 
-  .Sequencer {
-    $colorTheme: #f5e5a0;
-    $empty: rgba($colorTheme, 0.1);
-    $emptyHover: rgba($colorTheme, 0.2);
-    $full: rgba(lighten($colorTheme, 10%), 0.7);
-    $fullHover: rgba(lighten($colorTheme, 10%), 0.9);
-
-    border-radius: 3em;
-    box-shadow: 0em 0em 1em 0em $colorTheme;
-    color: $colorTheme;
-    cursor: default;
-    display: inline-block;
-    margin: 1em;
-    padding: 1em;
-    position: relative;
-    user-select: none;
-
-    .empty {
-      background-color: $empty;
-
-      &:hover {
-        background-color: $emptyHover;
-      }
-    }
-
-    .full {
-      background-color: $full;
-
-      &:hover {
-        background-color: $fullHover;
-      }
-    }
-
-    .pattern {
-      margin: 1em;
-
-      div {
-        height: 4vh;
-        width: 4vw;
-      }
-    }
-
-    h2 {
-      display: inline-block;
-      text-align: center;
-
-      &:hover {
-        text-shadow: 0 0 1em lighten($colorTheme, 10%);
-      }
-    }
-  }
-
   .prometheus {
     $colorTheme: #ace;
 
@@ -235,6 +183,71 @@ body {
     .tinyText {
       font-size: 0.5em;
       word-wrap: break-word;
+    }
+  }
+
+  .Sequencer {
+    $colorTheme: #f5e5a0;
+    $empty: rgba($colorTheme, 0.1);
+    $full: rgba(lighten($colorTheme, 10%), 0.7);
+
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    cursor: default;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    position: relative;
+    user-select: none;
+
+    .empty {
+      background-color: $empty;
+
+      &:hover {
+        background-color: rgba($empty, 0.2);
+      }
+    }
+
+    .emptyActive {
+      background-color: lighten($empty, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($empty, 0.2), 50%);
+      }
+    }
+
+    .full {
+      background-color: lighten($full, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($full, 0.2), 50%);
+      }
+    }
+    .fullActive {
+      background-color: $full;
+
+      &:hover {
+        background-color: rgba($full, 0.2);
+      }
+    }
+
+    .pattern {
+      margin: 1em;
+
+      div {
+        height: 2em;
+        width: 3em;
+      }
+    }
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
     }
   }
 }

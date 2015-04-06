@@ -8,8 +8,9 @@ const timeout = 60000 / bpm;
 
 module.exports = (parentDomElement) => {
   const model = Model(score);
+  const view = View(parentDomElement);
 
-  View(parentDomElement, model.getViewData());
+  view.render(model.getViewData());
 
   const startChannels = [];
   const stopChannels = [];
@@ -33,6 +34,7 @@ module.exports = (parentDomElement) => {
     R.forEach((prevFreq) =>
       R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
+    view.render(model.getViewData());
   }, timeout);
 
   return {

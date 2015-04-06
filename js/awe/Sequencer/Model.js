@@ -12,11 +12,17 @@ module.exports = (score) => {
   const getViewData = () => {
     const activeColumnIndices = R.map((notes) => R.map((note) => R.findIndex(R.eq(note), rowsToNotes), notes), score);
     const emptyRows = R.repeat(R.repeat(0, scoreLength), notesCount);
-    return R.mapIndexed(
+    const viewData = R.mapIndexed(
       (row, rowIndex) => R.mapIndexed(
         (note, noteIndex) => R.contains(rowIndex)(activeColumnIndices[noteIndex]) ? 1 : 0,
       row),
     emptyRows);
+    const highlightedViewData = R.mapIndexed(
+      (row, rowIndex) => R.mapIndexed(
+        (note, noteIndex) => noteIndex === i ? note + 2 : note,
+      row),
+      viewData);
+    return highlightedViewData;
   };
 
   return {
