@@ -33,7 +33,9 @@ module.exports = (params) => {
       min: maybeLog(params.min),
       step: (params.step || (maybeLog(params.max) - maybeLog(params.min)) / 100).toPrecision(PRECISION),
       value: maybeLog(params.model[params.name]),
-      oninput: () => oninputCallback(this.value)
+      oninput: function () {
+        oninputCallback(this.value);
+      }
     })
   ])));
 

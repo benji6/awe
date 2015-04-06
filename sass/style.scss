@@ -3,6 +3,10 @@ body {
 
   background-color: $bodyBackgroundColor;
   margin: 0;
+
+  table {
+    display: inline-block;
+  }
   .center {
     text-align: center;
 
@@ -106,7 +110,6 @@ body {
     }
 
     table {
-      display: inline-block;
       font-size: 0.67em;
       margin: 0;
 
@@ -237,6 +240,7 @@ body {
 
       div {
         height: 2em;
+        line-height: 2em;
         width: 3em;
       }
     }

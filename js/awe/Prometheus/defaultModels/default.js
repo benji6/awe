@@ -30,7 +30,7 @@ module.exports = [
       a: 0,
       d: 1,
       s: 0.5,
-      r: 0
+      r: 0.5
     }
   },
   {
