@@ -6,4 +6,14 @@ const createSequencer = require('./Sequencer/Controller.js');
 
 const sequencer = createSequencer(view.destinationView);
 
-Prometheus(audioContext.destination, view.destinationView, sequencer.startChannel, sequencer.stopChannel);
+const startChannels = [
+  keyboard.startChannel,
+  sequencer.startChannel
+];
+
+const stopChannels = [
+  keyboard.stopChannel,
+  sequencer.stopChannel
+];
+
+Prometheus(audioContext.destination, view.destinationView, startChannels, stopChannels);
