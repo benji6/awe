@@ -3,19 +3,19 @@ const score = require('./score.js');
 const Model = require('./Model.js');
 const createSequencerContainer = require('./Views/createSequencerContainer.js');
 const PatternView = require('./Views/Pattern.js');
-const ControlsView = require('./Views/Controls.js');
+const createBpmControl = require('./Views/createBpmControl.js');
 const Y = require('../utils/Y.js');
 
 module.exports = (parentDomElement) => {
   const controllerChannels = {};
   const model = Model(score);
   const sequencerContainer = createSequencerContainer(parentDomElement);
-  const controlsView = ControlsView(model, controllerChannels, sequencerContainer);
+  const bpmControl = createBpmControl(model, controllerChannels, sequencerContainer);
   const patternView = PatternView(model, controllerChannels, sequencerContainer);
 
   controllerChannels.oninput = (value) => {
     model.setBpm(value);
-    controlsView.render(value);
+    bpmControl.render(value);
   };
 
   patternView.render(model.getViewData());

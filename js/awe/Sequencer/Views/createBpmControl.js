@@ -7,7 +7,7 @@ const R = require('ramda');
 module.exports = (model, controller, parentDomElement) => {
   const createVirtualRoot = () => h("div.center", h("table", h("tr", [
     h("td", "BPM"),
-    h("input", {
+    h("td", h("input", {
       type: "range",
       min: 40,
       max: 240,
@@ -15,8 +15,8 @@ module.exports = (model, controller, parentDomElement) => {
         controller.oninput(this.value);
       },
       value: model.getBpm()
-    }),
-    h("output", String(model.getBpm()))
+    })),
+    h("td", h("output", String(model.getBpm())))
   ])));
 
   var virtualRoot = createVirtualRoot();
