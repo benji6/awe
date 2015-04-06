@@ -208,6 +208,36 @@ body {
       width: 16em;
     }
 
+    $playPauseWidth: 4em;
+    $playPauseColor: rgba($colorTheme, 0.2);
+    $playPauseHoverColor: rgba($colorTheme, 0.8);
+
+    .play {
+      $sideLength: $playPauseWidth / 2;
+
+      border-bottom: $sideLength solid transparent;
+      border-left: $playPauseWidth solid $playPauseColor;
+      border-top: $sideLength solid transparent;
+      display: inline-block;
+      margin: 1em 2em;
+
+      &:hover {
+        border-left: $playPauseWidth solid $playPauseHoverColor;
+      }
+    }
+
+    .stop {
+      background-color: $playPauseColor;
+      display: inline-block;
+      height: $playPauseWidth;
+      margin: 1em 2em;
+      width: $playPauseWidth;
+
+      &:hover {
+        background-color: $playPauseHoverColor;
+      }
+    }
+
     .empty {
       background-color: $empty;
 
