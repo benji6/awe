@@ -8,11 +8,8 @@ const timeout = 60000 / bpm;
 
 module.exports = (parentDomElement) => {
   const model = Model(score);
-  console.log(model.getViewData());
-  View(parentDomElement, [
-    ["A4"],
-    ["A4", "B4"]
-  ]);
+
+  View(parentDomElement, model.getViewData());
 
   const startChannels = [];
   const stopChannels = [];
