@@ -2,6 +2,15 @@ const R = require('ramda');
 const notesToFrequencies = require('../data/notesToFrequencies.js');
 const rowsToNotes = require('./rowsToNotes.js');
 
+const classNameFromCode = [
+  "empty",
+  "selected",
+  "emptyActive",
+  "selectedActive"
+];
+
+const getClassNameFromCode = (code) => classNameFromCode[code];
+
 module.exports = (score) => {
   var i = 0;
   const scoreLength = R.length(score);
@@ -42,6 +51,7 @@ module.exports = (score) => {
   const getTimeInterval = () => 60000 / bpm / 2;
   return {
     getBpm,
+    getClassNameFromCode,
     getCurrentScoreValue,
     getTimeInterval,
     getViewData,

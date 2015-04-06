@@ -191,8 +191,10 @@ body {
 
   .Sequencer {
     $colorTheme: #f5e5a0;
-    $empty: rgba($colorTheme, 0.1);
-    $full: rgba(lighten($colorTheme, 10%), 0.7);
+    $inactiveColor: rgba($colorTheme, 0.15);
+    $inactiveHoverColor: rgba($colorTheme, 0.8);
+    $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+    $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
 
     border-radius: 3em;
     box-shadow: 0em 0em 1em 0em $colorTheme;
@@ -209,63 +211,61 @@ body {
     }
 
     $playPauseWidth: 4em;
-    $playPauseColor: rgba($colorTheme, 0.2);
-    $playPauseHoverColor: rgba($colorTheme, 0.8);
 
     .play {
       $sideLength: $playPauseWidth / 2;
 
       border-bottom: $sideLength solid transparent;
-      border-left: $playPauseWidth solid $playPauseColor;
+      border-left: $playPauseWidth solid $inactiveColor;
       border-top: $sideLength solid transparent;
       display: inline-block;
       margin: 1em 2em;
 
       &:hover {
-        border-left: $playPauseWidth solid $playPauseHoverColor;
+        border-left: $playPauseWidth solid $inactiveHoverColor;
       }
     }
 
     .stop {
-      background-color: $playPauseColor;
+      background-color: $inactiveColor;
       display: inline-block;
       height: $playPauseWidth;
       margin: 1em 2em;
       width: $playPauseWidth;
 
       &:hover {
-        background-color: $playPauseHoverColor;
+        background-color: $inactiveHoverColor;
       }
     }
 
     .empty {
-      background-color: $empty;
+      background-color: $inactiveColor;
 
       &:hover {
-        background-color: rgba($empty, 0.2);
+        background-color: $inactiveHoverColor;
       }
     }
 
     .emptyActive {
-      background-color: lighten($empty, 50%);
+      background-color: lighten($inactiveColor, 50%);
 
       &:hover {
-        background-color: lighten(rgba($empty, 0.2), 50%);
+        background-color: lighten(rgba($inactiveHoverColor, 0.2), 50%);
       }
     }
 
-    .full {
-      background-color: lighten($full, 50%);
+    .selected {
+      background-color: lighten($selectedColor, 50%);
 
       &:hover {
-        background-color: lighten(rgba($full, 0.2), 50%);
+        background-color: lighten(rgba($selectedHoverColor, 0.2), 50%);
       }
     }
-    .fullActive {
-      background-color: $full;
+    .selectedActive {
+      background-color: $selectedColor;
 
       &:hover {
-        background-color: rgba($full, 0.2);
+        background-color: rgba($selectedHoverColor, 0.2);
       }
     }
 
