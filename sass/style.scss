@@ -3,28 +3,88 @@ body {
 
   background-color: $bodyBackgroundColor;
   margin: 0;
+
+  table {
+    display: inline-block;
+    font-size: 0.67em;
+  }
+
   .center {
     text-align: center;
+  }
 
-    .awe {
-      $fontColor: #cea;
+  .awe {
+    $fontColor: #cea;
 
-      color: $fontColor;
-      border-radius: 3em;
-      box-shadow: 0em 0em 1em 0em $fontColor;
+    color: $fontColor;
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $fontColor;
+    display: inline-block;
+    font-family: sans-serif;
+    margin: 1em;
+
+    h1 {
       display: inline-block;
-      font-family: sans-serif;
-      margin: 1em;
+      text-align: center;
+      user-select: none;
 
-      h1 {
-        display: inline-block;
-        text-align: center;
-        user-select: none;
+      &:hover {
+        cursor: default;
+        text-shadow: 0 0 1em lighten($fontColor, 10%);
+      }
+    }
+  }
 
-        &:hover {
-          cursor: default;
-          text-shadow: 0 0 1em lighten($fontColor, 10%);
+  nav {
+    $colorTheme: #ace;
+
+    margin: 0;
+    padding: 0;
+
+    ul {
+      border-radius: 1em;
+      display: inline-block;
+      list-style: none;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 0 1em 0.2em darken($colorTheme, 50%);
+      &:hover {
+        box-shadow: none;
+      }
+    }
+
+    ul li {
+      text-align: center;
+      width: 12em;
+
+      &:hover {
+        background-color: darken($colorTheme, 50%);
+        color: lighten(darken($colorTheme, 50%), 70%);
+
+        ul {
+          display: block;
         }
+
+        ul li {
+          border-radius: 0;
+        }
+      }
+    }
+
+    ul ul {
+      cursor: pointer;
+      display: none;
+      position: absolute;
+      z-index: 1;
+      box-shadow: none;
+    }
+
+    ul ul li {
+      background-color: darken($colorTheme, 50%);
+
+      &:hover {
+        background-color: darken(darken($colorTheme, 50%), 10%);
+        color: lighten (darken($colorTheme, 50%), 50%);
       }
     }
   }
@@ -37,7 +97,6 @@ body {
     color: $colorTheme;
     cursor: default;
     display: inline-block;
-    font-family: sans-serif;
     margin: 1em;
     padding: 1em;
     position: relative;
@@ -52,63 +111,7 @@ body {
       }
     }
 
-    nav {
-      $menuColorTheme: darken($colorTheme, 50%);
-
-      margin: 0;
-      padding: 0;
-
-      ul {
-        border-radius: 1em;
-        display: inline-block;
-        list-style: none;
-        padding: 0;
-        position: relative;
-        box-shadow: 0 0 1em 0.2em $menuColorTheme;
-        &:hover {
-          box-shadow: none;
-        }
-      }
-
-      ul li {
-        text-align: center;
-        width: 12em;
-
-        &:hover {
-          background-color: $menuColorTheme;
-          color: lighten($menuColorTheme, 70%);
-
-          ul {
-            display: block;
-          }
-
-          ul li {
-            border-radius: 0;
-          }
-        }
-      }
-
-      ul ul {
-        cursor: pointer;
-        display: none;
-        position: absolute;
-        z-index: 1;
-        box-shadow: none;
-      }
-
-      ul ul li {
-        background-color: $menuColorTheme;
-
-        &:hover {
-          background-color: darken($menuColorTheme, 10%);
-          color: lighten ($menuColorTheme, 50%);
-        }
-      }
-    }
-
     table {
-      display: inline-block;
-      font-size: 0.67em;
       margin: 0;
 
       td {
@@ -184,6 +187,156 @@ body {
     .tinyText {
       font-size: 0.5em;
       word-wrap: break-word;
+    }
+  }
+
+  .Sequencer {
+    $colorTheme: #f5e5a0;
+    $inactiveColor: rgba($colorTheme, 0.15);
+    $inactiveHoverColor: rgba($colorTheme, 0.8);
+    $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+    $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    cursor: default;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    position: relative;
+    user-select: none;
+
+    nav {
+      @extend nav;
+
+      ul {
+        box-shadow: 0 0 1em 0.2em darken($colorTheme, 50%);
+      }
+
+      ul li {
+        &:hover {
+          background-color: darken($colorTheme, 50%);
+          color: lighten(darken($colorTheme, 50%), 70%);
+        }
+      }
+
+      ul ul li {
+        background-color: darken($colorTheme, 50%);
+
+        &:hover {
+          background-color: darken(darken($colorTheme, 50%), 10%);
+          color: lighten (darken($colorTheme, 50%), 50%);
+        }
+      }
+    }
+
+    input {
+      width: 16em;
+    }
+
+    $playPauseWidth: 3.5em;
+
+    .play {
+      $sideLength: $playPauseWidth / 2;
+
+      border-bottom: $sideLength solid transparent;
+      border-left: $playPauseWidth solid $inactiveColor;
+      border-top: $sideLength solid transparent;
+      display: inline-block;
+      margin: 1em 2em;
+
+      &:hover {
+        border-left: $playPauseWidth solid $inactiveHoverColor;
+      }
+    }
+
+    .playSelected {
+      $sideLength: $playPauseWidth / 2;
+
+      border-bottom: $sideLength solid transparent;
+      border-left: $playPauseWidth solid $selectedColor;
+      border-top: $sideLength solid transparent;
+      display: inline-block;
+      margin: 1em 2em;
+
+      &:hover {
+        border-left: $playPauseWidth solid $selectedHoverColor;
+      }
+    }
+
+    .stop {
+      background-color: $inactiveColor;
+      display: inline-block;
+      height: $playPauseWidth;
+      margin: 1em 2em;
+      width: $playPauseWidth;
+
+      &:hover {
+        background-color: $inactiveHoverColor;
+      }
+    }
+
+    .stopSelected {
+      background-color: $selectedColor;
+      display: inline-block;
+      height: $playPauseWidth;
+      margin: 1em 2em;
+      width: $playPauseWidth;
+
+      &:hover {
+        background-color: $selectedHoverColor;
+      }
+    }
+
+    .empty {
+      background-color: $inactiveColor;
+
+      &:hover {
+        background-color: $inactiveHoverColor;
+      }
+    }
+
+    .emptyActive {
+      background-color: lighten($inactiveColor, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($inactiveHoverColor, 0.2), 50%);
+      }
+    }
+
+    .selected {
+      background-color: lighten($selectedColor, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($selectedHoverColor, 0.5), 50%);
+      }
+    }
+    .selectedActive {
+      background-color: $selectedColor;
+
+      &:hover {
+        background-color: rgba($selectedHoverColor, 0.5);
+      }
+    }
+
+    .pattern {
+      margin: 1em;
+
+      div {
+        height: 2em;
+        line-height: 2em;
+        width: 3em;
+      }
+    }
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
     }
   }
 }

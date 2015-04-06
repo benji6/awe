@@ -9,9 +9,9 @@ module.exports = (presets, channels, parentDomEl) => {
 
   const modalView = parentDomEl.appendChild(createElement(h("div.modalWindow", [
     h("h3", "Open Preset"),
-    h("select", {
-      onchange: () => selectedValue = this.value
-    }, R.map((preset) => h("option", preset), presets)),
+    h("select", {onchange: function () {
+      selectedValue = this.value;
+    }}, R.map((preset) => h("option", preset), presets)),
     h("button", {onclick: () => {
       closeModal();
       channels.openPreset(selectedValue);

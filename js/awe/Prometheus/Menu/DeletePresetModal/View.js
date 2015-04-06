@@ -21,14 +21,15 @@ module.exports = (channels, parentDomElement, presets) => {
   const message = presets.length ? "Permanently delete preset" : "No saved presets, refresh to reload defaults";
 
   var virtualRoot = createVirtualRoot(message, h("button", {onclick: () =>
-    renderDeleteState(`Are you sure you want to permanently delete preset "${getSelectValue()}"?`)}, "Delete"));
+    renderDeleteState(`Are you sure you want to permanently delete preset "${getSelectValue()}"?
+      (It's actually not that permanent if it is a default preset).`)}, "Delete"));
   var domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 
   const renderDeleteState = (message) => {
     const newVirtualRoot = createVirtualRoot(message, h("button", {onclick: () => {
       domRoot.parentNode.removeChild(domRoot);
       channels.deletePreset(getSelectValue());
-    }}, "Confirm Delete"), true);
+    }}, "Delete"), true);
     domRoot = patch(domRoot, diff(virtualRoot, newVirtualRoot));
     virtualRoot = newVirtualRoot;
   };

@@ -1,6 +1,6 @@
 const R = require('ramda');
 const keyCodesToNotes = require('./model/keyCodesToNotes.js');
-const notesToFrequencies = require('./model/notesToFrequencies.js');
+const notesToFrequencies = require('../data/notesToFrequencies.js');
 const startChannels = require('./model/startChannels.js');
 const stopChannels = require('./model/stopChannels.js');
 const keyListeners = require('./model/keyListeners.js');

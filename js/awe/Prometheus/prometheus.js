@@ -11,7 +11,7 @@ const destroyAllChildren = (parentDomElement) => {
   }
 };
 
-module.exports = (parentDestination, viewContainers, startChannel, stopChannel) => {
+module.exports = (parentDestination, viewContainers, startChannels, stopChannels) => {
   const oldState = {};
 
   const purgeOldState = () => {
@@ -66,14 +66,14 @@ module.exports = (parentDestination, viewContainers, startChannel, stopChannel) 
       }
     };
 
-    startChannel.remove(oldState.onStart);
-    stopChannel.remove(oldState.onStop);
+    R.forEach((startChannel) => startChannel.remove(oldState.onStart), startChannels);
+    R.forEach((stopChannel) => stopChannel.remove(oldState.onStop), stopChannels);
 
     oldState.onStart = onStart;
     oldState.onStop = onStop;
 
-    startChannel.add(onStart);
-    stopChannel.add(onStop);
+    R.forEach((startChannel) => startChannel.add(onStart), startChannels);
+    R.forEach((stopChannel) => stopChannel.add(onStop), stopChannels);
 
     Menu(recurse, model, pluginName).view.connect(viewContainers.menu);
 
