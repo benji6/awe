@@ -35,10 +35,18 @@ module.exports = (score) => {
     return step.push(note);
   };
 
+  var bpm = 140;
+
+  const getBpm = () => bpm;
+  const setBpm = (value) => bpm = value;
+  const getTimeInterval = () => 60000 / bpm / 2;
   return {
+    getBpm,
     getCurrentScoreValue,
-    moveToNextScoreStep,
+    getTimeInterval,
     getViewData,
+    moveToNextScoreStep,
+    setBpm,
     update
   };
 };

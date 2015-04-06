@@ -3,9 +3,8 @@ const diff = require('virtual-dom/diff');
 const h = require('virtual-dom/h');
 const patch = require('virtual-dom/patch');
 const R = require('ramda');
-const rowsToNotes = require('./rowsToNotes.js');
+const rowsToNotes = require('../rowsToNotes.js');
 
-const pluginName = "Sequencer";
 const classNameFromCode = [
   "empty",
   "full",
@@ -13,28 +12,9 @@ const classNameFromCode = [
   "fullActive"
 ];
 
-module.exports = (model, parentDomElement) => {
-  const sequencerContainer = parentDomElement.appendChild(createElement(h(`div.${pluginName}`, [
-    h("h2", pluginName)
-  ])));
-
-  const rangeVirtualDom = h("tr", [
-    h("td", "BPM"),
-    h("input", {
-      type: "range",
-      min: 60,
-      max: 300,
-      onchange: function () {
-        console.log(this.value);
-      }
-    }),
-    h("output")
-  ]);
-
-  sequencerContainer.appendChild(createElement(rangeVirtualDom));
-
+module.exports = (model, controller, parentDomElement) => {
   var virtualRoot = h("div.center");
-  const domRoot = sequencerContainer.appendChild(createElement(virtualRoot));
+  const domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 
   const render = (data) => {
     const newVirtualRoot = h("div.center", [

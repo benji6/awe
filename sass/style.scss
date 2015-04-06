@@ -204,6 +204,10 @@ body {
     position: relative;
     user-select: none;
 
+    input {
+      width: 16em;
+    }
+
     .empty {
       background-color: $empty;
 

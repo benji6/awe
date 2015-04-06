@@ -1,16 +1,24 @@
 const R = require('ramda');
 const score = require('./score.js');
 const Model = require('./Model.js');
-const View = require('./View.js');
-
-const bpm = 180 * 3 / 2;
-const timeout = 60000 / bpm;
+const createSequencerContainer = require('./Views/createSequencerContainer.js');
+const PatternView = require('./Views/Pattern.js');
+const ControlsView = require('./Views/Controls.js');
+const Y = require('../utils/Y.js');
 
 module.exports = (parentDomElement) => {
+  const controllerChannels = {};
   const model = Model(score);
-  const view = View(model, parentDomElement);
+  const sequencerContainer = createSequencerContainer(parentDomElement);
+  const controlsView = ControlsView(model, controllerChannels, sequencerContainer);
+  const patternView = PatternView(model, controllerChannels, sequencerContainer);
 
-  view.render(model.getViewData());
+  controllerChannels.oninput = (value) => {
+    model.setBpm(value);
+    controlsView.render(value);
+  };
+
+  patternView.render(model.getViewData());
 
   const startChannels = [];
   const stopChannels = [];
@@ -27,15 +35,16 @@ module.exports = (parentDomElement) => {
     }
   };
 
-  window.setInterval(() => {
+  const loop = Y((recurse) => () => {
+    window.setTimeout(recurse, model.getTimeInterval());
     const prevFreqs = model.getCurrentScoreValue();
     model.moveToNextScoreStep();
     const currentFreqs = model.getCurrentScoreValue();
     R.forEach((prevFreq) =>
       R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
-    view.render(model.getViewData());
-  }, timeout);
+    patternView.render(model.getViewData());
+  })();
 
   return {
     startChannel: {
