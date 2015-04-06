@@ -8,7 +8,7 @@ const timeout = 60000 / bpm;
 
 module.exports = (parentDomElement) => {
   const model = Model(score);
-  const view = View(parentDomElement);
+  const view = View(model, parentDomElement);
 
   view.render(model.getViewData());
 

@@ -12,7 +12,7 @@ const classNameFromCode = [
   "fullActive"
 ];
 
-module.exports = (parentDomElement) => {
+module.exports = (model, parentDomElement) => {
   const sequencerContainer = parentDomElement.appendChild(createElement(h(`div.${pluginName}`, [
     h("h2", pluginName)
   ])));
@@ -22,9 +22,9 @@ module.exports = (parentDomElement) => {
 
   const render = (data) => {
     const newVirtualRoot = h("div.center", [
-      h("table.pattern", R.map(
-        (row) => h("tr", R.map((td) => h("td", [
-          h(`div.${classNameFromCode[td]}`)
+      h("table.pattern", R.mapIndexed(
+        (row, rowIndex) => h("tr", R.mapIndexed((td, columnIndex) => h("td", [
+          h(`div.${classNameFromCode[td]}`, {onclick: () => model.update(rowIndex, columnIndex)})
         ]), row)),
       data))
     ]);

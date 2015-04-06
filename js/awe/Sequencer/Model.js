@@ -25,9 +25,20 @@ module.exports = (score) => {
     return highlightedViewData;
   };
 
+  const update = (row, col) => {
+    const step = score[col];
+    const note = rowsToNotes[row];
+    const index = R.indexOf(note, step);
+    if (index !== -1) {
+      return step.splice(index, 1);
+    }
+    return step.push(note);
+  };
+
   return {
     getCurrentScoreValue,
     moveToNextScoreStep,
-    getViewData
+    getViewData,
+    update
   };
 };
