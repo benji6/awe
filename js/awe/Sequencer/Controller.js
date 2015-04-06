@@ -1,13 +1,19 @@
 const R = require('ramda');
-const notesToFrequencies = require('../data/notesToFrequencies.js');
 const score = require('./score.js');
+const Model = require('./Model.js');
 const View = require('./View.js');
 
 const bpm = 180 * 3 / 2;
 const timeout = 60000 / bpm;
 
 module.exports = (parentDomElement) => {
-  View(parentDomElement);
+  const model = Model(score);
+  console.log(model.getViewData());
+  View(parentDomElement, [
+    ["A4"],
+    ["A4", "B4"]
+  ]);
+
   const startChannels = [];
   const stopChannels = [];
 
@@ -23,15 +29,10 @@ module.exports = (parentDomElement) => {
     }
   };
 
-  var i = 0;
-  const scoreLength = R.length(score);
-  const moveToNextScoreStep = () => ++i < scoreLength ? i : i = 0;
-  const getCurrentScoreValue = () => R.both(R.identity, R.map((freq) => notesToFrequencies[freq]))(score[i]);
-
   window.setInterval(() => {
-    const prevFreqs = getCurrentScoreValue();
-    moveToNextScoreStep();
-    const currentFreqs = getCurrentScoreValue();
+    const prevFreqs = model.getCurrentScoreValue();
+    model.moveToNextScoreStep();
+    const currentFreqs = model.getCurrentScoreValue();
     R.forEach((prevFreq) =>
       R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);

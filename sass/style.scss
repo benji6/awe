@@ -31,6 +31,10 @@ body {
 
   .Sequencer {
     $colorTheme: #f5e5a0;
+    $empty: rgba($colorTheme, 0.1);
+    $emptyHover: rgba($colorTheme, 0.2);
+    $full: rgba(lighten($colorTheme, 10%), 0.7);
+    $fullHover: rgba(lighten($colorTheme, 10%), 0.9);
 
     border-radius: 3em;
     box-shadow: 0em 0em 1em 0em $colorTheme;
@@ -41,6 +45,31 @@ body {
     padding: 1em;
     position: relative;
     user-select: none;
+
+    .empty {
+      background-color: $empty;
+
+      &:hover {
+        background-color: $emptyHover;
+      }
+    }
+
+    .full {
+      background-color: $full;
+
+      &:hover {
+        background-color: $fullHover;
+      }
+    }
+
+    .pattern {
+      margin: 1em;
+
+      div {
+        height: 4vw;
+        width: 4vw;
+      }
+    }
 
     h2 {
       display: inline-block;
