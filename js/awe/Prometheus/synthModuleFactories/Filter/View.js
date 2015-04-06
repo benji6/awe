@@ -104,7 +104,7 @@ module.exports = (model, channels) => {
   return {
     connect: connect,
     render: (type) => {
-      components.forEach((component) => component && component.render && component.render());
+      R.forEach((component) => component && component.render && component.render(), components);
       if (!type) {
         return;
       }

@@ -20,7 +20,7 @@ module.exports = (parentDomElement) => {
   var virtualRoot = h("div.center");
   const domRoot = sequencerContainer.appendChild(createElement(virtualRoot));
 
-  render = (data) => {
+  const render = (data) => {
     const newVirtualRoot = h("div.center", [
       h("table.pattern", R.map(
         (row) => h("tr", R.map((td) => h("td", [
