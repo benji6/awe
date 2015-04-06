@@ -34,8 +34,8 @@ module.exports = (parentDomElement) => {
   };
   controllerChannels.stop = () => {
     model.setPlaying(false);
-    R.forEach(noteStop, model.getCurrentScoreValue());
     window.setTimeout(() => {
+      R.forEach(noteStop, model.getCurrentScoreValue());
       model.resetPosition();
       patternView.render();
     }, model.getTimeInterval() * 1.1);
@@ -55,8 +55,7 @@ module.exports = (parentDomElement) => {
     const prevFreqs = model.getCurrentScoreValue();
     model.moveToNextScoreStep();
     const currentFreqs = model.getCurrentScoreValue();
-    R.forEach((prevFreq) =>
-      R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
+    R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
     patternView.render();
   });

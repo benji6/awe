@@ -92,12 +92,12 @@ module.exports = (model) => {
 
   const noteStart = (freq) => activeNotes[freq] || newNote(freq);
   const noteStop = (freq) => {
-    const oscillator = activeNotes[freq].oscillator;
-    const adsrRelease = activeNotes[freq].adsrRelease;
+    const oscillator = activeNotes[freq] && activeNotes[freq].oscillator;
+    const adsrRelease = activeNotes[freq] && activeNotes[freq].adsrRelease;
     if (adsrRelease) {
       adsrRelease().then(() => oscillator.stop());
     } else {
-      oscillator.stop();
+      oscillator && oscillator.stop();
     }
     activeNotes[freq] = null;
   };
