@@ -17,6 +17,7 @@ module.exports = (score) => {
   const notesCount = R.length(rowsToNotes);
 
   const moveToNextScoreStep = () => ++i < scoreLength ? i : i = 0;
+  const moveToPrevScoreStep = () => --i < 0 ? i = scoreLength - 1 : i;
   const getCurrentScoreValue = () => R.both(R.identity, R.map((freq) => notesToFrequencies[freq]))(score[i]);
   const getViewData = () => {
     const activeColumnIndices = R.map((notes) => R.map((note) => R.findIndex(R.eq(note), rowsToNotes), notes), score);
@@ -65,6 +66,7 @@ module.exports = (score) => {
     getTimeInterval,
     getViewData,
     moveToNextScoreStep,
+    moveToPrevScoreStep,
     resetPosition,
     setBpm,
     setPlaying,

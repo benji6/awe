@@ -28,6 +28,7 @@ module.exports = (parentDomElement) => {
     if (model.getPlaying()) {
       return;
     }
+    model.moveToPrevScoreStep();
     model.setPlaying(true);
     playPauseView.render();
     play();
