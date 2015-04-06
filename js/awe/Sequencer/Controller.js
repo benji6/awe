@@ -34,6 +34,11 @@ module.exports = (parentDomElement) => {
   };
   controllerChannels.stop = () => {
     model.setPlaying(false);
+    R.forEach(noteStop, model.getCurrentScoreValue());
+    window.setTimeout(() => {
+      model.resetPosition();
+      patternView.render();
+    }, model.getTimeInterval() * 1.1);
     playPauseView.render();
   };
 

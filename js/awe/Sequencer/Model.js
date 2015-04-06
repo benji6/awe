@@ -55,6 +55,8 @@ module.exports = (score) => {
   const getPlaying = () => playing;
   const setPlaying = (boo) => playing = boo;
 
+  const resetPosition = () => i = 0;
+
   return {
     getBpm,
     getClassNameFromCode,
@@ -63,6 +65,7 @@ module.exports = (score) => {
     getTimeInterval,
     getViewData,
     moveToNextScoreStep,
+    resetPosition,
     setBpm,
     setPlaying,
     updatePattern
