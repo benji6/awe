@@ -5,8 +5,6 @@ const patch = require('virtual-dom/patch');
 const R = require('ramda');
 const rowsToNotes = require('../rowsToNotes.js');
 
-
-
 module.exports = (model, controller, parentDomElement) => {
   var virtualRoot = h("div.center");
   const domRoot = parentDomElement.appendChild(createElement(virtualRoot));

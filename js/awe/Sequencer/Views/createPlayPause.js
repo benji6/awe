@@ -6,8 +6,8 @@ const R = require('ramda');
 
 module.exports = (model, controller, parentDomElement) => {
   const createVirtualRoot = () => h("div.center", [
-    h("div.play", {onclick: () => console.log('s')}),
-    h("div.stop", {onclick: () => console.log('stop')})
+    h(`div.${model.getPlaying() ? "playSelected" : "play"}`, {onclick: () => controller.play()}),
+    h(`div.${model.getPlaying() ? "stop" : "stopSelected"}`, {onclick: () => controller.stop()})
   ]);
 
   var virtualRoot = createVirtualRoot();

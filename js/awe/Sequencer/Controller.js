@@ -20,26 +20,29 @@ module.exports = (parentDomElement) => {
     model.setBpm(value);
     bpmControl.render(value);
   };
+  controllerChannels.play = () => {
+    if (model.getPlaying()) {
+      return;
+    }
+    model.setPlaying(true);
+    playPauseView.render();
+    play();
+  };
+  controllerChannels.stop = () => {
+    model.setPlaying(false);
+    playPauseView.render();
+  };
 
   patternView.render(model.getViewData());
 
   const startChannels = [];
   const stopChannels = [];
 
-  const noteStart = (freq) => {
-    for (var i = 0; i < startChannels.length; i++) {
-      startChannels[i](freq);
-    }
-  };
+  const noteStart = (freq) => R.forEach((startChannel) => startChannel(freq), startChannels);
+  const noteStop = (freq) => R.forEach((stopChannel) => stopChannel(freq), stopChannels);
 
-  const noteStop = (freq) => {
-    for (var i = 0; i < startChannels.length; i++) {
-      stopChannels[i](freq);
-    }
-  };
-
-  const loop = Y((recurse) => () => {
-    window.setTimeout(recurse, model.getTimeInterval());
+  const play = Y((recurse) => () => {
+    model.getPlaying() && window.setTimeout(recurse, model.getTimeInterval());
     const prevFreqs = model.getCurrentScoreValue();
     model.moveToNextScoreStep();
     const currentFreqs = model.getCurrentScoreValue();
@@ -47,7 +50,7 @@ module.exports = (parentDomElement) => {
       R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
     patternView.render(model.getViewData());
-  })();
+  });
 
   return {
     startChannel: {

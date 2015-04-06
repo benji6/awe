@@ -10,7 +10,7 @@ module.exports = (model, controller, parentDomElement) => {
     h("td", h("input", {
       type: "range",
       min: 40,
-      max: 240,
+      max: 300,
       oninput: function () {
         controller.oninput(this.value);
       },

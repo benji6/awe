@@ -6,6 +6,7 @@ body {
 
   table {
     display: inline-block;
+    font-size: 0.67em;
   }
   .center {
     text-align: center;
@@ -110,7 +111,6 @@ body {
     }
 
     table {
-      font-size: 0.67em;
       margin: 0;
 
       td {
@@ -210,7 +210,7 @@ body {
       width: 16em;
     }
 
-    $playPauseWidth: 4em;
+    $playPauseWidth: 3.5em;
 
     .play {
       $sideLength: $playPauseWidth / 2;
@@ -226,6 +226,20 @@ body {
       }
     }
 
+    .playSelected {
+      $sideLength: $playPauseWidth / 2;
+
+      border-bottom: $sideLength solid transparent;
+      border-left: $playPauseWidth solid $selectedColor;
+      border-top: $sideLength solid transparent;
+      display: inline-block;
+      margin: 1em 2em;
+
+      &:hover {
+        border-left: $playPauseWidth solid $selectedHoverColor;
+      }
+    }
+
     .stop {
       background-color: $inactiveColor;
       display: inline-block;
@@ -235,6 +249,18 @@ body {
 
       &:hover {
         background-color: $inactiveHoverColor;
+      }
+    }
+
+    .stopSelected {
+      background-color: $selectedColor;
+      display: inline-block;
+      height: $playPauseWidth;
+      margin: 1em 2em;
+      width: $playPauseWidth;
+
+      &:hover {
+        background-color: $selectedHoverColor;
       }
     }
 

@@ -49,14 +49,22 @@ module.exports = (score) => {
   const getBpm = () => bpm;
   const setBpm = (value) => bpm = value;
   const getTimeInterval = () => 60000 / bpm / 2;
+
+  var playing = false;
+
+  const getPlaying = () => playing;
+  const setPlaying = (boo) => playing = boo;
+
   return {
     getBpm,
     getClassNameFromCode,
     getCurrentScoreValue,
+    getPlaying,
     getTimeInterval,
     getViewData,
     moveToNextScoreStep,
     setBpm,
+    setPlaying,
     update
   };
 };
