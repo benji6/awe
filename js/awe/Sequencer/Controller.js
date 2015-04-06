@@ -20,6 +20,10 @@ module.exports = (parentDomElement) => {
     model.setBpm(value);
     bpmControl.render(value);
   };
+  controllerChannels.patternClick = (rowIndex, columnIndex) => {
+    model.updatePattern(rowIndex, columnIndex);
+    patternView.render();
+  };
   controllerChannels.play = () => {
     if (model.getPlaying()) {
       return;
@@ -33,7 +37,7 @@ module.exports = (parentDomElement) => {
     playPauseView.render();
   };
 
-  patternView.render(model.getViewData());
+  patternView.render();
 
   const startChannels = [];
   const stopChannels = [];
@@ -49,7 +53,7 @@ module.exports = (parentDomElement) => {
     R.forEach((prevFreq) =>
       R.both(R.not(R.contains(prevFreq, currentFreqs)), noteStop(prevFreq)), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
-    patternView.render(model.getViewData());
+    patternView.render();
   });
 
   return {

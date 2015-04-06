@@ -34,7 +34,7 @@ module.exports = (score) => {
     return highlightedViewData;
   };
 
-  const update = (row, col) => {
+  const updatePattern = (row, col) => {
     const step = score[col];
     const note = rowsToNotes[row];
     const index = R.indexOf(note, step);
@@ -65,6 +65,6 @@ module.exports = (score) => {
     moveToNextScoreStep,
     setBpm,
     setPlaying,
-    update
+    updatePattern
   };
 };

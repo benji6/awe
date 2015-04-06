@@ -9,14 +9,16 @@ module.exports = (model, controller, parentDomElement) => {
   var virtualRoot = h("div.center");
   const domRoot = parentDomElement.appendChild(createElement(virtualRoot));
 
-  const render = (data) => {
+  const render = () => {
+    const data = model.getViewData();
+    
     const newVirtualRoot = h("div.center", [
       h("table.pattern", R.concat([h("tr", R.map((element) =>
         h("td", element && String(element)), R.range(0, R.length(data) + 2)))],
       R.mapIndexed((row, rowIndex) =>
         h("tr", R.concat([h("div", h("td", rowsToNotes[rowIndex]))], R.mapIndexed((td, columnIndex) =>
           h("td", h(`div.${model.getClassNameFromCode(td)}`, {
-            onclick: () => model.update(rowIndex, columnIndex)
+            onclick: () => controller.patternClick(rowIndex, columnIndex)
           })), row))),
           data)))
         ]);
