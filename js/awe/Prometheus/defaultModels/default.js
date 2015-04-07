@@ -17,7 +17,7 @@ module.exports = [
       {id: 0, destination: "destination"}
     ],
     model: {
-      frequency: 8000,
+      frequency: 4000,
       gain: 0,
       q: 0,
       type: "lowpass"
@@ -31,6 +31,18 @@ module.exports = [
       d: 1,
       s: 0.5,
       r: 0.5
+    }
+  },
+  {
+    id: 3,
+    connections: [
+      {id: 1, destination: "frequency"}
+    ],
+    type: "lfo",
+    model: {
+      amplitude: 1000,
+      frequency: 0.5,
+      type: "saw"
     }
   },
   {
