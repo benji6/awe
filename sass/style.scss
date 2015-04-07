@@ -89,6 +89,32 @@ body {
     }
   }
 
+  .DrumMachine {
+    $colorTheme: #f59570;
+    $inactiveColor: rgba($colorTheme, 0.15);
+    $inactiveHoverColor: rgba($colorTheme, 0.8);
+    $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+    $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+    border-radius: 3em;
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    cursor: default;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    position: relative;
+    user-select: none;
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
+    }
+  }
+
   .prometheus {
     $colorTheme: #ace;
 
