@@ -4,8 +4,6 @@ const Menu = require('./Menu/Controller.js');
 const Model = require('./Model.js');
 const createSequencerContainer = require('./Views/createSequencerContainer.js');
 const PatternView = require('./Views/Pattern.js');
-const createBpmControl = require('./Views/createBpmControl.js');
-const createPlayPause = require('./Views/createPlayPause.js');
 const Y = require('../utils/Y.js');
 
 module.exports = (parentDomElement) => {
@@ -13,12 +11,10 @@ module.exports = (parentDomElement) => {
   const model = Model(score);
   const sequencerContainer = createSequencerContainer(parentDomElement);
   Menu(sequencerContainer);
-  const playPauseView = createPlayPause(model, controllerChannels, sequencerContainer);
-  const bpmControl = createBpmControl(model, controllerChannels, sequencerContainer);
   const patternView = PatternView(model, controllerChannels, sequencerContainer);
 
   controllerChannels.oninput = (value) => {
-    model.setBpm(value);
+    chronos.setBpm(value);
     bpmControl.render(value);
   };
   controllerChannels.patternClick = (rowIndex, columnIndex) => {
@@ -26,21 +22,21 @@ module.exports = (parentDomElement) => {
     patternView.render();
   };
   controllerChannels.play = () => {
-    if (model.getPlaying()) {
+    if (chronos.getIsPlaying()) {
       return;
     }
     model.moveToPrevScoreStep();
-    model.setPlaying(true);
+    chronos.setIsPlaying(true);
     playPauseView.render();
     play();
   };
   controllerChannels.stop = () => {
-    model.setPlaying(false);
+    chronos.setIsPlaying(false);
     window.setTimeout(() => {
       R.forEach(noteStop, model.getCurrentScoreValue());
       model.resetPosition();
       patternView.render();
-    }, model.getTimeInterval() * 1.1);
+    }, chronos.getTimeInterval() * 1.1);
     playPauseView.render();
   };
 
@@ -53,7 +49,7 @@ module.exports = (parentDomElement) => {
   const noteStop = (freq) => R.forEach((stopChannel) => stopChannel(freq), stopChannels);
 
   const play = Y((recurse) => () => {
-    model.getPlaying() && window.setTimeout(recurse, model.getTimeInterval());
+    chronos.getIsPlaying() && window.setTimeout(recurse, chronos.getTimeInterval());
     const prevFreqs = model.getCurrentScoreValue();
     model.moveToNextScoreStep();
     const currentFreqs = model.getCurrentScoreValue();
@@ -61,6 +57,8 @@ module.exports = (parentDomElement) => {
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
     patternView.render();
   });
+
+
 
   return {
     startChannel: {
