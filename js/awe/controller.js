@@ -6,11 +6,9 @@ const keyboard = require('./keyboard/controller.js');
 const Prometheus = require('./Prometheus/Controller.js');
 const createSequencer = require('./Sequencer/Controller.js');
 
-
 const chronos = createChronos(view.destinationView);
-DrumMachine(view.destinationView);
+DrumMachine(chronos, view.destinationView);
 const sequencer = createSequencer(chronos, view.destinationView);
-
 
 const startChannels = [
   keyboard.startChannel,

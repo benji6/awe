@@ -24,28 +24,28 @@ const trigger = () => {
   source.start(0);
 };
 
-
-
-module.exports = (parentDomElement) => {
+module.exports = (chronos, parentDomElement) => {
   loadSample();
-  
   const model = Model(score);
   const controllerChannels = {
     trigger
   };
 
   const view = View(model, controllerChannels, parentDomElement);
-// view.render();
+  view.render();
 
+  chronos.addStopListener(() => {
+    R.forEach(noteStop, model.getCurrentScoreValue());
+    model.resetPosition();
+    view.render();
+  });
 
-
-  const play = Y((recurse) => () => {
-    model.getIsPlaying() && window.setTimeout(recurse, model.getTimeInterval());
+  chronos.addTicListener(() => {
     const prevFreqs = model.getCurrentScoreValue();
     model.moveToNextScoreStep();
     const currentFreqs = model.getCurrentScoreValue();
     R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
-    patternView.render();
+    view.render();
   });
 };
