@@ -9,7 +9,7 @@ const createSequencer = require('./Sequencer/Controller.js');
 
 const chronos = createChronos(view.destinationView);
 DrumMachine(view.destinationView);
-const sequencer = createSequencer(view.destinationView);
+const sequencer = createSequencer(chronos, view.destinationView);
 
 
 const startChannels = [

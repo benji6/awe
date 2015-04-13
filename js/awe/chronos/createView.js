@@ -5,7 +5,7 @@ const patch = require('virtual-dom/patch');
 
 const pluginName = "Chronos";
 
-module.exports = (model, parentDomElement, controllerChannels) => {
+module.exports = (model, parentDomElement, controller) => {
   const createVirtualRoot = () => h(`div.${pluginName}`, [
     h("h2", pluginName),
     h("div.center", [

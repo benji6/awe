@@ -2,14 +2,12 @@ const R = require('ramda');
 const notesToFrequencies = require('../data/notesToFrequencies.js');
 const rowsToNotes = require('./rowsToNotes.js');
 
-const classNameFromCode = [
+const getClassNameFromCode = (code) => [
   "empty",
   "selected",
   "emptyActive",
   "selectedActive"
-];
-
-const getClassNameFromCode = (code) => classNameFromCode[code];
+][code];
 
 module.exports = (score) => {
   var i = 0;
@@ -45,31 +43,15 @@ module.exports = (score) => {
     return step.push(note);
   };
 
-  var bpm = 140;
-
-  const getBpm = () => bpm;
-  const setBpm = (value) => bpm = value;
-  const getTimeInterval = () => 60000 / bpm / 2;
-
-  var playing = false;
-
-  const getPlaying = () => playing;
-  const setPlaying = (boo) => playing = boo;
-
   const resetPosition = () => i = 0;
 
   return {
-    getBpm,
     getClassNameFromCode,
     getCurrentScoreValue,
-    getPlaying,
-    getTimeInterval,
     getViewData,
     moveToNextScoreStep,
     moveToPrevScoreStep,
     resetPosition,
-    setBpm,
-    setPlaying,
     updatePattern
   };
 };

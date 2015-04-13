@@ -323,6 +323,9 @@ body {
 
     box-shadow: 0em 0em 1em 0em $colorTheme;
     color: $colorTheme;
+    display: block;
+    margin-left: 20%;
+    margin-right: 20%;
 
     $playPauseWidth: 3.5em;
 
