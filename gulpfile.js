@@ -5,6 +5,7 @@ var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var minifycss = require('gulp-minify-css');
+var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
@@ -17,11 +18,13 @@ gulp.task("jsDev", function () {
   bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source("bundle.js"))
+    .pipe(plumber())
     .pipe(buffer())
     // .pipe(sourcemaps.init())
     // .pipe(babel())
     // .pipe(uglify())
     // .pipe(sourcemaps.write('.'))
+    .pipe(plumber.stop())
     .pipe(gulp.dest('dist'));
 });
 
@@ -31,9 +34,11 @@ gulp.task("jsDist", function () {
   bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source("bundle.js"))
+    .pipe(plumber())
     .pipe(buffer())
     .pipe(babel())
     .pipe(uglify())
+    .pipe(plumber.stop())
     .pipe(gulp.dest('dist'));
 });
 
