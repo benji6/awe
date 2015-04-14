@@ -26,9 +26,14 @@ const trigger = () => {
 
 module.exports = (chronos, parentDomElement) => {
   loadSample();
+  
   const model = Model(score);
+
   const controllerChannels = {
-    trigger
+    patternClick: (rowIndex, columnIndex) => {
+      model.updatePattern(rowIndex, columnIndex);
+      view.render();
+    }
   };
 
   const view = View(model, controllerChannels, parentDomElement);

@@ -21,13 +21,11 @@ module.exports = (score) => {
   const getViewData = () => R.map((row) => R.map(getClassNameFromCode, row), score);
 
   const updatePattern = (row, col) => {
-    const step = score[col];
-    const note = rowsToNotes[row];
-    const index = R.indexOf(note, step);
-    if (index !== -1) {
-      return step.splice(index, 1);
-    }
-    return step.push(note);
+    const cellCode = score[row][col];
+    const cellCodeEquals = R.eq(cellCode);
+    score[row][col] = R.or(cellCodeEquals(0), cellCodeEquals(2)) ?
+      R.add(1, cellCode) :
+      R.subtract(cellCode, 1);
   };
 
   const resetPosition = () => i = 0;
