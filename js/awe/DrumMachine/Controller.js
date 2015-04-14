@@ -2,7 +2,7 @@ const audioContext = require('../audioContext.js');
 const View = require('./View.js');
 const Model = require('./Model.js');
 const score = require('./data/score.js');
-const Y = require('../utils/Y.js');
+const R = require('ramda');
 
 var buffer;
 
@@ -17,7 +17,7 @@ const loadSample = () => new Promise((resolve) => {
   request.send();
 });
 
-const trigger = () => {
+const trigger = (channel) => {
   const source = audioContext.createBufferSource();
   source.buffer = buffer;
   source.connect(audioContext.destination);
@@ -26,7 +26,7 @@ const trigger = () => {
 
 module.exports = (chronos, parentDomElement) => {
   loadSample();
-  
+
   const model = Model(score);
 
   const controllerChannels = {
@@ -40,17 +40,13 @@ module.exports = (chronos, parentDomElement) => {
   view.render();
 
   chronos.addStopListener(() => {
-    R.forEach(noteStop, model.getCurrentScoreValue());
     model.resetPosition();
     view.render();
   });
 
   chronos.addTicListener(() => {
-    const prevFreqs = model.getCurrentScoreValue();
+    R.forEach(R.both(R.eq(1), trigger), model.getCurrentScoreValue());
     model.moveToNextScoreStep();
-    const currentFreqs = model.getCurrentScoreValue();
-    R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
-    R.forEach(R.both(R.identity, noteStart), currentFreqs);
     view.render();
   });
 };
