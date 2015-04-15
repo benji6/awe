@@ -1,66 +1,45 @@
 const R = require('ramda');
 const score = require('./score.js');
-const Menu = require('./Menu/Controller.js');
 const Model = require('./Model.js');
-const createSequencerContainer = require('./Views/createSequencerContainer.js');
-const PatternView = require('./Views/Pattern.js');
-const createBpmControl = require('./Views/createBpmControl.js');
-const createPlayPause = require('./Views/createPlayPause.js');
-const Y = require('../utils/Y.js');
+const createView = require('./createView.js');
 
-module.exports = (parentDomElement) => {
-  const controllerChannels = {};
-  const model = Model(score);
-  const sequencerContainer = createSequencerContainer(parentDomElement);
-  Menu(sequencerContainer);
-  const playPauseView = createPlayPause(model, controllerChannels, sequencerContainer);
-  const bpmControl = createBpmControl(model, controllerChannels, sequencerContainer);
-  const patternView = PatternView(model, controllerChannels, sequencerContainer);
+module.exports = (chronos, parentDomElement) => {
+  var isFirstNote = true;
 
-  controllerChannels.oninput = (value) => {
-    model.setBpm(value);
-    bpmControl.render(value);
-  };
-  controllerChannels.patternClick = (rowIndex, columnIndex) => {
-    model.updatePattern(rowIndex, columnIndex);
-    patternView.render();
-  };
-  controllerChannels.play = () => {
-    if (model.getPlaying()) {
-      return;
+  const controllerChannels = {
+    patternClick: (rowIndex, columnIndex) => {
+      model.updatePattern(rowIndex, columnIndex);
+      view.render();
     }
-    model.moveToPrevScoreStep();
-    model.setPlaying(true);
-    playPauseView.render();
-    play();
-  };
-  controllerChannels.stop = () => {
-    model.setPlaying(false);
-    window.setTimeout(() => {
-      R.forEach(noteStop, model.getCurrentScoreValue());
-      model.resetPosition();
-      patternView.render();
-    }, model.getTimeInterval() * 1.1);
-    playPauseView.render();
   };
 
-  patternView.render();
+  const model = Model(score);
+  const view = createView(model, controllerChannels, parentDomElement);
+
+  chronos.addStopListener(() => {
+    isFirstNote = true;
+    R.forEach(noteStop, model.getAllPossibleFrequencies());
+    model.resetPosition();
+    view.render();
+  });
+
+  chronos.addTicListener(() => {
+    R.not(isFirstNote) && model.moveToNextScoreStep();
+    isFirstNote = false;
+    const prevFreqs = model.getPreviousScoreValue();
+    const currentFreqs = model.getCurrentScoreValue();
+    R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
+    R.forEach(R.both(R.identity, noteStart), currentFreqs);
+    view.render();
+  });
+
+  view.render();
 
   const startChannels = [];
   const stopChannels = [];
 
   const noteStart = (freq) => R.forEach((startChannel) => startChannel(freq), startChannels);
   const noteStop = (freq) => R.forEach((stopChannel) => stopChannel(freq), stopChannels);
-
-  const play = Y((recurse) => () => {
-    model.getPlaying() && window.setTimeout(recurse, model.getTimeInterval());
-    const prevFreqs = model.getCurrentScoreValue();
-    model.moveToNextScoreStep();
-    const currentFreqs = model.getCurrentScoreValue();
-    R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
-    R.forEach(R.both(R.identity, noteStart), currentFreqs);
-    patternView.render();
-  });
 
   return {
     startChannel: {
