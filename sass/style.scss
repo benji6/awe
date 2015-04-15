@@ -235,6 +235,73 @@ body {
       width: 16em;
     }
 
+    .empty {
+      background-color: $inactiveColor;
+
+      &:hover {
+        background-color: $inactiveHoverColor;
+      }
+    }
+
+    .emptyActive {
+      background-color: lighten($inactiveColor, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($inactiveHoverColor, 0.2), 50%);
+      }
+    }
+
+    .selected {
+      background-color: lighten($selectedColor, 50%);
+
+      &:hover {
+        background-color: lighten(rgba($selectedHoverColor, 0.5), 50%);
+      }
+    }
+
+    .selectedActive {
+      background-color: $selectedColor;
+
+      &:hover {
+        background-color: rgba($selectedHoverColor, 0.5);
+      }
+    }
+
+    .pattern {
+      margin: 1em;
+
+      div {
+        height: 2em;
+        line-height: 2em;
+        width: 3em;
+      }
+    }
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
+    }
+  }
+
+  .Chronos {
+    @extend .Sequencer;
+
+    $colorTheme: #a5e5e5;
+    $inactiveColor: rgba($colorTheme, 0.15);
+    $inactiveHoverColor: rgba($colorTheme, 0.8);
+    $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+    $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+    display: block;
+    margin-left: 20%;
+    margin-right: 20%;
+
     $playPauseWidth: 3.5em;
 
     .play {
@@ -252,13 +319,10 @@ body {
     }
 
     .playSelected {
+      @extend .play;
       $sideLength: $playPauseWidth / 2;
 
-      border-bottom: $sideLength solid transparent;
       border-left: $playPauseWidth solid $selectedColor;
-      border-top: $sideLength solid transparent;
-      display: inline-block;
-      margin: 1em 2em;
 
       &:hover {
         border-left: $playPauseWidth solid $selectedHoverColor;
@@ -278,15 +342,38 @@ body {
     }
 
     .stopSelected {
+      @extend .stop;
       background-color: $selectedColor;
-      display: inline-block;
-      height: $playPauseWidth;
-      margin: 1em 2em;
-      width: $playPauseWidth;
 
       &:hover {
         background-color: $selectedHoverColor;
       }
+    }
+  }
+
+  .DrumMachine {
+    @extend .Sequencer;
+
+    $colorTheme: #f59570;
+    $inactiveColor: rgba($colorTheme, 0.15);
+    $inactiveHoverColor: rgba($colorTheme, 0.8);
+    $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+    $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+    box-shadow: 0em 0em 1em 0em $colorTheme;
+    color: $colorTheme;
+
+    h2 {
+      display: inline-block;
+      text-align: center;
+
+      &:hover {
+        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      }
+    }
+
+    div.text {
+      width: 12em;
     }
 
     .empty {
@@ -312,6 +399,7 @@ body {
         background-color: lighten(rgba($selectedHoverColor, 0.5), 50%);
       }
     }
+
     .selectedActive {
       background-color: $selectedColor;
 
@@ -320,22 +408,27 @@ body {
       }
     }
 
-    .pattern {
-      margin: 1em;
+    nav {
+      @extend nav;
 
-      div {
-        height: 2em;
-        line-height: 2em;
-        width: 3em;
+      ul {
+        box-shadow: 0 0 1em 0.2em darken($colorTheme, 50%);
       }
-    }
 
-    h2 {
-      display: inline-block;
-      text-align: center;
+      ul li {
+        &:hover {
+          background-color: darken($colorTheme, 50%);
+          color: lighten(darken($colorTheme, 50%), 70%);
+        }
+      }
 
-      &:hover {
-        text-shadow: 0 0 1em lighten($colorTheme, 10%);
+      ul ul li {
+        background-color: darken($colorTheme, 50%);
+
+        &:hover {
+          background-color: darken(darken($colorTheme, 50%), 10%);
+          color: lighten (darken($colorTheme, 50%), 50%);
+        }
       }
     }
   }

@@ -1,10 +1,14 @@
 const audioContext = require('./audioContext.js');
 const view = require('./view.js');
+const createChronos = require('./chronos/Controller.js');
+const DrumMachine = require('./DrumMachine/Controller.js');
 const keyboard = require('./keyboard/controller.js');
 const Prometheus = require('./Prometheus/Controller.js');
 const createSequencer = require('./Sequencer/Controller.js');
 
-const sequencer = createSequencer(view.destinationView);
+const chronos = createChronos(view.destinationView);
+DrumMachine(chronos, view.destinationView);
+const sequencer = createSequencer(chronos, view.destinationView);
 
 const startChannels = [
   keyboard.startChannel,
