@@ -15,8 +15,18 @@ module.exports = (score) => {
   const notesCount = R.length(rowsToNotes);
 
   const moveToNextScoreStep = () => ++i < scoreLength ? i : i = 0;
+
   const moveToPrevScoreStep = () => --i < 0 ? i = scoreLength - 1 : i;
+
+  const getAllPossibleFrequencies = () => R.map((note) => notesToFrequencies[note], rowsToNotes);
+
   const getCurrentScoreValue = () => R.both(R.identity, R.map((freq) => notesToFrequencies[freq]))(score[i]);
+
+  const getPrevIndex = () => Boolean(i) ? R.subtract(i, 1) : R.subtract(scoreLength, 1);
+
+  const getPreviousScoreValue = () =>
+    R.both(R.identity, R.map((freq) => notesToFrequencies[freq]))(score[getPrevIndex()]);
+
   const getViewData = () => {
     const activeColumnIndices = R.map((notes) => R.map((note) => R.findIndex(R.eq(note), rowsToNotes), notes), score);
     const emptyRows = R.repeat(R.repeat(0, scoreLength), notesCount);
@@ -46,8 +56,10 @@ module.exports = (score) => {
   const resetPosition = () => i = 0;
 
   return {
+    getAllPossibleFrequencies,
     getClassNameFromCode,
     getCurrentScoreValue,
+    getPreviousScoreValue,
     getViewData,
     moveToNextScoreStep,
     moveToPrevScoreStep,

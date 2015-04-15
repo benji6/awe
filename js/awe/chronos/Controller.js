@@ -31,7 +31,10 @@ module.exports = (parentDomElement) => {
   };
 
   const tic = Y((recurse) => () => {
-    model.getIsPlaying() && window.setTimeout(recurse, model.getTimeInterval());
+    if (!model.getIsPlaying()) {
+      return;
+    }
+    window.setTimeout(recurse, model.getTimeInterval());
     R.forEach((listener) => listener(), ticListeners);
   });
 

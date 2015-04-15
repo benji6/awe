@@ -15,17 +15,17 @@ module.exports = (chronos, parentDomElement) => {
   const view = createView(model, controllerChannels, parentDomElement);
 
   chronos.addStopListener(() => {
-    R.forEach(noteStop, model.getCurrentScoreValue());
+    R.forEach(noteStop, model.getAllPossibleFrequencies());
     model.resetPosition();
     view.render();
   });
 
   chronos.addTicListener(() => {
-    const prevFreqs = model.getCurrentScoreValue();
-    model.moveToNextScoreStep();
+    const prevFreqs = model.getPreviousScoreValue();
     const currentFreqs = model.getCurrentScoreValue();
     R.forEach((prevFreq) => !R.contains(prevFreq, currentFreqs) && noteStop(prevFreq), prevFreqs);
     R.forEach(R.both(R.identity, noteStart), currentFreqs);
+    model.moveToNextScoreStep();
     view.render();
   });
 
