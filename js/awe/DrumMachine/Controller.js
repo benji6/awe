@@ -31,6 +31,8 @@ const trigger = (channel) => {
 };
 
 module.exports = (chronos, parentDomElement) => {
+  var isFirstNote = true;
+
   const model = Model(score);
 
   const controllerChannels = {
@@ -44,13 +46,15 @@ module.exports = (chronos, parentDomElement) => {
   view.render();
 
   chronos.addStopListener(() => {
+    isFirstNote = true;
     model.resetPosition();
     view.render();
   });
 
   chronos.addTicListener(() => {
+    !isFirstNote && model.moveToNextScoreStep();
+    isFirstNote = false;
     R.forEachIndexed((cell, index) => R.eq(1, cell) && trigger(index), model.getCurrentScoreValue());
-    model.moveToNextScoreStep();
     view.render();
   });
 };
