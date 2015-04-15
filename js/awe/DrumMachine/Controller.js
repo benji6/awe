@@ -19,10 +19,14 @@ Promise.all(R.map(loadSample, R.pluck("location", samples))).then((loadedBuffers
   buffers = loadedBuffers;
 });
 
+const masterGain = audioContext.createGain();
+masterGain.gain.value = 0.4;
+masterGain.connect(audioContext.destination);
+
 const trigger = (channel) => {
   const source = audioContext.createBufferSource();
   source.buffer = buffers[channel];
-  source.connect(audioContext.destination);
+  source.connect(masterGain);
   source.start(0);
 };
 
