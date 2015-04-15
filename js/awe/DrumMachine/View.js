@@ -4,7 +4,7 @@ const h = require('virtual-dom/h');
 const patch = require('virtual-dom/patch');
 const R = require('ramda');
 const createMenuVirtualRoot = require('./Menu/createVirtualRoot.js');
-const rowsToSamples = require('./rowsToSamples.js');
+const samples = require('./data/samples.js');
 
 const pluginName = "DrumMachine";
 
@@ -21,7 +21,7 @@ module.exports = (model, controller, parentDomElement) => {
       h("div.center", h("table.pattern", R.concat([h("tr", R.map((element) =>
         h("td", element && String(element)), R.range(0, R.add(R.length(data), 2))))],
       R.mapIndexed((row, rowIndex) =>
-        h("tr", R.concat([h("div", h("td", rowsToSamples[rowIndex]))], R.mapIndexed((td, columnIndex) =>
+        h("tr", R.concat([h("td", h("div.text", samples[rowIndex].name))], R.mapIndexed((td, columnIndex) =>
           h("td", h(`div.${td}`, {
             onclick: () => controller.patternClick(rowIndex, columnIndex)
           })), row))),

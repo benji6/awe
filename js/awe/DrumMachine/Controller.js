@@ -3,30 +3,30 @@ const View = require('./View.js');
 const Model = require('./Model.js');
 const score = require('./data/score.js');
 const R = require('ramda');
+const samples = require('./data/samples.js');
 
-var buffer;
-
-const loadSample = () => new Promise((resolve) => {
+const loadSample = (filePath) => new Promise((resolve) => {
   const request = new XMLHttpRequest();
-  request.open("GET", "Bell_1.mp3", true);
+  request.open("GET", filePath, true);
   request.responseType = 'arraybuffer';
-  request.onload = () => audioContext.decodeAudioData(request.response, (loadedBuffer) => {
-    buffer = loadedBuffer;
-    resolve();
-  });
+  request.onload = () => audioContext.decodeAudioData(request.response, resolve);
   request.send();
+});
+
+var buffers;
+
+Promise.all(R.map(loadSample, R.pluck("location", samples))).then((loadedBuffers) => {
+  buffers = loadedBuffers;
 });
 
 const trigger = (channel) => {
   const source = audioContext.createBufferSource();
-  source.buffer = buffer;
+  source.buffer = buffers[channel];
   source.connect(audioContext.destination);
   source.start(0);
 };
 
 module.exports = (chronos, parentDomElement) => {
-  loadSample();
-
   const model = Model(score);
 
   const controllerChannels = {
@@ -45,7 +45,7 @@ module.exports = (chronos, parentDomElement) => {
   });
 
   chronos.addTicListener(() => {
-    R.forEach(R.both(R.eq(1), trigger), model.getCurrentScoreValue());
+    R.forEachIndexed((cell, index) => R.eq(1, cell) && trigger(index), model.getCurrentScoreValue());
     model.moveToNextScoreStep();
     view.render();
   });

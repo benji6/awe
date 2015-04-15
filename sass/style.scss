@@ -371,6 +371,11 @@ body {
         text-shadow: 0 0 1em lighten($colorTheme, 10%);
       }
     }
+
+    div.text {
+      width: 12em;
+    }
+
     .empty {
       background-color: $inactiveColor;
 
