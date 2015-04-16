@@ -60,7 +60,7 @@ module.exports = [
     model: {
       type: "sawtooth",
       detune: 0,
-      panning: 0,
+      panning: 0.2,
       tune: 0,
       volume: 0.2
     }
@@ -79,8 +79,8 @@ module.exports = [
     ],
     model: {
       type: "sine",
-      detune: 0,
-      panning: 0,
+      detune: 0.08,
+      panning: -0.2,
       tune: 0,
       volume: 0.2
     }

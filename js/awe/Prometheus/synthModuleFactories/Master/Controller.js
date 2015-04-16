@@ -8,13 +8,8 @@ const GainNode = (volume) => {
 };
 
 const Panner = (panning) => {
-  const panner = audioContext.createPanner();
-  panner.panningModel = 'equalpower';
-  return setPannerPosition(panner, panning);
-};
-
-const setPannerPosition = (panner, panning) => {
-  panner.setPosition(panning, 0, 1 - Math.abs(panning));
+  const panner = audioContext.createStereoPanner();
+  panner.pan.value = panning;
   return panner;
 };
 
@@ -28,7 +23,7 @@ module.exports = (model) => {
 
   controllerChannel.panning = (value) => {
     model.panning = Number(value);
-    setPannerPosition(panner, value);
+    panner.pan.value = value;
   };
 
   const connect = (node) => {

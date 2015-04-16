@@ -15,15 +15,10 @@ const Gain = (volume) => {
   return gain;
 };
 
-const setPannerPosition = (panner, panning) => {
-  panner.setPosition(panning, 0, 1 - Math.abs(panning));
-  return panner;
-};
-
 const Panner = (panning) => {
-  const panner = audioContext.createPanner();
-  panner.panningModel = 'equalpower';
-  return setPannerPosition(panner, panning);
+  const panner = audioContext.createStereoPanner();
+  panner.pan.value = panning;
+  return panner;
 };
 
 const oscillatorParams = [
@@ -76,7 +71,7 @@ module.exports = (model) => {
       };
       channels.panning = (value) => {
         model.panning = Number(value);
-        setPannerPosition(panner, value);
+        panner.pan.value = value;
       };
 
       masterGain.connect(output);
