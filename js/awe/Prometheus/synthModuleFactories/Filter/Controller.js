@@ -25,6 +25,7 @@ module.exports = (model) => {
     connect: (node) => filter.connect(node),
     destinations: {
       destination: filter,
+      frequency: filter.frequency
     },
     id: model.id,
     view
