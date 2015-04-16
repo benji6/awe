@@ -17,9 +17,9 @@ module.exports = [
       {id: 0, destination: "destination"}
     ],
     model: {
-      frequency: 4000,
+      frequency: 3600,
       gain: 0,
-      q: 0,
+      q: 0.2,
       type: "lowpass"
     }
   },
@@ -40,9 +40,9 @@ module.exports = [
     ],
     type: "lfo",
     model: {
-      amplitude: 1000,
-      frequency: 0.5,
-      type: "saw"
+      amount: 1200,
+      rate: 0.3,
+      type: "triangle"
     }
   },
   {
@@ -58,7 +58,7 @@ module.exports = [
       {id: 2, destination: "gain"}
     ],
     model: {
-      type: "saw",
+      type: "sawtooth",
       detune: 0,
       panning: 0,
       tune: 0,

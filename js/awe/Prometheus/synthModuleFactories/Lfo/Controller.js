@@ -2,17 +2,33 @@ const audioContext = require('../../../audioContext');
 const View = require('./View.js');
 
 module.exports = (model) => {
-  const channels = {
-    freq: (value) => model.freq = Number(value),
+  const gain = audioContext.createGain();
+  const lfo = audioContext.createOscillator();
+
+  const controllerChannels = {
+    rate: (value) => {
+      model.rate = Number(value);
+      lfo.frequency.value = model.rate;
+      view.render();
+    },
+
+    amount: (value) => {
+      model.amount = Number(value);
+      gain.gain.value = model.amount;
+      view.render();
+    },
+
+    type: (value) => {
+      model.type = value;
+      lfo.type = model.type;
+    },
   };
-  const view = View(model, channels);
+  const view = View(model, controllerChannels);
 
   const connect = (destination) => {
-    const gain = audioContext.createGain();
-    const lfo = audioContext.createOscillator();
-    gain.gain.value = model.amplitude;
+    gain.gain.value = model.amount;
     lfo.type = model.type;
-    lfo.frequency.value = model.frequency;
+    lfo.frequency.value = model.rate;
     lfo.connect(gain);
     gain.connect(destination);
     lfo.start();
