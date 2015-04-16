@@ -27,10 +27,9 @@ gulp.task("jsDev", function () {
     .pipe(source("bundle.js"))
     .pipe(plumber())
     .pipe(buffer())
-    // .pipe(sourcemaps.init())
-    // .pipe(babel())
-    // .pipe(uglify())
-    // .pipe(sourcemaps.write('.'))
+    .pipe(sourcemaps.init())
+    .pipe(babel())
+    .pipe(sourcemaps.write('.'))
     .pipe(plumber.stop())
     .pipe(gulp.dest('dist'));
 });
