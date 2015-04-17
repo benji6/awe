@@ -52,7 +52,11 @@ gulp.task('sass', function () {
   gulp.src('sass/style.scss')
     .pipe(sass())
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
+      browsers: [
+        'last 2 Chrome versions',
+        'last 2 Firefox versions',
+        'last 2 Opera versions'
+      ],
       cascade: false
     }))
     .pipe(minifycss())
