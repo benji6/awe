@@ -20,8 +20,10 @@
   }
 
   .hint {
-    margin-bottom: 2em;
+    cursor: default;
     font-style: italic;
     font-size: 0.8em;
+    margin-bottom: 2em;
+    user-select: none;
   }
 }
