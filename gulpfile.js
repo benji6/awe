@@ -1,17 +1,17 @@
-var autoprefixer = require('gulp-autoprefixer');
-var babel = require("gulp-babel");
-var browserify = require('browserify');
-var buffer = require('vinyl-buffer');
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var minifycss = require('gulp-minify-css');
-var minifyHTML = require('gulp-minify-html');
-var plumber = require('gulp-plumber');
-var sass = require('gulp-sass');
-var source = require('vinyl-source-stream');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require("gulp-uglify");
-var watchify = require('watchify');
+const autoprefixer = require('gulp-autoprefixer');
+const babel = require("gulp-babel");
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const minifycss = require('gulp-minify-css');
+const minifyHTML = require('gulp-minify-html');
+const plumber = require('gulp-plumber');
+const sass = require('gulp-sass');
+const source = require('vinyl-source-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require("gulp-uglify");
+const watchify = require('watchify');
 
 gulp.task("html", function () {
   gulp.src('./index.html')
@@ -20,7 +20,7 @@ gulp.task("html", function () {
 });
 
 gulp.task("jsDev", function () {
-  var bundler = watchify(browserify('./js/main.js', watchify.args));
+  const bundler = watchify(browserify('./js/main.js', watchify.args));
 
   bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
@@ -35,7 +35,7 @@ gulp.task("jsDev", function () {
 });
 
 gulp.task("jsDist", function () {
-  var bundler = watchify(browserify('./js/main.js', watchify.args));
+  const bundler = watchify(browserify('./js/main.js', watchify.args));
 
   bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))

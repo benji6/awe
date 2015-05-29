@@ -4,7 +4,7 @@ const R = require('ramda');
 const createRangeControl = require('../../../Components/createRangeControl.js');
 const createSelectControl = require('../../../Components/createSelectControl.js');
 
-const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
+const capitalizeFirst = (str) => R.concat(R.toUpper(R.nthChar(0, str)), R.slice(1, R.length(str), str));
 const formatOutput = (output) => Number(output).toFixed(2);
 
 module.exports = (model, channels) => {

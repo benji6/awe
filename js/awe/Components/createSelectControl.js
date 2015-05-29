@@ -2,7 +2,7 @@ const h = require('virtual-dom/h');
 const createElement = require('virtual-dom/create-element');
 const R = require('ramda');
 
-const capitalizeFirst = (str) => R.concat(R.toUpper(R.charAt(0, str)), R.slice(1, R.length(str), str));
+const capitalizeFirst = (str) => R.concat(R.toUpper(R.nthChar(0, str)), R.slice(1, R.length(str), str));
 
 module.exports = (params) => {
   const modelType = params.model.type;
