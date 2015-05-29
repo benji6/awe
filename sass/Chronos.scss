@@ -1,0 +1,63 @@
+.Chronos {
+  @extend .Sequencer;
+
+  $colorTheme: #a5e5e5;
+  $inactiveColor: rgba($colorTheme, 0.15);
+  $inactiveHoverColor: rgba($colorTheme, 0.8);
+  $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+  $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+  box-shadow: 0em 0em 1em 0em $colorTheme;
+  color: $colorTheme;
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
+
+  $playPauseWidth: 3.5em;
+
+  .play {
+    $sideLength: $playPauseWidth / 2;
+
+    border-bottom: $sideLength solid transparent;
+    border-left: $playPauseWidth solid $inactiveColor;
+    border-top: $sideLength solid transparent;
+    display: inline-block;
+    margin: 1em 2em;
+
+    &:hover {
+      border-left: $playPauseWidth solid $inactiveHoverColor;
+    }
+  }
+
+  .playSelected {
+    @extend .play;
+    $sideLength: $playPauseWidth / 2;
+
+    border-left: $playPauseWidth solid $selectedColor;
+
+    &:hover {
+      border-left: $playPauseWidth solid $selectedHoverColor;
+    }
+  }
+
+  .stop {
+    background-color: $inactiveColor;
+    display: inline-block;
+    height: $playPauseWidth;
+    margin: 1em 2em;
+    width: $playPauseWidth;
+
+    &:hover {
+      background-color: $inactiveHoverColor;
+    }
+  }
+
+  .stopSelected {
+    @extend .stop;
+    background-color: $selectedColor;
+
+    &:hover {
+      background-color: $selectedHoverColor;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.awe {
+  $fontColor: #cea;
+
+  color: $fontColor;
+  border-radius: 3em;
+  box-shadow: 0em 0em 1em 0em $fontColor;
+  display: inline-block;
+  font-family: sans-serif;
+  margin: 1em;
+
+  h1 {
+    display: inline-block;
+    text-align: center;
+    user-select: none;
+
+    &:hover {
+      cursor: default;
+      text-shadow: 0 0 1em lighten($fontColor, 10%);
+    }
+  }
+
+  .hint {
+    margin-bottom: 2em;
+    font-style: italic;
+    font-size: 0.8em;
+  }
+}

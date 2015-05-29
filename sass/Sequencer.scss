@@ -1,0 +1,96 @@
+.Sequencer {
+  $colorTheme: #f5e5a0;
+  $inactiveColor: rgba($colorTheme, 0.15);
+  $inactiveHoverColor: rgba($colorTheme, 0.8);
+  $selectedColor: rgba(lighten($colorTheme, 10%), 0.7);
+  $selectedHoverColor: rgba(lighten($colorTheme, 10%), 0.7);
+
+  border-radius: 3em;
+  box-shadow: 0em 0em 1em 0em $colorTheme;
+  color: $colorTheme;
+  cursor: default;
+  display: inline-block;
+  margin: 1em;
+  padding: 1em;
+  position: relative;
+  user-select: none;
+
+  nav {
+    @extend nav;
+
+    ul {
+      box-shadow: 0 0 1em 0.2em darken($colorTheme, 50%);
+    }
+
+    ul li {
+      &:hover {
+        background-color: darken($colorTheme, 50%);
+        color: lighten(darken($colorTheme, 50%), 70%);
+      }
+    }
+
+    ul ul li {
+      background-color: darken($colorTheme, 50%);
+
+      &:hover {
+        background-color: darken(darken($colorTheme, 50%), 10%);
+        color: lighten (darken($colorTheme, 50%), 50%);
+      }
+    }
+  }
+
+  input {
+    width: 16em;
+  }
+
+  .empty {
+    background-color: $inactiveColor;
+
+    &:hover {
+      background-color: $inactiveHoverColor;
+    }
+  }
+
+  .emptyActive {
+    background-color: lighten($inactiveColor, 50%);
+
+    &:hover {
+      background-color: lighten(rgba($inactiveHoverColor, 0.2), 50%);
+    }
+  }
+
+  .selected {
+    background-color: lighten($selectedColor, 50%);
+
+    &:hover {
+      background-color: lighten(rgba($selectedHoverColor, 0.5), 50%);
+    }
+  }
+
+  .selectedActive {
+    background-color: $selectedColor;
+
+    &:hover {
+      background-color: rgba($selectedHoverColor, 0.5);
+    }
+  }
+
+  .pattern {
+    margin: 1em;
+
+    div {
+      height: 2em;
+      line-height: 2em;
+      width: 3em;
+    }
+  }
+
+  h2 {
+    display: inline-block;
+    text-align: center;
+
+    &:hover {
+      text-shadow: 0 0 1em lighten($colorTheme, 10%);
+    }
+  }
+}

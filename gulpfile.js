@@ -50,6 +50,7 @@ gulp.task("jsDist", function () {
 
 gulp.task('sass', function () {
   gulp.src('sass/style.scss')
+    .pipe(plumber())
     .pipe(sass())
     .pipe(autoprefixer({
       browsers: [
@@ -67,7 +68,7 @@ gulp.task("watch", function () {
   gulp.start("html", "jsDev", "sass");
   gulp.watch('index.html', ["html"]);
   gulp.watch('js/**/*.js', ["jsDev"]);
-  gulp.watch('sass/style.scss', ["sass"]);
+  gulp.watch('sass/**/*.scss', ["sass"]);
 });
 
 gulp.task("build", ["html", "jsDist", "sass"]);
