@@ -1,5 +1,4 @@
 # Awe
-###### Make Music In Your Browser!
 
 **No longer hosted or in development, see my latest web audio experiment here:**
 
